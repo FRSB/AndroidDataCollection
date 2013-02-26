@@ -189,6 +189,19 @@
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
 				/>
+		    
+		    <TextView
+		        android:id="@+id/text_ringer_mode"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:text="Ringer Mode: "
+				/>
+			
+		    <TextView
+		        android:id="@+id/ringer_mode"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+				/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

@@ -27,7 +27,7 @@ public final class R {
         public static final int accelerometer_x=0x7f080004;
         public static final int accelerometer_y=0x7f080006;
         public static final int accelerometer_z=0x7f080008;
-        public static final int action_settings=0x7f08001b;
+        public static final int action_settings=0x7f08001d;
         public static final int beginEndButton=0x7f080002;
         public static final int cellId=0x7f08000a;
         public static final int cellLac=0x7f08000c;
@@ -38,6 +38,7 @@ public final class R {
         public static final int gps_latitude=0x7f080014;
         public static final int gps_longiitude=0x7f080016;
         public static final int gps_speed=0x7f08001a;
+        public static final int ringer_mode=0x7f08001c;
         public static final int scrollView1=0x7f080000;
         public static final int textView1=0x7f080001;
         public static final int text_accelerometer_x=0x7f080003;
@@ -52,6 +53,7 @@ public final class R {
         public static final int text_gps_latitude=0x7f080013;
         public static final int text_gps_longitude=0x7f080015;
         public static final int text_gps_speed=0x7f080019;
+        public static final int text_ringer_mode=0x7f08001b;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;

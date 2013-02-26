@@ -1,7 +1,6 @@
 package de.unihalle.ebusiness.androiddatacollection;
 
 import java.util.List;
-
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -9,6 +8,7 @@ import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
@@ -25,6 +25,8 @@ public class MainActivity extends Activity {
 	
 	private TelephonyManager telephonyManager;
 	
+	private AudioManager audioManager;
+	
 	private LocationManager locationManager;
 	private LocationListener locationListener;
 	
@@ -33,10 +35,8 @@ public class MainActivity extends Activity {
 	private Sensor accelerometerSensor;
 	private Sensor gyroscopeSensor;
 	private Sensor magneticFieldSensor;
-	private Sensor gravitySensor;
 	private Sensor lightSensor;
 	private Sensor proximitySensor;
-	private Sensor linearAccelerationSensor;
 	
 	private TextView tvAccelerometer_x;
 	private TextView tvAccelerometer_y;
@@ -53,13 +53,14 @@ public class MainActivity extends Activity {
 	private TextView tvGpsBearing;
 	private TextView tvGpsSpeed;
 	
+	private TextView tvRingerMode;
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);        
         
         try {     	
-
 			
 			beginEndButton = ((Button) findViewById(R.id.beginEndButton));
 				
@@ -74,6 +75,7 @@ public class MainActivity extends Activity {
 						setUpSensorListener();
 						getCellLocation();
 						getGpsLocation();
+						getRinger();
 					} else {
 						beginEndButton.setText(getString(R.string.button_begin));
 						sensorManager.unregisterListener(sensorEventListener);
@@ -94,7 +96,7 @@ public class MainActivity extends Activity {
     }    
        
     public void setUpSensors() {
-    	
+    	// the accelerometer is the result of gravity and linear acceleration, so they have been omitted
     	try {
     		sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
     		
@@ -106,20 +108,12 @@ public class MainActivity extends Activity {
 				magneticFieldSensor = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
 			}
 			
-			if (sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY) != null) {
-				gravitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
-			}
-			
 			if (sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE) != null) {
 				gyroscopeSensor = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
 			}
 			
 			if (sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT) != null) {
 				lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
-			}
-			
-			if (sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION) != null) {
-				linearAccelerationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
 			}
 			
 			if (sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY) != null) {
@@ -149,6 +143,22 @@ public class MainActivity extends Activity {
 						tvAccelerometer_y.setText(Float.toString(event.values[1]));
 						tvAccelerometer_z.setText(Float.toString(event.values[2]));
 					}
+					
+					if (event.sensor.getType() == Sensor.TYPE_GYROSCOPE) {
+						System.out.println("Gyroscope: " + "x = " + event.values[0] + ", y = " + event.values[1] + ", z = " + event.values[2]);
+					}
+					
+					if (event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
+						System.out.println("Magnetic Field: " + "x = " + event.values[0] + ", y = " + event.values[1] + ", z = " + event.values[2]);
+					}
+									
+					if (event.sensor.getType() == Sensor.TYPE_LIGHT) {
+						System.out.println("Light: " + "x = " + event.values[0]);						
+					}
+					
+					if (event.sensor.getType() == Sensor.TYPE_PROXIMITY) {
+						System.out.println("Proximity: " + "x = " + event.values[0]);	
+					}
 				}
 				
 				@Override
@@ -158,6 +168,10 @@ public class MainActivity extends Activity {
 			};
 			
 			sensorManager.registerListener(sensorEventListener, accelerometerSensor, SensorManager.SENSOR_DELAY_NORMAL);
+			sensorManager.registerListener(sensorEventListener, gyroscopeSensor, SensorManager.SENSOR_DELAY_NORMAL);
+			sensorManager.registerListener(sensorEventListener, lightSensor, SensorManager.SENSOR_DELAY_NORMAL);
+			sensorManager.registerListener(sensorEventListener, proximitySensor, SensorManager.SENSOR_DELAY_NORMAL);
+			sensorManager.registerListener(sensorEventListener, magneticFieldSensor, SensorManager.SENSOR_DELAY_NORMAL);
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -167,27 +181,28 @@ public class MainActivity extends Activity {
     
     public void getCellLocation() {
     	try {
-    		   		
+    		    		
         	tvCellId = (TextView) findViewById(R.id.cellId);
         	tvCellLac = (TextView) findViewById(R.id.cellLac);
-        	tvCellNeighbors = (TextView) findViewById(R.id.cellNeighbors);
-        	
+        	tvCellNeighbors = (TextView) findViewById(R.id.cellNeighbors);        	
         	        	
 			telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
 			
 			GsmCellLocation cellLocation = (GsmCellLocation) telephonyManager.getCellLocation();
 			
-			tvCellId.setText(Integer.toString(cellLocation.getCid()));
-			tvCellLac.setText(Integer.toString(cellLocation.getLac()));
-			
-			List<NeighboringCellInfo> neighboringCellInfo = telephonyManager.getNeighboringCellInfo();
-			
-			String neighboringCellString = "CellID LAC RSSI | ";
-			for (NeighboringCellInfo cell : neighboringCellInfo) {
-				neighboringCellString = neighboringCellString + cell.getCid() + ", " + cell.getLac() + ", " + cell.getRssi() + " | ";
+			if (cellLocation != null) {
+				tvCellId.setText(Integer.toString(cellLocation.getCid()));
+				tvCellLac.setText(Integer.toString(cellLocation.getLac()));				
+								
+				List<NeighboringCellInfo> neighboringCellInfo = telephonyManager.getNeighboringCellInfo();
+				
+				String neighboringCellString = "CellID LAC RSSI | ";
+				for (NeighboringCellInfo cell : neighboringCellInfo) {
+					neighboringCellString = neighboringCellString + cell.getCid() + ", " + cell.getLac() + ", " + cell.getRssi() + " | ";
+				}
+				
+				tvCellNeighbors.setText(neighboringCellString);
 			}
-			
-			tvCellNeighbors.setText(neighboringCellString);
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -257,4 +272,26 @@ public class MainActivity extends Activity {
 		}
     }
     
+    public void getRinger() {
+    	
+    	try {
+    		tvRingerMode = (TextView) findViewById(R.id.ringer_mode);
+			audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+			
+			switch (audioManager.getRingerMode()) {
+				case AudioManager.RINGER_MODE_NORMAL:
+					tvRingerMode.setText("RINGER_MODE_NORMAL");
+					break;
+				case AudioManager.RINGER_MODE_VIBRATE:
+					tvRingerMode.setText("RINGER_MODE_VIBRATE");
+					break;
+				case AudioManager.RINGER_MODE_SILENT:
+					tvRingerMode.setText("RINGER_MODE_SILENT");
+					break;
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
 }
