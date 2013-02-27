@@ -9,9 +9,14 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.media.AudioManager;
+import android.net.wifi.WifiInfo;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.provider.Settings.SettingNotFoundException;
 import android.app.Activity;
 import android.content.Context;
+import android.telephony.ServiceState;
+import android.telephony.SignalStrength;
 import android.telephony.NeighboringCellInfo;
 import android.telephony.TelephonyManager;
 import android.telephony.gsm.GsmCellLocation;
@@ -24,6 +29,9 @@ public class MainActivity extends Activity {
 	private Button beginEndButton;
 	
 	private TelephonyManager telephonyManager;
+	private SignalStrength signalStrength;
+	
+	private ServiceState serviceState;
 	
 	private AudioManager audioManager;
 	
@@ -38,13 +46,28 @@ public class MainActivity extends Activity {
 	private Sensor lightSensor;
 	private Sensor proximitySensor;
 	
+	private WifiInfo wifiInfo;
+	
+	private TextView tvProximity;
+	
+	private TextView tvLight;
+	
 	private TextView tvAccelerometer_x;
 	private TextView tvAccelerometer_y;
 	private TextView tvAccelerometer_z;
 	
+	private TextView tvGyroscope_x;
+	private TextView tvGyroscope_y;
+	private TextView tvGyroscope_z;
+	
+	private TextView tvMagneticField_x;
+	private TextView tvMagneticField_y;
+	private TextView tvMagneticField_z;
+	
 	private TextView tvCellId;
 	private TextView tvCellLac;
 	private TextView tvCellNeighbors;
+	private TextView tvCellSignalStrength;
 
 	private TextView tvGpsAccuracy;
 	private TextView tvGpsAltitude;
@@ -54,6 +77,22 @@ public class MainActivity extends Activity {
 	private TextView tvGpsSpeed;
 	
 	private TextView tvRingerMode;
+	
+	private TextView tvAirplaneMode;
+	
+	private TextView tvBluetoothMode;
+	
+	private TextView tvDeviceId;
+	
+	private TextView tvPhoneType;
+	
+	private TextView tvWifiSsid;	
+	private TextView tvWifiRssi;
+	
+	private TextView tvOperatorState;
+	private TextView tvOperatorRoaming;
+	private TextView tvOperatorName;
+	private TextView tvOperatorId;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,16 +109,24 @@ public class MainActivity extends Activity {
 				public void onClick(View arg0) {				
 										
 					if (beginEndButton.getText() == getString(R.string.button_begin)) {
+						
 						beginEndButton.setText(getString(R.string.button_end));
-			        	setUpSensors();
-						setUpSensorListener();
+			        	setUpSensors();						
 						getCellLocation();
 						getGpsLocation();
 						getRinger();
+						getAirplaneMode();
+						getBluetoothMode();
+						getDeviceInformation();
+						getWifiInformation();
+						getOperatorInformation();
+						
 					} else {
+						
 						beginEndButton.setText(getString(R.string.button_begin));
 						sensorManager.unregisterListener(sensorEventListener);
 						locationManager.removeUpdates(locationListener);
+						
 					}
 				}
 				
@@ -119,6 +166,9 @@ public class MainActivity extends Activity {
 			if (sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY) != null) {
 				proximitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
 			}
+			
+			setUpSensorListener();
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -129,9 +179,20 @@ public class MainActivity extends Activity {
     public void setUpSensorListener() {
     	try {
     		
+        	tvProximity = (TextView) findViewById(R.id.proximity);
+        	tvLight = (TextView) findViewById(R.id.light);
+    		
         	tvAccelerometer_x = (TextView) findViewById(R.id.accelerometer_x);
         	tvAccelerometer_y = (TextView) findViewById(R.id.accelerometer_y);
         	tvAccelerometer_z = (TextView) findViewById(R.id.accelerometer_z);
+        	
+        	tvGyroscope_x = (TextView) findViewById(R.id.gyroscope_x);
+        	tvGyroscope_y = (TextView) findViewById(R.id.gyroscope_y);
+        	tvGyroscope_z = (TextView) findViewById(R.id.gyroscope_z);
+        	
+        	tvMagneticField_x = (TextView) findViewById(R.id.magneticfield_x);
+        	tvMagneticField_y = (TextView) findViewById(R.id.magneticfield_y);
+        	tvMagneticField_z = (TextView) findViewById(R.id.magneticfield_z);
         	
 			sensorEventListener = new SensorEventListener() {
 				
@@ -145,19 +206,23 @@ public class MainActivity extends Activity {
 					}
 					
 					if (event.sensor.getType() == Sensor.TYPE_GYROSCOPE) {
-						System.out.println("Gyroscope: " + "x = " + event.values[0] + ", y = " + event.values[1] + ", z = " + event.values[2]);
+						tvGyroscope_x.setText(Float.toString(event.values[0]));
+						tvGyroscope_y.setText(Float.toString(event.values[1]));
+						tvGyroscope_z.setText(Float.toString(event.values[2]));
 					}
 					
 					if (event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
-						System.out.println("Magnetic Field: " + "x = " + event.values[0] + ", y = " + event.values[1] + ", z = " + event.values[2]);
+						tvMagneticField_x.setText(Float.toString(event.values[0]));
+						tvMagneticField_y.setText(Float.toString(event.values[1]));
+						tvMagneticField_z.setText(Float.toString(event.values[2]));
 					}
 									
 					if (event.sensor.getType() == Sensor.TYPE_LIGHT) {
-						System.out.println("Light: " + "x = " + event.values[0]);						
+						tvLight.setText(Float.toString(event.values[0]));
 					}
 					
 					if (event.sensor.getType() == Sensor.TYPE_PROXIMITY) {
-						System.out.println("Proximity: " + "x = " + event.values[0]);	
+						tvProximity.setText(Float.toString(event.values[0]));
 					}
 				}
 				
@@ -167,11 +232,25 @@ public class MainActivity extends Activity {
 				}
 			};
 			
-			sensorManager.registerListener(sensorEventListener, accelerometerSensor, SensorManager.SENSOR_DELAY_NORMAL);
-			sensorManager.registerListener(sensorEventListener, gyroscopeSensor, SensorManager.SENSOR_DELAY_NORMAL);
-			sensorManager.registerListener(sensorEventListener, lightSensor, SensorManager.SENSOR_DELAY_NORMAL);
-			sensorManager.registerListener(sensorEventListener, proximitySensor, SensorManager.SENSOR_DELAY_NORMAL);
-			sensorManager.registerListener(sensorEventListener, magneticFieldSensor, SensorManager.SENSOR_DELAY_NORMAL);
+			if (accelerometerSensor != null) {
+				sensorManager.registerListener(sensorEventListener, accelerometerSensor, SensorManager.SENSOR_DELAY_NORMAL);
+			}
+			
+			if (gyroscopeSensor != null) {
+				sensorManager.registerListener(sensorEventListener, gyroscopeSensor, SensorManager.SENSOR_DELAY_NORMAL);
+			}
+			
+			if (lightSensor != null) {
+				sensorManager.registerListener(sensorEventListener, lightSensor, SensorManager.SENSOR_DELAY_NORMAL);
+			}
+			
+			if (proximitySensor != null) {
+				sensorManager.registerListener(sensorEventListener, proximitySensor, SensorManager.SENSOR_DELAY_NORMAL);
+			}
+			
+			if (magneticFieldSensor != null) {
+				sensorManager.registerListener(sensorEventListener, magneticFieldSensor, SensorManager.SENSOR_DELAY_NORMAL);
+			}			
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -184,16 +263,20 @@ public class MainActivity extends Activity {
     		    		
         	tvCellId = (TextView) findViewById(R.id.cellId);
         	tvCellLac = (TextView) findViewById(R.id.cellLac);
-        	tvCellNeighbors = (TextView) findViewById(R.id.cellNeighbors);        	
+        	tvCellNeighbors = (TextView) findViewById(R.id.cellNeighbors);
+        	tvCellSignalStrength = (TextView) findViewById(R.id.cellsignalstrength);
         	        	
 			telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+			
+//			tvCellSignalStrength.setText(Integer.toString(signalStrength.getGsmSignalStrength()));
 			
 			GsmCellLocation cellLocation = (GsmCellLocation) telephonyManager.getCellLocation();
 			
 			if (cellLocation != null) {
 				tvCellId.setText(Integer.toString(cellLocation.getCid()));
 				tvCellLac.setText(Integer.toString(cellLocation.getLac()));				
-								
+				
+				
 				List<NeighboringCellInfo> neighboringCellInfo = telephonyManager.getNeighboringCellInfo();
 				
 				String neighboringCellString = "CellID LAC RSSI | ";
@@ -294,4 +377,109 @@ public class MainActivity extends Activity {
 			e.printStackTrace();
 		}
     }
+    
+    public void getAirplaneMode() {
+    	
+    	try {
+    		tvAirplaneMode = (TextView) findViewById(R.id.airplane_mode);
+    		
+			if (Settings.System.getInt(getContentResolver(), Settings.Global.AIRPLANE_MODE_ON) == 1) {
+				tvAirplaneMode.setText("AIRPLANE_MODE_ON");
+			} else {
+				tvAirplaneMode.setText("AIRPLANE_MODE_OFF");
+			}
+		} catch (SettingNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+    
+    public void getBluetoothMode() {
+    	
+    	try {
+    		tvBluetoothMode = (TextView) findViewById(R.id.bluetooth_mode);
+    		
+			if (Settings.System.getInt(getContentResolver(), Settings.Global.BLUETOOTH_ON) == 1) {
+				tvBluetoothMode.setText("Bluetooth_ON");
+			} else {
+				tvBluetoothMode.setText("Bluetooth_OFF");
+			}
+		} catch (SettingNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+    
+    public void getDeviceInformation() {
+    	try {
+			tvDeviceId = (TextView) findViewById(R.id.deviceid);
+			tvPhoneType = (TextView) findViewById(R.id.phone_type);
+			
+			tvDeviceId.setText(telephonyManager.getDeviceId());
+			
+			if (telephonyManager.getPhoneType() == 1) {
+				tvPhoneType.setText("Phone_Type_GSM");
+			} else {
+				    	if (telephonyManager.getPhoneType() == 2) {
+				    		tvPhoneType.setText("Phone_Type_CDMA");
+				    	} else {
+				    		tvPhoneType.setText("Phone_Type_NONE");
+				    		}
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+    
+    public void getWifiInformation() {
+    	try {
+			tvWifiSsid = (TextView) findViewById(R.id.wifi_ssid);
+			tvWifiRssi = (TextView) findViewById(R.id.wifi_rssi);
+			
+			if (wifiInfo.getSSID() != null) {
+				// null if not connected
+				tvWifiSsid.setText(wifiInfo.getSSID());
+				tvWifiRssi.setText(Integer.toString(wifiInfo.getRssi()));
+			}
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+
+    public void getOperatorInformation() {
+		try {
+			tvOperatorState = (TextView) findViewById(R.id.operator_state);
+			tvOperatorRoaming = (TextView) findViewById(R.id.operator_roaming);
+			tvOperatorName = (TextView) findViewById(R.id.operator_name);
+			tvOperatorState = (TextView) findViewById(R.id.operator_id);
+			
+			serviceState = new ServiceState();
+				
+			switch (serviceState.getState()) {
+				case 0:				
+					tvOperatorState.setText("STATE_IN_SERVICE");
+					break;
+				case 1:				
+					tvOperatorState.setText("STATE_OUT_OF_SERVICE");
+					break;
+				case 2:				
+					tvOperatorState.setText("STATE_EMERGENCY_ONLY ");
+					break;
+				case 3:				
+					tvOperatorState.setText("STATE_POWER_OFF ");
+					break;
+			}
+			
+			tvOperatorRoaming.setText(Boolean.toString(serviceState.getRoaming()));
+			tvOperatorName.setText(serviceState.getOperatorAlphaLong());
+			tvOperatorId.setText(serviceState.getOperatorNumeric());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
 }
+ 
