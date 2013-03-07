@@ -7,15 +7,18 @@ inferTransitionTensor = function(data) {
 	stateSums = matrix(0, nrow=numStates, ncol=numStates)
 	transitionTensor = list()
 	for (i in 1:numStates) {
-		transitionTensor[[i]] = matrix(0, nrow=numStates, ncol=numStates)
+		transitionTensor[[i]] = matrix(1/numStates, nrow=numStates, ncol=numStates)
 	}
 	for (i in 3:length(data[,1])) {
+		if (transitionTensor[[data[,1][i]]][data[,1][i-2],data[,1][i-1]] == 1/numStates) {
+			transitionTensor[[data[,1][i]]][data[,1][i-2],data[,1][i-1]] = 0
+		}
 		transitionTensor[[data[,1][i]]][data[,1][i-2],data[,1][i-1]] =
 			transitionTensor[[data[,1][i]]][data[,1][i-2],data[,1][i-1]] + 1
 		stateSums[data[,1][i-2],data[,1][i-1]] = 
 			stateSums[data[,1][i-2],data[,1][i-1]] + 1
 	}
-	stateSums[stateSums==0]=-1
+	stateSums[stateSums==0]=1
 	for (i in 1:numStates) {
 		transitionTensor[[i]] = transitionTensor[[i]] / stateSums
 	}
