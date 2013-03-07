@@ -8,7 +8,11 @@ inferTransitionMatrix = function(data) {
 	for (i in 2:length(data[,1])) {
 		transitionMatrix[data[,1][i-1],data[,1][i]] = transitionMatrix[data[,1][i-1],data[,1][i]] + 1
 	}
-	transitionMatrix = transitionMatrix / apply(transitionMatrix,1,sum)
+	stateSums = apply(transitionMatrix,1,sum)
+	zeroRows=which(stateSums==0)
+	stateSums[stateSums==0]=-1
+	transitionMatrix = transitionMatrix / stateSums
+	transitionMatrix[zeroRows,]=1/numStates
 	return(transitionMatrix)
 }
 
@@ -30,7 +34,7 @@ predictNextState = function(transitionMatrix, currentState) {
 	return(which.max(transitionMatrix[currentState,]))
 }
 
-cells = c(1,2,3,4,1,3,4,1,2,4)
+cells = c(1,2,3,4,1,3,4,1,2,4,5)
 data = as.data.frame(cells)
 
 transitionMatrix = inferTransitionMatrix(data)
