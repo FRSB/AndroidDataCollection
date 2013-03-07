@@ -1,5 +1,9 @@
 package de.unihalle.ebusiness.androiddatacollection;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -13,7 +17,9 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.BatteryManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
+import android.os.PowerManager;
 import android.provider.Settings;
 import android.provider.Settings.SettingNotFoundException;
 import android.app.Activity;
@@ -23,6 +29,7 @@ import android.content.IntentFilter;
 import android.telephony.PhoneStateListener;
 import android.telephony.ServiceState;
 import android.telephony.NeighboringCellInfo;
+import android.telephony.SignalStrength;
 import android.telephony.TelephonyManager;
 import android.telephony.gsm.GsmCellLocation;
 import android.util.Log;
@@ -39,6 +46,8 @@ public class MainActivity extends Activity {
 	private PhoneStateListener phoneStateListener;
 	
 	private AudioManager audioManager;
+	
+	private PowerManager powerManager;
 	
 	private LocationManager locationManager;
 	private LocationListener locationListener;
@@ -76,7 +85,7 @@ public class MainActivity extends Activity {
 						
 						beginEndButton.setText(getString(R.string.button_end));
 			        	setUpSensors();						
-						getCellLocation();
+						getCellInformation();
 						getGpsLocation();
 						getRinger();
 						getAirplaneMode();
@@ -86,8 +95,9 @@ public class MainActivity extends Activity {
 						getOperatorInformation();
 						getBatteryStatus();
 						getSimInformation();
-						schedule();
-						
+						getScreenBrightness();
+						writeData();
+						schedule();				
 					} else {
 						
 						beginEndButton.setText(getString(R.string.button_begin));
@@ -115,26 +125,23 @@ public class MainActivity extends Activity {
     protected void onResume() {
     	super.onResume();
     	Log.i("Lifecycle", "onResume");
-    	
-    	if (beginEndButton.getText() == getString(R.string.button_end)) {			
-			beginEndButton.setText(getString(R.string.button_begin));			
-		}
     }
     
     protected void onPause() {
     	super.onPause();
-    	Log.i("Lifecycle", "onPause");
+    	Log.i("Lifecycle", "onPause");    	
+    	
+		beginEndButton.setText(getString(R.string.button_begin));
+		sensorManager.unregisterListener(sensorEventListener);
+		locationManager.removeUpdates(locationListener);
+		telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_NONE);
+		handler.removeCallbacks(runnable);
     }
     
     @Override
     protected void onStop() {
     	super.onStop();
     	Log.i("Lifecycle", "onStop");
-    	
-		beginEndButton.setText(getString(R.string.button_begin));
-		sensorManager.unregisterListener(sensorEventListener);
-		locationManager.removeUpdates(locationListener);
-		telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_NONE);
     }
     
     public void schedule() {
@@ -272,17 +279,14 @@ public class MainActivity extends Activity {
 		}
     }
     
-    public void getCellLocation() {
+    public void getCellInformation() {
     	try {
     		    		
     		final TextView tvCellId = (TextView) findViewById(R.id.cellId);
     		final TextView tvCellLac = (TextView) findViewById(R.id.cellLac);
     		final TextView tvCellNeighbors = (TextView) findViewById(R.id.cellNeighbors);
-    		final TextView tvCellSignalStrength = (TextView) findViewById(R.id.cellsignalstrength);
         	        	
 			telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-			
-//			tvCellSignalStrength.setText(Integer.toString(signalStrength.getGsmSignalStrength()));
 			
 			GsmCellLocation cellLocation = (GsmCellLocation) telephonyManager.getCellLocation();
 			
@@ -472,6 +476,7 @@ public class MainActivity extends Activity {
 			final TextView tvOperatorRoaming = (TextView) findViewById(R.id.operator_roaming);
 			final TextView tvOperatorName = (TextView) findViewById(R.id.operator_name);
 			final TextView tvIncomingNumber = (TextView) findViewById(R.id.incoming_number);
+    		final TextView tvCellSignalStrength = (TextView) findViewById(R.id.cellsignalstrength);			
 			
 			telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
 			
@@ -499,12 +504,18 @@ public class MainActivity extends Activity {
 					
 					tvOperatorRoaming.setText(Boolean.toString(serviceState.getRoaming()));
 					tvOperatorName.setText(serviceState.getOperatorAlphaLong());
+					
+				}
+				
+				public void onSignalStrengthsChanged (SignalStrength signalStrength) {
+					tvCellSignalStrength.setText(Integer.toString(signalStrength.getGsmSignalStrength()));
 				}
 			};
 			
 			telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_SERVICE_STATE);
 			telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
-			
+			telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_SIGNAL_STRENGTHS);
+	
 
 
 		} catch (Exception e) {
@@ -570,8 +581,43 @@ public class MainActivity extends Activity {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}    	
+    }
+    
+    public void getScreenBrightness() {
+    	try {
+			final TextView tvScreenBrightness = (TextView) findViewById(R.id.screen_brightness);
+			final TextView tvScreenOn = (TextView) findViewById(R.id.screen_on);
+			
+			powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+			
+			tvScreenOn.setText(Boolean.toString(powerManager.isScreenOn()));			
+			tvScreenBrightness.setText(Integer.toString(Settings.System.getInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS)));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-    	
+    }
+    
+    public void writeData() {
+    	try {
+			String FILENAME = "data";
+			String string = "hello world!";
+
+			FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
+			fos.write(string.getBytes());
+			fos.close();
+
+			Log.i("STORAGE", getFilesDir().getAbsolutePath());
+			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
     }
 }
  
