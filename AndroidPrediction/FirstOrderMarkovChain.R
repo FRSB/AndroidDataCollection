@@ -15,7 +15,7 @@ inferTransitionMatrix = function(data) {
 # sample markov chain from transition matrix
 # beginning from initial state
 sampleFromTransitionMatrix = function(transitionMatrix, initialState, length) {
-	numStates = length(levels(as.factor(data[,1])))
+	numStates = dim(transitionMatrix)[1]
 	samples = vector(length=length)
 	samples[1] = initialState
 	for (i in 2:length) {
@@ -35,7 +35,7 @@ data = as.data.frame(cells)
 
 transitionMatrix = inferTransitionMatrix(data)
 sampleFromTransitionMatrix(transitionMatrix,1,20)
-predictNextState(transitionMatrix, 4)
+predictNextState(transitionMatrix, 2)
 
 
 
