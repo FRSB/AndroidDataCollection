@@ -1,9 +1,12 @@
 package de.unihalle.ebusiness.androiddatacollection;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -65,6 +68,8 @@ public class MainActivity extends Activity {
 	
 	private Handler handler;
 	private Runnable runnable;
+	
+	private DataWriter dataWriter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,8 +77,11 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);        
         Log.i("Lifecycle", "onCreate");
         
-        try {     	
-     	
+        try {
+        	dataWriter = new DataWriter();
+        	dataWriter.openWriter();
+        	dataWriter.emptyFile();
+        	dataWriter.writeToFile("dsfsdf;sdasdaD");
 			beginEndButton = ((Button) findViewById(R.id.beginEndButton));
 				
 			Button.OnClickListener buttonListener = new Button.OnClickListener() {
@@ -96,7 +104,7 @@ public class MainActivity extends Activity {
 						getBatteryStatus();
 						getSimInformation();
 						getScreenBrightness();
-						writeData();
+
 						schedule();				
 					} else {
 						
@@ -293,8 +301,7 @@ public class MainActivity extends Activity {
 			if (cellLocation != null) {
 				tvCellId.setText(Integer.toString(cellLocation.getCid()));
 				tvCellLac.setText(Integer.toString(cellLocation.getLac()));				
-				
-				
+								
 				List<NeighboringCellInfo> neighboringCellInfo = telephonyManager.getNeighboringCellInfo();
 				
 				String neighboringCellString = "CellID LAC RSSI | ";
@@ -598,26 +605,6 @@ public class MainActivity extends Activity {
 			e.printStackTrace();
 		}
     }
-    
-    public void writeData() {
-    	try {
-			String FILENAME = "data";
-			String string = "hello world!";
 
-			FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
-			fos.write(string.getBytes());
-			fos.close();
-
-			Log.i("STORAGE", getFilesDir().getAbsolutePath());
-			
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-    }
 }
  
