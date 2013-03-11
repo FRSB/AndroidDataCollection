@@ -4,21 +4,17 @@ rm(list = ls())
 # one state per row, states have to be integers beginning from 1
 inferTransitionTensor = function(data) {
 	numStates = length(levels(as.factor(data[,1])))
-	stateSums = matrix(0, nrow=numStates, ncol=numStates)
+	stateSums = matrix(1, nrow=numStates, ncol=numStates) #1 forlaplace correction
 	transitionTensor = list()
 	for (i in 1:numStates) {
-		transitionTensor[[i]] = matrix(1/numStates, nrow=numStates, ncol=numStates)
+		transitionTensor[[i]] = matrix(1, nrow=numStates, ncol=numStates) #1 for laplace correction
 	}
 	for (i in 3:length(data[,1])) {
-		if (transitionTensor[[data[,1][i]]][data[,1][i-2],data[,1][i-1]] == 1/numStates) {
-			transitionTensor[[data[,1][i]]][data[,1][i-2],data[,1][i-1]] = 0
-		}
 		transitionTensor[[data[,1][i]]][data[,1][i-2],data[,1][i-1]] =
 			transitionTensor[[data[,1][i]]][data[,1][i-2],data[,1][i-1]] + 1
 		stateSums[data[,1][i-2],data[,1][i-1]] = 
 			stateSums[data[,1][i-2],data[,1][i-1]] + 1
 	}
-	stateSums[stateSums==0]=1
 	for (i in 1:numStates) {
 		transitionTensor[[i]] = transitionTensor[[i]] / stateSums
 	}

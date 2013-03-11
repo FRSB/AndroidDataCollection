@@ -4,7 +4,7 @@ rm(list = ls())
 # one state per row, states have to be integers beginning from 1
 inferTransitionMatrix = function(data) {
 	numStates = length(levels(as.factor(data[,1])))
-	transitionMatrix = matrix(0, nrow=numStates, ncol=numStates)
+	transitionMatrix = matrix(1, nrow=numStates, ncol=numStates) #1 for laplace correction
 	for (i in 2:length(data[,1])) {
 		transitionMatrix[data[,1][i-1],data[,1][i]] = transitionMatrix[data[,1][i-1],data[,1][i]] + 1
 	}

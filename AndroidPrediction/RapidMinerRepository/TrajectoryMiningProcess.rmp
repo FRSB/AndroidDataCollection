@@ -37,10 +37,10 @@
       </operator>
       <operator activated="true" class="generate_data" compatibility="5.3.005" expanded="true" height="60" name="Generate Data" width="90" x="45" y="435">
         <parameter key="target_function" value="sum"/>
-        <parameter key="number_examples" value="10"/>
+        <parameter key="number_examples" value="4"/>
         <parameter key="number_of_attributes" value="1"/>
         <parameter key="attributes_lower_bound" value="0.0"/>
-        <parameter key="attributes_upper_bound" value="10.0"/>
+        <parameter key="attributes_upper_bound" value="2.0"/>
         <parameter key="use_local_random_seed" value="false"/>
         <parameter key="local_random_seed" value="1992"/>
         <parameter key="datamanagement" value="int_array"/>
@@ -75,7 +75,7 @@
       </operator>
       <operator activated="true" class="multiply" compatibility="5.3.005" expanded="true" height="112" name="Multiply" width="90" x="179" y="30"/>
       <operator activated="true" class="r:execute_script_r" compatibility="5.3.000" expanded="true" height="76" name="Execute Script (R)" width="90" x="313" y="300">
-        <parameter key="script" value="# infer transition matrix from state sequence&#10;# one state per row, states have to be integers beginning from 1&#10;inferTransitionMatrix = function(data) {&#10;&#9;numStates = length(levels(as.factor(data[,1])))&#10;&#9;transitionMatrix = matrix(0, nrow=numStates, ncol=numStates)&#10;&#9;for (i in 2:length(data[,1])) {&#10;&#9;&#9;transitionMatrix[data[,1][i-1],data[,1][i]] = transitionMatrix[data[,1][i-1],data[,1][i]] + 1&#10;&#9;}&#10;&#9;stateSums = apply(transitionMatrix,1,sum)&#10;&#9;zeroRows=which(stateSums==0)&#10;&#9;stateSums[stateSums==0]=-1&#10;&#9;transitionMatrix = transitionMatrix / stateSums&#10;&#9;transitionMatrix[zeroRows,]=1/numStates&#10;&#9;return(transitionMatrix)&#10;}&#10;&#10;# sample markov chain from transition matrix&#10;# beginning from initial state&#10;sampleFromTransitionMatrix = function(transitionMatrix, initialState, length) {&#10;&#9;numStates = dim(transitionMatrix)[1]&#10;&#9;samples = vector(length=length)&#10;&#9;samples[1] = initialState&#10;&#9;for (i in 2:length) {&#10;&#9;&#9;samples[i] = sample(1:numStates, size=1, replace=TRUE, prob=transitionMatrix[samples[i-1],])&#10;&#9;}&#10;&#9;return(samples)&#10;}&#10;&#10;# predict next state given a current state&#10;# by simply chosing the one with the highest transition probability&#10;predictNextState = function(transitionMatrix, currentState) {&#10;&#9;return(which.max(transitionMatrix[currentState,]))&#10;}&#10;&#10;transitionMatrix = inferTransitionMatrix(data)&#10;#sampleFromTransitionMatrix(transitionMatrix,1,20)&#10;#predictNextState(transitionMatrix, 2)"/>
+        <parameter key="script" value="# infer transition matrix from state sequence&#10;# one state per row, states have to be integers beginning from 1&#10;inferTransitionMatrix = function(data) {&#10;&#9;numStates = length(levels(as.factor(data[,1])))&#10;&#9;transitionMatrix = matrix(1, nrow=numStates, ncol=numStates)&#10;&#9;for (i in 2:length(data[,1])) {&#10;&#9;&#9;transitionMatrix[data[,1][i-1],data[,1][i]] = transitionMatrix[data[,1][i-1],data[,1][i]] + 1&#10;&#9;}&#10;&#9;stateSums = apply(transitionMatrix,1,sum)&#10;&#9;zeroRows=which(stateSums==0)&#10;&#9;print(zeroRows)&#10;&#9;stateSums[stateSums==0]=-1&#10;&#9;transitionMatrix = transitionMatrix / stateSums&#10;&#9;transitionMatrix[zeroRows,]=1/numStates&#10;&#9;return(transitionMatrix)&#10;}&#10;&#10;# sample markov chain from transition matrix&#10;# beginning from initial state&#10;sampleFromTransitionMatrix = function(transitionMatrix, initialState, length) {&#10;&#9;numStates = dim(transitionMatrix)[1]&#10;&#9;samples = vector(length=length)&#10;&#9;samples[1] = initialState&#10;&#9;for (i in 2:length) {&#10;&#9;&#9;samples[i] = sample(1:numStates, size=1, replace=TRUE, prob=transitionMatrix[samples[i-1],])&#10;&#9;}&#10;&#9;return(samples)&#10;}&#10;&#10;# predict next state given a current state&#10;# by simply chosing the one with the highest transition probability&#10;predictNextState = function(transitionMatrix, currentState) {&#10;&#9;return(which.max(transitionMatrix[currentState,]))&#10;}&#10;&#10;transitionMatrix = inferTransitionMatrix(data)&#10;#sampleFromTransitionMatrix(transitionMatrix,1,20)&#10;#predictNextState(transitionMatrix, 2)"/>
         <enumeration key="inputs">
           <parameter key="name_of_variable" value="data"/>
         </enumeration>
@@ -93,7 +93,7 @@
         </list>
       </operator>
       <operator activated="true" class="naive_bayes" compatibility="5.3.005" expanded="true" height="76" name="Naive Bayes" width="90" x="581" y="30">
-        <parameter key="laplace_correction" value="false"/>
+        <parameter key="laplace_correction" value="true"/>
       </operator>
       <connect from_op="Generate Data" from_port="output" to_op="Select Attributes" to_port="example set input"/>
       <connect from_op="Select Attributes" from_port="example set output" to_op="Numerical to Polynominal" to_port="example set input"/>
