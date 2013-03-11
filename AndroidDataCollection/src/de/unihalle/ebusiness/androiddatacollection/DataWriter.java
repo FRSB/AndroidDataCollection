@@ -6,7 +6,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import android.os.Environment;
-import android.util.Log;
 
 public class DataWriter {
 	
@@ -15,7 +14,11 @@ public class DataWriter {
 	private File file;
 	private Boolean fileExists;
 	
-	public void openWriter() {		
+	public DataWriter(String headline) {
+		openWriter(headline);
+	}
+	
+	public void openWriter(String headline) {		
 		try {
     		if (Environment.getExternalStorageState().equals("mounted")) {
 				//remember .nomedia
@@ -25,7 +28,7 @@ public class DataWriter {
 	    		fileExists = file.exists();	    		
 
 	    		bufferedWriter = new BufferedWriter(new FileWriter(file, true));
-	    		bufferedWriter.write("id;acc");
+	    		bufferedWriter.write(headline);
 	    		bufferedWriter.flush();
     		}
 		} catch (Exception e) {
@@ -36,8 +39,8 @@ public class DataWriter {
 	
 	public void writeToFile(String string) {
 		try {
-			if (fileExists) {
-				bufferedWriter.write(string);
+			if (true) { //if (fileExists) not working ?!
+				bufferedWriter.write(string + "\n");
 				bufferedWriter.flush();
 			}
 		} catch (Exception e) {
@@ -46,11 +49,11 @@ public class DataWriter {
 		}
 	}
 	
-	public void emptyFile() {
+	public void emptyFile(String headline) {
 		try {
 			if (fileExists & Environment.getExternalStorageState().equals("mounted")) {
 				file.delete();
-				this.openWriter();
+				openWriter(headline);
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
