@@ -100,6 +100,26 @@
 
 \subsection{Data Analysis}
 
+\begin{enumerate}
+%\item $ \displaystyle L(p_0,P|X) = \prod_{t=1}^T L(x_t|x_{t-1}, P) \cdot L(x_0|p_0)$
+%\item $ \displaystyle L(p_0,P) = P(X_0 = i_0, \ldots, X_T = i_T)$
+%\item $ \displaystyle L(P) =p_{i_0}\cdot p_{i_0i_1}\cdot \ldots \cdot p_{i_{T-1}i_T}$
+\item Likelihood:\\
+$ \displaystyle L(P) = \prod_{i=1}^m\prod_{j=1}^m p_{ij}^{n_{ij}},\quad i,j \in \text{Zustandsraum}$
+% Problem ist noch erster und letzter Zustand!
+\item Log-Likelihood:\\
+$ \displaystyle l(P) = \sum_{i=1}^m\sum_{j=1}^m n_{ij} \cdot \ln p_{ij},\quad s.t.\ \forall i: \sum_{j=1}^m p_{ij}=1$
+\item $ \displaystyle \mathcal L(P, \lambda_1, \ldots, \lambda_m) = \sum_{i=1}^m \sum_{j=1}^m n_{ij} \ln(p_{ij}) - \sum_{i=1}^m \lambda_i \left(\left(\sum_{j=1}^m p_{ij}\right) - 1 \right)$
+\item $ \displaystyle \frac{\partial \mathcal L}{\partial p_{ij}} = \frac{n_{ij}}{p_{ij}} - \lambda_i$
+\item FOC: $ \displaystyle \frac{n_{ij}}{p_{ij}} - \lambda_i = 0\quad \Leftrightarrow \quad p_{ij} = \frac{n_{ij}}{\lambda_i}$
+\item $ \displaystyle \frac{\partial \mathcal L}{\partial \lambda_{i}} = 1 - \sum_{j=1}^m p_{ij}$
+\item FOC: $ \displaystyle 1 - \sum_{j=1}^m p_{ij} = 0$
+\item $ \displaystyle 1 - \sum_{j=1}^m \frac{n_{ij}}{\lambda_i} = 0$
+\item $ \displaystyle \sum_{j=1}^m n_{ij} = \lambda_i$
+\item $ \displaystyle \hat p_{ij} = \frac{n_{ij}}{\sum_{j=1}^m n_{ij}}$
+
+\end{enumerate}
+
 \section{Results}
 
 \section{Discussion}
