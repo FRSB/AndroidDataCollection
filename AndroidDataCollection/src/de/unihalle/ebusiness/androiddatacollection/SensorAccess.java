@@ -83,17 +83,18 @@ import android.util.Log;
 			getScreenBrightness();
 	    }
 	    
-	    public CollectedDataMap stopSensors() {
+	    public void stopSensors() {
 			sensorManager.unregisterListener(sensorEventListener);
 			locationManager.removeUpdates(locationListener);
 			telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_NONE);
-			
-	    	Log.i("STORAGE", collectedDataMap.toString());
 
 			dataWriter.writeToFile(collectedDataMap.getAllValues());
-			return collectedDataMap;
 		}
 	    	    
+	    public CollectedDataMap getUIData() {
+	    	return collectedDataMap;
+	    }
+	    
 	    public void setUpListenerSensors() {
 	    	// the accelerometer is the result of gravity and linear acceleration, so they have been omitted
 	    	try {
@@ -118,7 +119,7 @@ import android.util.Log;
 				if (sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY) != null) {
 					proximitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
 				}
-				
+				 
 				sensorEventListener = new SensorEventListener() {
 					
 					@Override
@@ -220,7 +221,7 @@ import android.util.Log;
 				
 				if (location != null) {
 					collectedDataMap.put("gpsaccuracy", Double.toString(location.getAccuracy()));
-					collectedDataMap.put("gpsaaltitude", Double.toString(location.getAltitude()));
+					collectedDataMap.put("gpsaltitude", Double.toString(location.getAltitude()));
 					collectedDataMap.put("gpslatitude", Double.toString(location.getLatitude()));
 					collectedDataMap.put("gpslongitude", Double.toString(location.getLongitude()));
 					collectedDataMap.put("gpsbearing", Double.toString(location.getBearing()));
@@ -250,7 +251,7 @@ import android.util.Log;
 					@Override
 					public void onLocationChanged(Location location) {
 						collectedDataMap.put("gpsaccuracy", Double.toString(location.getAccuracy()));
-						collectedDataMap.put("gpsaaltitude", Double.toString(location.getAltitude()));
+						collectedDataMap.put("gpsaltitude", Double.toString(location.getAltitude()));
 						collectedDataMap.put("gpslatitude", Double.toString(location.getLatitude()));
 						collectedDataMap.put("gpslongitude", Double.toString(location.getLongitude()));
 						collectedDataMap.put("gpsbearing", Double.toString(location.getBearing()));
@@ -384,7 +385,7 @@ import android.util.Log;
 					}
 					
 					public void onSignalStrengthsChanged (SignalStrength signalStrength) {
-						collectedDataMap.put("cellsignalstrength", Integer.toString(signalStrength.getGsmSignalStrength()));
+						collectedDataMap.put("cellsignalstrength", "GSM: " + Integer.toString(signalStrength.getGsmSignalStrength()) + " UMTS: " + Integer.toString(signalStrength.getCdmaDbm()));
 					}
 				};
 				

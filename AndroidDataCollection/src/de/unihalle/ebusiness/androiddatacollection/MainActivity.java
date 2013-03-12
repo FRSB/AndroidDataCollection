@@ -28,7 +28,7 @@ public class MainActivity extends Activity {
 	
 	private TextView tvGyroscope_x;
 	private TextView tvGyroscope_y;
-	private TextView tvGyroscope_z;
+	private TextView tvGyroscope_z; 
 	
 	private TextView tvMagneticField_x;
 	private TextView tvMagneticField_y;
@@ -205,7 +205,8 @@ public class MainActivity extends Activity {
 				@Override
 				public void run() {
 					sensorAccess.startSensors();
-					collectedDataMap = sensorAccess.stopSensors();
+					sensorAccess.stopSensors();
+					collectedDataMap = sensorAccess.getUIData();
 					updateUI();
 					handler.postDelayed(runnable, 10000);
 				}

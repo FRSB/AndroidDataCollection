@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import android.os.Environment;
+import android.util.Log;
 
 public class DataWriter {
 	
@@ -28,15 +29,15 @@ public class DataWriter {
 	    		fileExists = file.exists();	    		
 
 	    		bufferedWriter = new BufferedWriter(new FileWriter(file, true));
-	    		bufferedWriter.write(headline);
-	    		bufferedWriter.flush();
+	    		bufferedWriter.write(headline + "\n");
+//	    		bufferedWriter.flush();
     		}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
+	 
 	public void writeToFile(String string) {
 		try {
 			if (true) { //if (fileExists) not working ?!
