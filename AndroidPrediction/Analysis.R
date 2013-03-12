@@ -1,45 +1,32 @@
 rm(list = ls())
 
-# infer transition matrix from state sequence
-# one state per row, states have to be integers beginning from 1
-inferTransitionMatrix = function(data) {
-	numStates = length(levels(as.factor(data[,1])))
-	transitionMatrix = matrix(1, nrow=numStates, ncol=numStates) #1 for laplace correction
-	for (i in 2:length(data[,1])) {
-		transitionMatrix[data[,1][i-1],data[,1][i]] = transitionMatrix[data[,1][i-1],data[,1][i]] + 1
-	}
-	stateSums = apply(transitionMatrix,1,sum)
-	zeroRows=which(stateSums==0)
-	stateSums[stateSums==0]=-1
-	transitionMatrix = transitionMatrix / stateSums
-	transitionMatrix[zeroRows,]=1/numStates
-	return(transitionMatrix)
+# install required libraries and packages
+.libPaths("lib") #remove this line to use your personal library instead
+#install.packages("hash")
+
+# load required libraries and packages
+source("MarkovChains.R")
+library(hash)
+
+# Generate dummy data set
+cellIds = c(1,2,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4,1,2,3,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4,1,2,3,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4,1,2,3,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4,1,2,3,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4,1,2,3,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4,1,2,3,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4)
+cells = rep("cell", length(cellIds))
+data = paste(cells, cellIds)
+
+# data transformation (cell -> cellId)
+# input: data, output: data, cellNameToCellId, cellIdToCellName
+states = unique(data)
+cellNameToCellId = hash(keys=states, values=1:length(states))
+cellIdToCellName = vector(length=length(states))
+i = 1
+for (state in states) {
+  cellIdToCellName[i] = state
+  i = i + 1
 }
-
-# sample markov chain from transition matrix
-# beginning from initial state
-sampleFromTransitionMatrix = function(transitionMatrix, initialState, length) {
-	numStates = dim(transitionMatrix)[1]
-	samples = vector(length=length)
-	samples[1] = initialState
-	for (i in 2:length) {
-		samples[i] = sample(1:numStates, size=1, replace=TRUE, prob=transitionMatrix[samples[i-1],])
-	}
-	return(samples)
+for (i in 1:length(data)) {
+  cellIds[i] = cellNameToCellId[[as.character(data[i])]]
 }
+data=cellIds
 
-# predict next state given a current state
-# by simply chosing the one with the highest transition probability
-predictNextState = function(transitionMatrix, currentState) {
-	return(which.max(transitionMatrix[currentState,]))
-}
-
-cells = c(1,2,3,4,1,3,4,1,2,4,5)
-data = as.data.frame(cells)
-
-transitionMatrix = inferTransitionMatrix(data)
-sampleFromTransitionMatrix(transitionMatrix,1,20)
-predictNextState(transitionMatrix, 2)
-
-
-
+t1 = FirstOrderMarkovChain.inferTransitionTensor(data)
+t2 = SecondOrderMarkovChain.inferTransitionTensor(data)
