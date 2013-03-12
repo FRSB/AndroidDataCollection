@@ -13,6 +13,7 @@ public class CollectedDataMap {
 		
 		collectedSensorData.put("time", "");
 		collectedSensorData.put("light", "");
+		collectedSensorData.put("proximity", "");
 		collectedSensorData.put("accx", "");
 		collectedSensorData.put("accy", "");
 		collectedSensorData.put("accz", "");
@@ -35,7 +36,7 @@ public class CollectedDataMap {
 		collectedSensorData.put("airplanemode", "");
 		collectedSensorData.put("bluetoothmode", "");
 		collectedSensorData.put("deviceid", "");
-		collectedSensorData.put("phoneid", "");
+		collectedSensorData.put("phonetype", "");
 		collectedSensorData.put("wifissid", "");
 		collectedSensorData.put("wifirssi", "");
 		collectedSensorData.put("operatorstate", "");

@@ -205,7 +205,8 @@ public class MainActivity extends Activity {
 				@Override
 				public void run() {
 					sensorAccess.startSensors();
-					collectedDataMap = sensorAccess.stopSensors();
+					sensorAccess.stopSensors();
+					collectedDataMap = sensorAccess.getUIData();
 					updateUI();
 					handler.postDelayed(runnable, 10000);
 				}
