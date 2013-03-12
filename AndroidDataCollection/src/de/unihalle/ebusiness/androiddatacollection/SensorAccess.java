@@ -119,7 +119,7 @@ import android.util.Log;
 				if (sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY) != null) {
 					proximitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
 				}
-				
+				 
 				sensorEventListener = new SensorEventListener() {
 					
 					@Override

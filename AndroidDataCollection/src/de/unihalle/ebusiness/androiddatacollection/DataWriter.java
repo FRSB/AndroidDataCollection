@@ -37,7 +37,7 @@ public class DataWriter {
 			e.printStackTrace();
 		}
 	}
-	
+	 
 	public void writeToFile(String string) {
 		try {
 			if (true) { //if (fileExists) not working ?!

@@ -28,7 +28,7 @@ public class MainActivity extends Activity {
 	
 	private TextView tvGyroscope_x;
 	private TextView tvGyroscope_y;
-	private TextView tvGyroscope_z;
+	private TextView tvGyroscope_z; 
 	
 	private TextView tvMagneticField_x;
 	private TextView tvMagneticField_y;

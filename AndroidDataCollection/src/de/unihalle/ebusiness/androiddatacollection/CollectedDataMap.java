@@ -6,7 +6,7 @@ import java.util.TreeMap;
 
 public class CollectedDataMap {
 
-	private TreeMap<String, String> collectedSensorData;
+	private TreeMap<String, String> collectedSensorData; 
 	
 	public CollectedDataMap() {
 		collectedSensorData = new TreeMap<String, String>();
