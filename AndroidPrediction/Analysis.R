@@ -28,5 +28,14 @@ for (i in 1:length(data)) {
 }
 data=cellIds
 
+# infer dummy data
 t1 = FirstOrderMarkovChain.inferTransitionTensor(data)
 t2 = SecondOrderMarkovChain.inferTransitionTensor(data)
+
+# apply models on dummy data 
+p1 = applyFirstOrderMarkovChain(t1,data)
+p2 = applySecondOrderMarkovChain(t2,data)
+
+# count number of right predictions
+dim(p1[p1$tNext==p1$prediction,])[1]/dim(p1)[1]
+dim(p2[p2$tNext==p2$prediction,])[1]/dim(p2)[1]

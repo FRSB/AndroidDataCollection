@@ -53,6 +53,21 @@ FirstOrderMarkovChain.predictNextState = function(transitionTensor, currentState
   return(which.max(transitionTensor[currentState,]))
 }
 
+# use 1st order markov chain as predictor
+applyFirstOrderMarkovChain = function(transitionTensor, data) {
+  prediction = vector(length = length(data)-2)
+  tNow = vector(length = length(data)-2)
+  tNext = vector(length = length(data)-2)
+  for (i in 2:(length(data)-1)) {
+    prediction[i-1] = FirstOrderMarkovChain.predictNextState(transitionTensor, data[i])
+    tNext[i-1] = data[i+1]
+    tNow[i-1] = data[i]
+  }
+  result = data.frame(tNow, tNext, prediction)
+  names(result) = c("tNow", "tNext", "prediction")
+  return (result)
+}
+
 # Second order Markov chain
 ###########################
 
@@ -113,4 +128,21 @@ SecondOrderMarkovChain.predictNextState = function(transitionTensor, currentStat
     transitionVector[i] = transitionTensor[[i]][currentStates[1],currentStates[2]]
   }
   return(which.max(transitionVector))
+}
+
+# use 2nd order markov chain as predictor
+applySecondOrderMarkovChain = function(transitionTensor, data) {
+  prediction = vector(length = length(data)-2)
+  tPrev1 = vector(length = length(data)-2)
+  tNow = vector(length = length(data)-2)
+  tNext = vector(length = length(data)-2)
+  for (i in 2:(length(data)-1)) {
+    prediction[i-1] = SecondOrderMarkovChain.predictNextState(transitionTensor, c(data[i-1],data[i]))
+    tPrev1[i-1] = data[i-1]
+    tNext[i-1] = data[i+1]
+    tNow[i-1] = data[i]
+  }
+  result = data.frame(tPrev1, tNow, tNext, prediction)
+  names(result) = c("tPrev1","tNow", "tNext", "prediction")
+  return (result)
 }
