@@ -23,6 +23,7 @@ public class CollectedDataMap {
 		collectedSensorData.put("magneticx", "");
 		collectedSensorData.put("magneticy", "");
 		collectedSensorData.put("magneticz", "");
+		collectedSensorData.put("networktype", "");
 		collectedSensorData.put("cellid", "");
 		collectedSensorData.put("celllac", "");
 		collectedSensorData.put("cellneighbors", "");

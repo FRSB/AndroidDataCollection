@@ -6,7 +6,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import android.os.Environment;
-import android.util.Log;
 
 public class DataWriter {
 	

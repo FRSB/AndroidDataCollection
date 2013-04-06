@@ -34,6 +34,7 @@ public class MainActivity extends Activity {
 	private TextView tvMagneticField_y;
 	private TextView tvMagneticField_z;
 	
+	private TextView tvNetworkType;
 	private TextView tvCellId;
 	private TextView tvCellLac;
 	private TextView tvCellNeighbors;
@@ -103,6 +104,7 @@ public class MainActivity extends Activity {
 			tvMagneticField_y = (TextView) findViewById(R.id.magneticfield_y);
 			tvMagneticField_z = (TextView) findViewById(R.id.magneticfield_z);
 			
+			tvNetworkType = (TextView) findViewById(R.id.networkType);
 			tvCellId = (TextView) findViewById(R.id.cellId);
 			tvCellLac = (TextView) findViewById(R.id.cellLac);
 			tvCellNeighbors = (TextView) findViewById(R.id.cellNeighbors);
@@ -186,7 +188,7 @@ public class MainActivity extends Activity {
     	super.onPause();
     	Log.i("Lifecycle", "onPause");    	
     	
-    	sensorAccess.stopSensors();
+    	sensorAccess.stopSensors(false);
 		handler.removeCallbacks(runnable);						
     }
     
@@ -205,7 +207,7 @@ public class MainActivity extends Activity {
 				@Override
 				public void run() {
 					sensorAccess.startSensors();
-					sensorAccess.stopSensors();
+					sensorAccess.stopSensors(true); //no writing to file
 					collectedDataMap = sensorAccess.getUIData();
 					updateUI();
 					handler.postDelayed(runnable, 10000);
@@ -233,6 +235,7 @@ public class MainActivity extends Activity {
 		tvLight.setText(collectedDataMap.get("light"));
 		tvProximity.setText(collectedDataMap.get("proximity"));
 		
+		tvNetworkType.setText(collectedDataMap.get("networktype"));
 		tvCellId.setText(collectedDataMap.get("cellid"));
 		tvCellLac.setText(collectedDataMap.get("celllac"));	
 		tvCellNeighbors.setText(collectedDataMap.get("cellneighbors"));
