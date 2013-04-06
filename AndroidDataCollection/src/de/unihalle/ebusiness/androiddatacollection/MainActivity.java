@@ -1,11 +1,17 @@
 package de.unihalle.ebusiness.androiddatacollection;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.os.Bundle;
 import android.os.Handler;
 import android.app.Activity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
@@ -85,6 +91,24 @@ public class MainActivity extends Activity {
         Log.i("Lifecycle", "onCreate");
         
         try {        	
+        	
+        	List<String> valueList = new ArrayList<String>();
+        	
+        	valueList.add("key");
+        	valueList.add("value");
+        	valueList.add("key");
+        	valueList.add("value");
+        	valueList.add("key");
+        	valueList.add("value");
+        	valueList.add("key");
+        	valueList.add("value");
+        	
+        	ListAdapter adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, valueList);
+        	
+        	final ListView listView = (ListView) findViewById(R.id.listview);
+        	
+        	listView.setAdapter(adapter);
+        	
         	sensorAccess = new SensorAccess(this);
         	
 			beginEndButton = ((Button) findViewById(R.id.beginEndButton));
