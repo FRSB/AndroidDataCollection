@@ -44,7 +44,7 @@ import android.telephony.gsm.GsmCellLocation;
 		private Sensor accelerometerSensor;
 		private Sensor gyroscopeSensor;
 		private Sensor magneticFieldSensor;
-		private Sensor lightSensor;
+		private Sensor lightSensor; 
 		private Sensor proximitySensor;
 		
 		private WifiManager wifiManager;

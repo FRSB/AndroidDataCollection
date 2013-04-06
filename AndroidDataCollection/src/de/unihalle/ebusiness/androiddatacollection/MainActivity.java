@@ -210,7 +210,7 @@ public class MainActivity extends Activity {
 					sensorAccess.stopSensors(true); //no writing to file
 					collectedDataMap = sensorAccess.getUIData();
 					updateUI();
-					handler.postDelayed(runnable, 10000);
+					handler.postDelayed(runnable, 10000); 
 				}
 			};
 		} catch (Exception e) {
