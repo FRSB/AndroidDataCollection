@@ -63,10 +63,10 @@ public class MainActivity extends Activity {
         	
         	addBeginEndButton();
         	addSensorsOnOffButton();
-//        	getServiceState();
+//        	getServiceState(); 
         	
 //        	startService(service);
-        	isServiceOn = true;
+//        	isServiceOn = true;
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
