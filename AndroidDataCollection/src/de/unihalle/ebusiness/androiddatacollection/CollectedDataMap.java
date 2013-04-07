@@ -96,6 +96,12 @@ public class CollectedDataMap {
 		return values;
 	}
 	
+	public Set<String> getAllKeys() {
+		Set<String> keySet = collectedSensorData.keySet();
+		
+		return keySet;
+	}
+	
 	public String toString() {
 		return collectedSensorData.toString();		
 	}

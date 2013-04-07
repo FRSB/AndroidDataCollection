@@ -6,5 +6,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="button_begin">Begin</string>
     <string name="button_end">End</string>
+    <string name="button_service_on">On</string>
+    <string name="button_service_off">Off</string>
 
 </resources>

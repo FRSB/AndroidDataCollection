@@ -29,7 +29,7 @@ public class DataWriter {
 
 	    		bufferedWriter = new BufferedWriter(new FileWriter(file, true));
 	    		bufferedWriter.write(headline + "\n");
-//	    		bufferedWriter.flush();
+	    		bufferedWriter.flush();
     		}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

@@ -1,5 +1,8 @@
 package de.unihalle.ebusiness.androiddatacollection;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -25,6 +28,7 @@ import android.telephony.NeighboringCellInfo;
 import android.telephony.SignalStrength;
 import android.telephony.TelephonyManager;
 import android.telephony.gsm.GsmCellLocation;
+import android.util.Log;
 
 	public class SensorAccess {
 		
@@ -56,18 +60,23 @@ import android.telephony.gsm.GsmCellLocation;
 
 	    private Context context;
 	    
-	    public SensorAccess(Context context) {
+	    private Boolean writeToFile;
+	    
+	    public SensorAccess(Context context, Boolean writeToFile) {
 	    	this.context = context;
 	    	collectedDataMap = new CollectedDataMap();
 	    	
-	    	String headline = collectedDataMap.getHeadline();	
+	    	this.writeToFile = writeToFile;
 	    	
-	    	dataWriter = new DataWriter(headline);
-	    	dataWriter.emptyFile(headline);
+	    	if (writeToFile) {
+		    	String headline = collectedDataMap.getHeadline();	
+		    	dataWriter = new DataWriter(headline);
+		    	dataWriter.emptyFile(headline);
+	    	}
 	    }
 	    
 	    public void startSensors() {
-	    	collectedDataMap.put("time", Long.toString(System.currentTimeMillis()));    	
+	    	collectedDataMap.put("time", getTimestamp());    	
 	    	setUpListenerSensors();						
 			getCellInformation();
 			getGpsLocation();
@@ -82,7 +91,7 @@ import android.telephony.gsm.GsmCellLocation;
 			getScreenBrightness();
 	    }
 	    
-	    public void stopSensors(Boolean writeToFile) {
+	    public void stopSensors() {
 			sensorManager.unregisterListener(sensorEventListener);
 			locationManager.removeUpdates(locationListener);
 			telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_NONE);
@@ -322,6 +331,7 @@ import android.telephony.gsm.GsmCellLocation;
 						break;
 					case AudioManager.RINGER_MODE_SILENT:
 						collectedDataMap.put("ringermode", "RINGER_MODE_SILENT");
+						Log.i("Lifecycle", "ServiceDoRINGER_MODE_SILENT");
 						break;
 				}
 			} catch (Exception e) {
@@ -502,4 +512,12 @@ import android.telephony.gsm.GsmCellLocation;
 			}
 	    }
 	 
+	    public String getTimestamp() {
+	    	
+	    	SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MM yyyy HH:mm:ss");
+	    	Calendar cal = Calendar.getInstance();
+	    	
+			return simpleDateFormat.format(cal.getTime()).toString();
+	    	
+	    }
 }
