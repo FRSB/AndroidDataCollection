@@ -1,10 +1,24 @@
-# infer transition matrix from state sequence
+#####################################################################################################
+#                                                                                                   #
+#   Implementation of Markov chains. Inference is only done for the transition probabilities        #
+#   and not the initial probabilities. We use ML with laplace correction for parameter estimation.  #
+#                                                                                                   #
+#   Authors: Frank Rosner, Sebastian Baer                                                           #
+#                                                                                                   #
+#####################################################################################################
+
+# First order Markov chain
+##########################
+
+# Infer transition matrix from vector of states (observation sequence)
 # one state per row, states have to be integers beginning from 1
-FirstOrderMarkovChain.inferTransitionMatrix = function(data) {
-  numStates = length(levels(as.factor(data[,1])))
+# in:   - data, vector of observations
+# out:  - transitionTensor containing the transition probabilities of 1st order markov chain
+FirstOrderMarkovChain.inferTransitionTensor = function(data) {
+  numStates = length(unique(data))
   transitionMatrix = matrix(1, nrow=numStates, ncol=numStates) #1 for laplace correction
-  for (i in 2:length(data[,1])) {
-    transitionMatrix[data[,1][i-1],data[,1][i]] = transitionMatrix[data[,1][i-1],data[,1][i]] + 1
+  for (i in 2:length(data)) {
+    transitionMatrix[data[i-1],data[i]] = transitionMatrix[data[i-1],data[i]] + 1
   }
   stateSums = apply(transitionMatrix,1,sum)
   zeroRows=which(stateSums==0)
@@ -14,38 +28,65 @@ FirstOrderMarkovChain.inferTransitionMatrix = function(data) {
   return(transitionMatrix)
 }
 
-# sample markov chain from transition matrix
+# sample random walk from transition matrix
 # beginning from initial state
-FirstOrderMarkovChain.sampleFromTransitionMatrix = function(transitionMatrix, initialState, length) {
-  numStates = dim(transitionMatrix)[1]
+# in:   - transitionTensor, either infered or given transition probabilities of 1st order markov chain
+#       - initialState, single integer noting the initial state to begin sampling with
+#       - length, length of random walk
+# out:  - random walk as state sequence
+FirstOrderMarkovChain.sampleFromTransitionTensor = function(transitionTensor, initialState, length) {
+  numStates = dim(transitionTensor)[1]
   samples = vector(length=length)
   samples[1] = initialState
   for (i in 2:length) {
-    samples[i] = sample(1:numStates, size=1, replace=TRUE, prob=transitionMatrix[samples[i-1],])
+    samples[i] = sample(1:numStates, size=1, replace=TRUE, prob=transitionTensor[samples[i-1],])
   }
   return(samples)
 }
 
 # predict next state given a current state
 # by simply chosing the one with the highest transition probability
-FirstOrderMarkovChain.predictNextState = function(transitionMatrix, currentState) {
-  return(which.max(transitionMatrix[currentState,]))
+# in:   - transitionTensor, either infered or given transition probabilities of 1st order markov chain
+#       - currentState, single integer noting the current state to predict from
+# out:  - next state (integer) with highest transition probability
+FirstOrderMarkovChain.predictNextState = function(transitionTensor, currentState) {
+  return(which.max(transitionTensor[currentState,]))
 }
 
-# infer transition tensor from state sequence
+# use 1st order markov chain as predictor
+applyFirstOrderMarkovChain = function(transitionTensor, data) {
+  prediction = vector(length = length(data)-2)
+  tNow = vector(length = length(data)-2)
+  tNext = vector(length = length(data)-2)
+  for (i in 2:(length(data)-1)) {
+    prediction[i-1] = FirstOrderMarkovChain.predictNextState(transitionTensor, data[i])
+    tNext[i-1] = data[i+1]
+    tNow[i-1] = data[i]
+  }
+  result = data.frame(tNow, tNext, prediction)
+  names(result) = c("tNow", "tNext", "prediction")
+  return (result)
+}
+
+# Second order Markov chain
+###########################
+
+# Infer transition matrix from vector of states (observation sequence)
 # one state per row, states have to be integers beginning from 1
+# in:   - data, vector of observations
+# out:  - transitionTensor containing the transition probabilities of 2nd order markov chain
 SecondOrderMarkovChain.inferTransitionTensor = function(data) {
-  numStates = length(levels(as.factor(data[,1])))
-  stateSums = matrix(1, nrow=numStates, ncol=numStates) #1 forlaplace correction
+  numStates = length(unique(data))
+  stateSums = matrix(numStates, nrow=numStates, ncol=numStates) #1 forlaplace correction
   transitionTensor = list()
   for (i in 1:numStates) {
     transitionTensor[[i]] = matrix(1, nrow=numStates, ncol=numStates) #1 for laplace correction
   }
-  for (i in 3:length(data[,1])) {
-    transitionTensor[[data[,1][i]]][data[,1][i-2],data[,1][i-1]] =
-      transitionTensor[[data[,1][i]]][data[,1][i-2],data[,1][i-1]] + 1
-    stateSums[data[,1][i-2],data[,1][i-1]] = 
-      stateSums[data[,1][i-2],data[,1][i-1]] + 1
+  for (i in 3:length(data)) {
+    transitionTensor[[data[i]]][data[i-2],data[i-1]] =
+      transitionTensor[[data[i]]][data[i-2],data[i-1]] + 1
+    stateSums[data[i-2],data[i-1]] = 
+      stateSums[data[i-2],data[i-1]] + 1
   }
   for (i in 1:numStates) {
     transitionTensor[[i]] = transitionTensor[[i]] / stateSums
@@ -55,6 +96,10 @@ SecondOrderMarkovChain.inferTransitionTensor = function(data) {
 
 # sample markov chain from transition tensor
 # beginning from initial states c(state1, state2)
+# in:   - transitionTensor, either infered or given transition probabilities of 2nd order markov chain
+#       - initialState, a vector containing two integers noting the initial states to begin sampling with
+#       - length, length of random walk
+# out:  - random walk as state sequence
 SecondOrderMarkovChain.sampleFromTransitionTensor = function(transitionTensor, initialStates, length) {
   numStates = length(transitionTensor)
   samples = vector(length=length)
@@ -72,6 +117,10 @@ SecondOrderMarkovChain.sampleFromTransitionTensor = function(transitionTensor, i
 
 # predict next state given the current and last but current state
 # by simply chosing the one with the highest transition probability
+# in:   - transitionTensor, either infered or given transition probabilities of 2nd order markov chain
+#       - currentState, a vector containing two integers noting the current and last but current 
+#         states to predict from
+# out:  - next state (integer) with highest transition probability
 SecondOrderMarkovChain.predictNextState = function(transitionTensor, currentStates) {
   numStates = length(transitionTensor)
   transitionVector = vector(length=numStates)
@@ -81,3 +130,19 @@ SecondOrderMarkovChain.predictNextState = function(transitionTensor, currentStat
   return(which.max(transitionVector))
 }
 
+# use 2nd order markov chain as predictor
+applySecondOrderMarkovChain = function(transitionTensor, data) {
+  prediction = vector(length = length(data)-2)
+  tPrev1 = vector(length = length(data)-2)
+  tNow = vector(length = length(data)-2)
+  tNext = vector(length = length(data)-2)
+  for (i in 2:(length(data)-1)) {
+    prediction[i-1] = SecondOrderMarkovChain.predictNextState(transitionTensor, c(data[i-1],data[i]))
+    tPrev1[i-1] = data[i-1]
+    tNext[i-1] = data[i+1]
+    tNow[i-1] = data[i]
+  }
+  result = data.frame(tPrev1, tNow, tNext, prediction)
+  names(result) = c("tPrev1","tNow", "tNext", "prediction")
+  return (result)
+}
