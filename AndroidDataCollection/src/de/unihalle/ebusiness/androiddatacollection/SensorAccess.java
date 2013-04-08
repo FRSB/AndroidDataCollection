@@ -331,7 +331,6 @@ import android.util.Log;
 						break;
 					case AudioManager.RINGER_MODE_SILENT:
 						collectedDataMap.put("ringermode", "RINGER_MODE_SILENT");
-						Log.i("Lifecycle", "ServiceDoRINGER_MODE_SILENT");
 						break;
 				}
 			} catch (Exception e) {

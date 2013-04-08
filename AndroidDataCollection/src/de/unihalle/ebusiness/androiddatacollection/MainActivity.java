@@ -1,6 +1,7 @@
 package de.unihalle.ebusiness.androiddatacollection;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
 
@@ -9,6 +10,8 @@ import android.os.Handler;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.util.Log;
 import android.view.View;
@@ -39,7 +42,8 @@ public class MainActivity extends Activity {
 	private ListView listView;
 	
 	private Intent service;
-	private Boolean isServiceOn;
+	private AlarmManager alarmManager;
+	private PendingIntent pendingIntent;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,25 +52,15 @@ public class MainActivity extends Activity {
         Log.i("Lifecycle", "onCreate");
         
         try {  
-        	
-        	collectedDataList = new ArrayList<String>();
-        	
-        	adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, collectedDataList);
-        	
-        	listView = (ListView) findViewById(R.id.listview);
-        	
-        	listView.setAdapter(adapter);
-        	
         	sensorAccess = new SensorAccess(this, false); //no writing to file if false
         	
         	service = new Intent(this, SensorService.class);
-        	
+        	stopService(service);
+        
+        	addViewList();
         	addBeginEndButton();
         	addSensorsOnOffButton();
-//        	getServiceState(); 
-        	
-//        	startService(service);
-//        	isServiceOn = true;
+
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -104,7 +98,7 @@ public class MainActivity extends Activity {
 			runnable = new Runnable() {
 				@Override
 				public void run() {
-//					sensorAccess.startSensors();
+					sensorAccess.startSensors();
 					sensorAccess.stopSensors();
 					collectedDataMap = sensorAccess.getUIData();
 					updateUI();
@@ -116,6 +110,18 @@ public class MainActivity extends Activity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+    }
+    
+    public void addViewList() {
+    	collectedDataList = new ArrayList<String>();        	
+    	collectedDataMap = sensorAccess.getUIData();
+    	convertMapToList();
+    	
+    	adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, collectedDataList);
+    	
+    	listView = (ListView) findViewById(R.id.listview);
+    	
+    	listView.setAdapter(adapter);
     }
     
     public void updateUI() {    	
@@ -162,6 +168,10 @@ public class MainActivity extends Activity {
     
     public void addSensorsOnOffButton() {
     	sensorsOnOffButton = (ToggleButton) findViewById(R.id.serviceOnOffButton);
+    	
+    	if (getServiceState()) {
+    		sensorsOnOffButton.setChecked(true);
+    	} else sensorsOnOffButton.setChecked(false);
 
     	Button.OnClickListener sensorsOnOffButtonListener = new Button.OnClickListener() {
 
@@ -171,13 +181,13 @@ public class MainActivity extends Activity {
 					sensorsOnOffButton.setChecked(false);
 					sensorsOnOffButton.setText(R.string.button_service_off);			
 					
-					stopService(service);
+					destroyService();
 					
 				}	else {
 					sensorsOnOffButton.setChecked(true);
 					sensorsOnOffButton.setText(R.string.button_service_on);
 					
-					startService(service);
+					createService();
 				}
 			}
     		
@@ -186,14 +196,28 @@ public class MainActivity extends Activity {
     	sensorsOnOffButton.setOnClickListener(sensorsOnOffButtonListener);
     }
     
-//    public void getServiceState() {
-//    	    ActivityManager activityManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
-//    	    for (RunningServiceInfo service : activityManager.getRunningServices(Integer.MAX_VALUE)) {
-//    	        if (SensorService.class.getName().equals(service.service.getClassName())) {
-//    	            isServiceOn = true;
-//    	        }
-//    	    }
-//    	    isServiceOn = false;    	
-//    }
+    public Boolean getServiceState() {
+    	    ActivityManager activityManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+    	    for (RunningServiceInfo service : activityManager.getRunningServices(Integer.MAX_VALUE)) {
+    	        if (SensorService.class.getName().equals(service.service.getClassName())) {
+    	            return true;
+    	        }
+    	    }
+    	    return false;    	
+    }
+    
+    public void createService() {
+    	pendingIntent = PendingIntent.getService(MainActivity.this, 0, service, 0);
+
+        alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+        Calendar calendar = Calendar.getInstance();
+        
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 10*1000, pendingIntent);
+    }
+    
+    public void destroyService() {
+    	alarmManager.cancel(pendingIntent);
+    }
 }
  
