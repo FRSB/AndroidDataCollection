@@ -2,7 +2,6 @@ package de.unihalle.ebusiness.androiddatacollection;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -28,7 +27,6 @@ import android.telephony.NeighboringCellInfo;
 import android.telephony.SignalStrength;
 import android.telephony.TelephonyManager;
 import android.telephony.gsm.GsmCellLocation;
-import android.util.Log;
 
 	public class SensorAccess {
 		
@@ -71,7 +69,6 @@ import android.util.Log;
 	    	if (writeToFile) {
 		    	String headline = collectedDataMap.getHeadline();	
 		    	dataWriter = new DataWriter(headline);
-		    	dataWriter.emptyFile(headline);
 	    	}
 	    }
 	    
@@ -93,7 +90,8 @@ import android.util.Log;
 	    
 	    public void stopSensors() {
 			sensorManager.unregisterListener(sensorEventListener);
-			locationManager.removeUpdates(locationListener);
+			// gps stays always on, check battery consumption
+//			locationManager.removeUpdates(locationListener);
 			telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_NONE);
 			
 			if (writeToFile) {
@@ -513,7 +511,7 @@ import android.util.Log;
 	 
 	    public String getTimestamp() {
 	    	
-	    	SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MM yyyy HH:mm:ss");
+	    	SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
 	    	Calendar cal = Calendar.getInstance();
 	    	
 			return simpleDateFormat.format(cal.getTime()).toString();

@@ -29,7 +29,6 @@ public class DataWriter {
 
 	    		bufferedWriter = new BufferedWriter(new FileWriter(file, true));
 	    		bufferedWriter.write(headline + "\n");
-	    		bufferedWriter.flush();
     		}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -41,7 +40,6 @@ public class DataWriter {
 		try {
 			if (true) { //if (fileExists) not working ?!
 				bufferedWriter.write(string + "\n");
-				bufferedWriter.flush();
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

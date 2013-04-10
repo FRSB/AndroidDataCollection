@@ -18,15 +18,15 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.ToggleButton;
 
 public class MainActivity extends Activity {
 	
-	private Button beginEndButton;
-	private ToggleButton sensorsOnOffButton;
+	private ToggleButton showSensorDataButton;
+	private ToggleButton sensorsButton;
 	
 	private Handler handler;
 	private Runnable runnable;
@@ -50,22 +50,16 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);        
         Log.i("Lifecycle", "onCreate");
-        
-        try {  
-        	sensorAccess = new SensorAccess(this, false); //no writing to file if false
-        	
-        	service = new Intent(this, SensorService.class);
-        	stopService(service);
-        
-        	addViewList();
-        	addBeginEndButton();
-        	addSensorsOnOffButton();
-
-			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+ 
+    	sensorAccess = new SensorAccess(this, false); //no writing to file if false
+    	
+    	handler = new Handler();
+    	
+    	service = new Intent(this, SensorService.class);
+    	
+    	addViewList();
+    	addShowSensorDataButton();
+    	addSensorsOnOffButton();
     }    
        
     @Override
@@ -80,7 +74,9 @@ public class MainActivity extends Activity {
     	
     	if (isGettingSensorData) {
     		sensorAccess.stopSensors();
-			handler.removeCallbacks(runnable);	
+			handler.removeCallbacks(runnable);
+			isGettingSensorData = false;
+			showSensorDataButton.setChecked(false);
     	}
     }
     
@@ -92,20 +88,22 @@ public class MainActivity extends Activity {
     
     public void schedule() {
     	try {
-			handler = new Handler();
-			handler.postDelayed(runnable, 0);
-			
+    		final int fetchTime = (Integer.parseInt(((EditText) findViewById(R.id.changeFetchRateEditText)).getText().toString())) * 1000;    		
+    		
 			runnable = new Runnable() {
 				@Override
 				public void run() {
+					
 					sensorAccess.startSensors();
-					sensorAccess.stopSensors();
-					collectedDataMap = sensorAccess.getUIData();
+					sensorAccess.stopSensors();					
 					updateUI();
 					isGettingSensorData = true;
-					handler.postDelayed(runnable, 10000); 
+					handler.postDelayed(runnable, fetchTime); 
 				}
 			};
+			
+			handler.post(runnable);
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -115,21 +113,25 @@ public class MainActivity extends Activity {
     public void addViewList() {
     	collectedDataList = new ArrayList<String>();        	
     	collectedDataMap = sensorAccess.getUIData();
+    	listView = (ListView) findViewById(R.id.listview);
+    	
     	convertMapToList();
     	
-    	adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, collectedDataList);
-    	
-    	listView = (ListView) findViewById(R.id.listview);
+    	adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.list_view_item, collectedDataList);
     	
     	listView.setAdapter(adapter);
     }
     
-    public void updateUI() {    	
+    public void updateUI() { 
+    	int index = listView.getFirstVisiblePosition();
+    	collectedDataMap = sensorAccess.getUIData();
+    	
     	convertMapToList();
     	
-    	adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, collectedDataList);
+    	adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.list_view_item, collectedDataList);
     	
     	listView.setAdapter(adapter);
+    	listView.setSelectionFromTop(index, 0);
     }
     
     public void convertMapToList() {
@@ -142,58 +144,48 @@ public class MainActivity extends Activity {
     		
     }
     
-    public void addBeginEndButton() {
-		beginEndButton = ((Button) findViewById(R.id.beginEndButton));				
+    public void addShowSensorDataButton() {
+		showSensorDataButton = ((ToggleButton) findViewById(R.id.showSensorDataButton));
+		
+		if (isGettingSensorData) {
+			showSensorDataButton.setChecked(true);
+		} else showSensorDataButton.setChecked(false);
 		
 		Button.OnClickListener beginEndButtonListener = new Button.OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {				
 									
-				if (beginEndButton.getText() == getString(R.string.button_begin)) {
-					
-					beginEndButton.setText(getString(R.string.button_end));
-					schedule();
-		
-				} else {
-					beginEndButton.setText(getString(R.string.button_begin));
-					handler.removeCallbacks(runnable);		
-				}
-			}
-			
+				if (showSensorDataButton.isChecked()) {				
+					schedule();		
+				} else	handler.removeCallbacks(runnable);				
+			}			
 		};
 
-		beginEndButton.setOnClickListener(beginEndButtonListener);
+		showSensorDataButton.setOnClickListener(beginEndButtonListener);
     }
     
     public void addSensorsOnOffButton() {
-    	sensorsOnOffButton = (ToggleButton) findViewById(R.id.serviceOnOffButton);
+    	sensorsButton = (ToggleButton) findViewById(R.id.serviceButton);
     	
     	if (getServiceState()) {
-    		sensorsOnOffButton.setChecked(true);
-    	} else sensorsOnOffButton.setChecked(false);
+    		sensorsButton.setChecked(true);
+    	} else sensorsButton.setChecked(false);
 
-    	Button.OnClickListener sensorsOnOffButtonListener = new Button.OnClickListener() {
+    	OnClickListener sensorsOnOffButtonListener = new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
-				if (sensorsOnOffButton.isChecked()) {
-					sensorsOnOffButton.setChecked(false);
-					sensorsOnOffButton.setText(R.string.button_service_off);			
-					
-					destroyService();
-					
+				if (sensorsButton.isChecked()) {
+					createService();				
 				}	else {
-					sensorsOnOffButton.setChecked(true);
-					sensorsOnOffButton.setText(R.string.button_service_on);
-					
-					createService();
+					destroyService();
 				}
 			}
     		
     	};
 
-    	sensorsOnOffButton.setOnClickListener(sensorsOnOffButtonListener);
+    	sensorsButton.setOnClickListener(sensorsOnOffButtonListener);
     }
     
     public Boolean getServiceState() {
@@ -207,17 +199,20 @@ public class MainActivity extends Activity {
     }
     
     public void createService() {
+		final int fetchTime = (Integer.parseInt(((EditText) findViewById(R.id.changeFetchRateEditText)).getText().toString())) * 1000;
+    	
     	pendingIntent = PendingIntent.getService(MainActivity.this, 0, service, 0);
 
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
         Calendar calendar = Calendar.getInstance();
         
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 10*1000, pendingIntent);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), fetchTime, pendingIntent);
     }
     
     public void destroyService() {
     	alarmManager.cancel(pendingIntent);
+    	stopService(service);
     }
 }
  

@@ -3,10 +3,10 @@
 
     <string name="app_name">Android Data Collection</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="button_begin">Begin</string>
-    <string name="button_end">End</string>
-    <string name="button_service_on">On</string>
-    <string name="button_service_off">Off</string>
-
+    <string name="settings">Settings:</string>
+    <string name="show_sensor_data">Show sensor data:</string>
+    <string name="service">Service</string>
+    <string name="change_fetch_rate">Change Fetch Rate [s]</string>
+	<string name="change_fetch_rate_time">10</string>
+	
 </resources>

@@ -1,48 +1,76 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
-
-            
-            
-	    <TextView
-	        android:id="@+id/textView1"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:text="@string/hello_world" 
-	        android:layout_alignParentTop="true"/>	    
+    android:layout_height="fill_parent" >	    
 
 
 	    <ListView
 	        android:id="@+id/listview"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content" 
-	        android:layout_below="@+id/beginEndButton"/>
-
-	    <TextView
-	        android:id="@+id/textView2"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_alignParentLeft="true"
-	        android:layout_below="@+id/textView1"
-	        android:text="Service"
-	        android:textAppearance="?android:attr/textAppearanceSmall" />
+	        android:layout_below="@+id/showSensorDataButton"/>
 
 	    <ToggleButton
-	        android:id="@+id/serviceOnOffButton"
+	        android:id="@+id/serviceButton"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:layout_alignBaseline="@+id/textView2"
-	        android:layout_alignBottom="@+id/textView2"
-	        android:layout_alignParentRight="true"
-	        android:text="@string/button_service_off" />
+	        android:layout_alignBaseline="@+id/serviceView"
+	        android:layout_alignBottom="@+id/serviceView"
+	        android:layout_alignParentRight="true" />
 
-	    <Button
-	        android:id="@+id/beginEndButton"
+	    <EditText
+	        android:id="@+id/changeFetchRateEditText"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignLeft="@+id/serviceButton"
+	        android:layout_alignParentRight="true"
+	        android:layout_below="@+id/serviceView"
+	        android:ems="10"
+	        android:inputType="number"
+	        android:text="@string/change_fetch_rate_time" >
+	    </EditText>
+
+	    <TextView
+	        android:id="@+id/settingsView"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:layout_alignParentLeft="true"
-	        android:layout_below="@+id/serviceOnOffButton"
-	        android:layout_marginTop="17dp"
-	        android:text="@string/button_begin" />
+	        android:layout_alignParentTop="true"
+	        android:text="@string/settings" />
+
+	    <TextView
+	        android:id="@+id/changeFetchRateView"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignBaseline="@+id/changeFetchRateEditText"
+	        android:layout_alignBottom="@+id/changeFetchRateEditText"
+	        android:layout_alignParentLeft="true"
+	        android:text="@string/change_fetch_rate"
+	        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+	    <TextView
+	        android:id="@+id/serviceView"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:layout_below="@+id/settingsView"
+	        android:text="@string/service"
+	        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+	    <ToggleButton
+	        android:id="@+id/showSensorDataButton"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentRight="true"
+	        android:layout_below="@+id/changeFetchRateEditText" />
+
+	    <TextView
+	        android:id="@+id/showSensorDataView"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignBaseline="@+id/showSensorDataButton"
+	        android:layout_alignBottom="@+id/showSensorDataButton"
+	        android:layout_alignParentLeft="true"
+	        android:text="@string/show_sensor_data"
+	        android:textAppearance="?android:attr/textAppearanceSmall" />
  
 </RelativeLayout>
