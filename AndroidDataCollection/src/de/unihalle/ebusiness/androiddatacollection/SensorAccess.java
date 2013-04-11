@@ -307,7 +307,7 @@ import android.telephony.gsm.GsmCellLocation;
 					}
 				};
 				
-				locationManager.requestLocationUpdates("gps", 10000, 1, locationListener);
+				locationManager.requestLocationUpdates("gps", 0, 1, locationListener);
 				
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -516,5 +516,9 @@ import android.telephony.gsm.GsmCellLocation;
 	    	
 			return simpleDateFormat.format(cal.getTime()).toString();
 	    	
+	    }
+	    
+	    public void disableGps() {
+	    	locationManager.removeUpdates(locationListener);
 	    }
 }

@@ -12,13 +12,14 @@ import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ToggleButton;
@@ -45,6 +46,9 @@ public class MainActivity extends Activity {
 	private AlarmManager alarmManager;
 	private PendingIntent pendingIntent;
 	
+	private ComponentName receiver;
+	private PackageManager pm;
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +59,15 @@ public class MainActivity extends Activity {
     	
     	handler = new Handler();
     	
-    	service = new Intent(this, SensorService.class);
+    	service = new Intent(this, SensorService.class);    	
+    	
+    	pendingIntent = PendingIntent.getService(MainActivity.this, 0, service, 0);
+
+        alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+    	
+    	receiver = new ComponentName(this, BootCompletedIntentReceiver.class);
+    	
+    	pm = getPackageManager();
     	
     	addViewList();
     	addShowSensorDataButton();
@@ -88,7 +100,7 @@ public class MainActivity extends Activity {
     
     public void schedule() {
     	try {
-    		final int fetchTime = (Integer.parseInt(((EditText) findViewById(R.id.changeFetchRateEditText)).getText().toString())) * 1000;    		
+    		final int fetchTime = 10000;
     		
 			runnable = new Runnable() {
 				@Override
@@ -158,7 +170,10 @@ public class MainActivity extends Activity {
 									
 				if (showSensorDataButton.isChecked()) {				
 					schedule();		
-				} else	handler.removeCallbacks(runnable);				
+				} else	{
+					handler.removeCallbacks(runnable);
+					sensorAccess.disableGps();
+				}
 			}			
 		};
 
@@ -168,18 +183,20 @@ public class MainActivity extends Activity {
     public void addSensorsOnOffButton() {
     	sensorsButton = (ToggleButton) findViewById(R.id.serviceButton);
     	
-    	if (getServiceState()) {
+    	Log.i("Lifecycle", "ComponentEnabled" + Boolean.toString((pm.getComponentEnabledSetting(receiver) == PackageManager.COMPONENT_ENABLED_STATE_ENABLED)));
+    	
+    	if (pm.getComponentEnabledSetting(receiver) == PackageManager.COMPONENT_ENABLED_STATE_ENABLED) {
     		sensorsButton.setChecked(true);
     	} else sensorsButton.setChecked(false);
 
     	OnClickListener sensorsOnOffButtonListener = new OnClickListener() {
 
-			@Override
+			@Override 
 			public void onClick(View arg0) {
 				if (sensorsButton.isChecked()) {
-					createService();				
+					setServiceAlwaysOn();				
 				}	else {
-					destroyService();
+					setServiceAlwaysOff();
 				}
 			}
     		
@@ -199,11 +216,7 @@ public class MainActivity extends Activity {
     }
     
     public void createService() {
-		final int fetchTime = (Integer.parseInt(((EditText) findViewById(R.id.changeFetchRateEditText)).getText().toString())) * 1000;
-    	
-    	pendingIntent = PendingIntent.getService(MainActivity.this, 0, service, 0);
-
-        alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+		int fetchTime = 10000;
 
         Calendar calendar = Calendar.getInstance();
         
@@ -213,6 +226,20 @@ public class MainActivity extends Activity {
     public void destroyService() {
     	alarmManager.cancel(pendingIntent);
     	stopService(service);
+    }
+    
+    public void setServiceAlwaysOn() {
+    	pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
+    	
+    	createService();
+    }
+    
+    public void setServiceAlwaysOff() {
+    	pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
+    	
+    	if (getServiceState()) {
+    		destroyService();
+    	}
     }
 }
  
