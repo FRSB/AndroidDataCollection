@@ -1,8 +1,8 @@
-\documentclass[a4paper, 11pt, titlepage]{scrartcl} %scrartcl für kurze Artikel
+\documentclass[a4paper, 12pt, titlepage, bibtotoc]{scrartcl} %scrartcl für kurze Artikel
 
-% \renewcommand*\sectfont{\normalcolor\rmfamily\bfseries}
-% \renewcommand*\descfont{\rmfamily\bfseries}
-% \setkomafont{dictum}{\normalfont\normalcolor\rmfamily\small}
+\renewcommand*\sectfont{\normalcolor\rmfamily\bfseries}
+\renewcommand*\descfont{\rmfamily\bfseries}
+\setkomafont{dictum}{\normalfont\normalcolor\rmfamily\small}
 
 \makeatletter% siehe De-TeX-FAQ
 \renewcommand*{\toc@heading}{%
@@ -14,37 +14,42 @@
 \usepackage[ngerman]{babel}
 \usepackage[ansinew]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage{lmodern}
-% \usepackage{times}
-% \usepackage{mathptmx}
 \usepackage{color}
 % \usepackage{courier} % Monospace/Truetype umstellen
 \usepackage{enumitem} % \begin{enumerate}[label={\alph*)}] \item \end{enumerate} für a) b) c)...
-\usepackage{rotating}
-\usepackage{grffile}
 \usepackage{amsmath}
 \usepackage{amssymb}
-\usepackage{subfig}
 \usepackage{setspace}
-\setcapindent{0em} 
-\interfootnotelinepenalty=10000
-\raggedbottom
-\usepackage{algorithm}
-\usepackage{algorithmic}
-	\renewcommand{\algorithmiccomment}[1]{// #1}
 \usepackage{ulem}
 	\normalem %stellt emph{} wieder auf kursiv, sonst unterstrichen
 \usepackage{graphicx}
 \graphicspath{{img/}}
-\usepackage[hmargin={3cm,2cm}, vmargin={2cm, 3cm}]{geometry}
+\usepackage[hmargin={3cm,3cm}, vmargin={2.5cm, 3.5cm}]{geometry}
+% \usepackage{times}
+\usepackage{mathptmx}
 \usepackage{nicefrac} 	
 \usepackage{titlesec}
 \titlespacing{\section}{0pt}{*2.5}{*1.5}
 \titlespacing{\subsection}{0pt}{*2}{*1}
 \titlespacing{\subsubsection}{0pt}{*1}{*0.5}
-\bibliography{literature}
+
+\tolerance=500
+
+\usepackage{url}
+\urlstyle{leo}
+
+% Punkt + Komma Abstände bei Tausendern/Dezimalzahlen ans dt. anpassen
+% \mathcode`,="013B
+% \mathcode`.="613A
+
+%\usepackage{hyperref}
+\usepackage{csquotes}
+\usepackage{parcolumns}
+% \usepackage{parskip}
+
+\bibliography{recommendation-in-social-networks_literature}
 \usepackage[style=authoryear]{biblatex} 
-\addbibresource{literature.bib}
+\addbibresource{recommendation-in-social-networks_literature.bib}
 
 \DefineBibliographyStrings{ngerman}{
     references = {Literaturverzeichnis}
@@ -58,48 +63,89 @@
 \setlength{\parsep}{\bibparsep}}}
 {\endlist}
 {\item}
-\ExecuteBibliographyOptions{dashed=false}
 
-\tolerance=500
+% \renewbibmacro*{cite:year+labelyear}{%
+% \iffieldundef{year}
+% {}
+% {\printtext[bibhyperref]{%
+% \mkbibparens{%
+% \printfield{year}%
+% \printfield{labelyear}}}}}
 
-\usepackage[hyperref]{ntheorem}
-\theoremstyle{plain}
-\theorembodyfont{\upshape}
-\theoremsymbol{\ensuremath{\ast}}
-\theoremseparator{}
-\newtheorem{Example}{Beispiel}
-\newtheorem{Definition}{Definition}
 
-\renewcommand{\topfraction}{0.7}	% max fraction of floats at top
+%%%% Klammern um die Jahreszahl 
+% \renewbibmacro*{cite:labelyear+extrayear}{%
+% \iffieldundef{labelyear}
+% {}
+% {\printtext[bibhyperref]{%
+% \mkbibparens{\iffieldundef{origyear}{}{\printfield{origyear}\addslash}% <--- added
+% \printfield{labelyear}%
+% \printfield{extrayear}}}}}
+% 
+% \renewbibmacro*{date+extrayear}{%
+% \iffieldundef{year}
+% {}
+% {\printtext[parens]{%
+% \iffieldundef{origyear}{}{\printfield{origyear}\addslash}%<--- added
+% \printdateextra}}}
 
-\usepackage{url}
-\urlstyle{leo}
+%Schriftart http://tu-dresden.de/Members/jan.rudl/latex_win/fonts.pdf
+%\usepackage[T1]{fontenc}
+%\newcommand{\changefont}[3]{
+%\fontfamily{#1} \fontseries{#2} \fontshape{#3} \selectfont}
 
-%\usepackage{hyperref}
-\usepackage{csquotes}
-\usepackage{parcolumns}
+% \setlength{\tabcolsep}{5pt} %colspan
+% \renewcommand{\arraystretch}{1.3} %rowspan
 
-\usepackage{parskip}
-
-% \parindent 0pt %Absatzeinrückung
-% \parskip 12pt %Absatzabstand
+\parindent 0pt %Absatzeinrückung
+\parskip 12pt %Absatzabstand
 
 \begin{document}
 
+\input{title.tex}
+
+% \setcounter{page}{0}\clearpage\newpage
+\renewcommand{\baselinestretch}{1.25}\normalsize
+
+
+\pagenumbering{Roman} \setcounter{page}{2}
+\addcontentsline{toc}{section}{Inhaltsverzeichnis}
 \tableofcontents
+
+\renewcommand{\baselinestretch}{1.50}\normalsize
 
 \newpage
 
-\section{Introduction}
+\addcontentsline{toc}{section}{Abbildungsverzeichnis}
+\listoffigures
 
-\section{Related Work}
+\newpage
 
-\section{Methods}
+\section*{Abkürzungsverzeichnis}
+\addcontentsline{toc}{section}{Abkürzungsverzeichnis}
 
-\subsection{Data Collection}
+\begin{tabular}{ll}
+% CF & Collaborative Filtering\\
+AA & Abkürzungsaffe\\
+AA & Abkürzungsaffe
+\end{tabular}
 
-\subsection{Data Analysis}
+\newpage
 
+\listoftables
+\addcontentsline{toc}{section}{Tabellenverzeichnis}
+
+\newpage
+
+\pagenumbering{arabic} \setcounter{page}{1}
+
+\section{Einleitung}
+%\input{sec.introduction}
+
+%\input{sec.methods}
+\section{Methoden}
+\subsection{Datenerhebung}
+\subsection{Datenanalyse}
 \begin{enumerate}
 %\item $ \displaystyle L(p_0,P|X) = \prod_{t=1}^T L(x_t|x_{t-1}, P) \cdot L(x_0|p_0)$
 %\item $ \displaystyle L(p_0,P) = P(X_0 = i_0, \ldots, X_T = i_T)$
@@ -118,18 +164,24 @@ $ \displaystyle l(P) = \sum_{i=1}^m\sum_{j=1}^m n_{ij} \cdot \ln p_{ij},\quad s.
 \item $ \displaystyle \sum_{j=1}^m n_{ij} = \lambda_i$
 \item $ \displaystyle \hat p_{ij} = \frac{n_{ij}}{\sum_{j=1}^m n_{ij}}$
 
+\section{Auswertung}
+%\input{sec.experiments}
+
+\section{Schlussbetrachtung}
+%\input{sec.conclusion}
+
+
+
 \end{enumerate}
 
-\section{Results}
-
-\section{Discussion}
 
 
+\newpage
+
+\parskip 12pt %Absatzabstand
+\renewcommand{\baselinestretch}{1.00}\normalsize
 
 \printbibliography
-
-% \bibliographystyle{babplain}
-% \bibliography{literature}
 
 \end{document}
 
