@@ -1,193 +1,95 @@
 package de.unihalle.ebusiness.androiddatacollection;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Set;
+
 import android.os.Bundle;
 import android.os.Handler;
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.app.ActivityManager.RunningServiceInfo;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.ToggleButton;
 
 public class MainActivity extends Activity {
 	
-	private Button beginEndButton;
+	private ToggleButton showSensorDataButton;
+	private ToggleButton sensorsButton;
 	
 	private Handler handler;
 	private Runnable runnable;
+	
+	private Boolean isGettingSensorData = false;
 	
 	private SensorAccess sensorAccess;
 	
 	private CollectedDataMap collectedDataMap;
 	
-	private TextView tvProximity;
-	private TextView tvLight;
+	private List<String> collectedDataList;
+	private ListAdapter adapter;
+	private ListView listView;
 	
-	private TextView tvAccelerometer_x;
-	private TextView tvAccelerometer_y;
-	private TextView tvAccelerometer_z;
+	private Intent service;
+	private AlarmManager alarmManager;
+	private PendingIntent pendingIntent;
 	
-	private TextView tvGyroscope_x;
-	private TextView tvGyroscope_y;
-	private TextView tvGyroscope_z; 
+	private ComponentName receiver;
+	private PackageManager pm;
 	
-	private TextView tvMagneticField_x;
-	private TextView tvMagneticField_y;
-	private TextView tvMagneticField_z;
-	
-	private TextView tvCellId;
-	private TextView tvCellLac;
-	private TextView tvCellNeighbors;
-	
-	private TextView tvGpsAccuracy;
-	private TextView tvGpsAltitude;
-	private TextView tvGpsLatitude;
-	private TextView tvGpsLongitude;
-	private TextView tvGpsBearing;
-	private TextView tvGpsSpeed;
-	
-	private TextView tvRingerMode;
-
-	private TextView tvAirplaneMode;
-	
-	private TextView tvBluetoothMode;
-
-	private TextView tvDeviceId;
-	private TextView tvPhoneType;
-
-	private TextView tvWifiSsid;
-	private TextView tvWifiRssi;
-	
-	private TextView tvOperatorState;
-	private TextView tvOperatorRoaming;
-	private TextView tvOperatorName;
-	private TextView tvIncomingNumber;
-	private TextView tvCellSignalStrength;
-	
-	private TextView tvBatteryLevel;
-	private TextView tvBatteryPlugged;
-	private TextView tvBatteryTemperature;
-	
-	private TextView tvSimCountry;
-	private TextView tvSimOperator;
-	private TextView tvSimOperatorName;
-	private TextView tvSimSerialNumber;
-	private TextView tvSimState;
-	private TextView tvSimSubscriberId;
-	
-	private TextView tvScreenBrightness;
-	private TextView tvScreenOn;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);        
         Log.i("Lifecycle", "onCreate");
-        
-        try {        	
-        	sensorAccess = new SensorAccess(this);
-        	
-			beginEndButton = ((Button) findViewById(R.id.beginEndButton));
-			
-			tvProximity = (TextView) findViewById(R.id.proximity);
-			tvLight = (TextView) findViewById(R.id.light);
-			
-			tvAccelerometer_x = (TextView) findViewById(R.id.accelerometer_x);
-			tvAccelerometer_y = (TextView) findViewById(R.id.accelerometer_y);
-			tvAccelerometer_z = (TextView) findViewById(R.id.accelerometer_z);
-			
-			tvGyroscope_x = (TextView) findViewById(R.id.gyroscope_x);
-			tvGyroscope_y = (TextView) findViewById(R.id.gyroscope_y);
-			tvGyroscope_z = (TextView) findViewById(R.id.gyroscope_z);
-			
-			tvMagneticField_x = (TextView) findViewById(R.id.magneticfield_x);
-			tvMagneticField_y = (TextView) findViewById(R.id.magneticfield_y);
-			tvMagneticField_z = (TextView) findViewById(R.id.magneticfield_z);
-			
-			tvCellId = (TextView) findViewById(R.id.cellId);
-			tvCellLac = (TextView) findViewById(R.id.cellLac);
-			tvCellNeighbors = (TextView) findViewById(R.id.cellNeighbors);
-			
-			tvGpsAccuracy = (TextView) findViewById(R.id.gps_accuracy);
-			tvGpsAltitude = (TextView) findViewById(R.id.gps_altitude);
-			tvGpsLatitude = (TextView) findViewById(R.id.gps_latitude);
-			tvGpsLongitude = (TextView) findViewById(R.id.gps_longiitude);
-			tvGpsBearing = (TextView) findViewById(R.id.gps_bearing);
-			tvGpsSpeed = (TextView) findViewById(R.id.gps_speed);
-			
-			tvRingerMode = (TextView) findViewById(R.id.ringer_mode);
+ 
+    	sensorAccess = new SensorAccess(this, false); //no writing to file if false
+    	
+    	handler = new Handler();
+    	
+    	service = new Intent(this, SensorService.class);    	
+    	
+    	pendingIntent = PendingIntent.getService(MainActivity.this, 0, service, 0);
 
-			tvAirplaneMode = (TextView) findViewById(R.id.airplane_mode);
-			
-			tvBluetoothMode = (TextView) findViewById(R.id.bluetooth_mode);
-
-			tvDeviceId = (TextView) findViewById(R.id.deviceid);
-			tvPhoneType = (TextView) findViewById(R.id.phone_type);
-
-			tvWifiSsid = (TextView) findViewById(R.id.wifi_ssid);
-			tvWifiRssi = (TextView) findViewById(R.id.wifi_rssi);
-			
-			tvOperatorState = (TextView) findViewById(R.id.operator_state);
-			tvOperatorRoaming = (TextView) findViewById(R.id.operator_roaming);
-			tvOperatorName = (TextView) findViewById(R.id.operator_name);
-			tvIncomingNumber = (TextView) findViewById(R.id.incoming_number);
-			tvCellSignalStrength = (TextView) findViewById(R.id.cellsignalstrength);
-			
-			tvBatteryLevel = (TextView) findViewById(R.id.battery_level);
-			tvBatteryPlugged = (TextView) findViewById(R.id.battery_plugged);
-			tvBatteryTemperature = (TextView) findViewById(R.id.battery_temperature);
-			
-			tvSimCountry = (TextView) findViewById(R.id.sim_country);
-			tvSimOperator = (TextView) findViewById(R.id.sim_operator);
-			tvSimOperatorName = (TextView) findViewById(R.id.sim_operator_name);
-			tvSimSerialNumber = (TextView) findViewById(R.id.sim_serial_number);
-			tvSimState = (TextView) findViewById(R.id.sim_state);
-			tvSimSubscriberId = (TextView) findViewById(R.id.sim_subscriber_id);
-			
-			tvScreenBrightness = (TextView) findViewById(R.id.screen_brightness);
-			tvScreenOn = (TextView) findViewById(R.id.screen_on);
-			
-				
-			Button.OnClickListener buttonListener = new Button.OnClickListener() {
-
-				@Override
-				public void onClick(View arg0) {				
-										
-					if (beginEndButton.getText() == getString(R.string.button_begin)) {
-						
-						beginEndButton.setText(getString(R.string.button_end));
-						schedule();
-			
-					} else {
-						beginEndButton.setText(getString(R.string.button_begin));
-						handler.removeCallbacks(runnable);						
-					}
-				}
-				
-			};
-
-			((Button) findViewById(R.id.beginEndButton)).setOnClickListener(buttonListener);
-			
-
-			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+    	
+    	receiver = new ComponentName(this, BootCompletedIntentReceiver.class);
+    	
+    	pm = getPackageManager();
+    	
+    	addViewList();
+    	addShowSensorDataButton();
+    	addSensorsOnOffButton();
     }    
        
     @Override
     protected void onResume() {
     	super.onResume();
     	Log.i("Lifecycle", "onResume");
-    	schedule();
     }
     
     protected void onPause() {
     	super.onPause();
     	Log.i("Lifecycle", "onPause");    	
     	
-    	sensorAccess.stopSensors();
-		handler.removeCallbacks(runnable);						
+    	if (isGettingSensorData) {
+    		sensorAccess.stopSensors();
+			handler.removeCallbacks(runnable);
+			isGettingSensorData = false;
+			showSensorDataButton.setChecked(false);
+    	}
     }
     
     @Override
@@ -198,85 +100,146 @@ public class MainActivity extends Activity {
     
     public void schedule() {
     	try {
-			handler = new Handler();
-			handler.postDelayed(runnable, 0);
-			
+    		final int fetchTime = 10000;
+    		
 			runnable = new Runnable() {
 				@Override
 				public void run() {
+					
 					sensorAccess.startSensors();
-					sensorAccess.stopSensors();
-					collectedDataMap = sensorAccess.getUIData();
+					sensorAccess.stopSensors();					
 					updateUI();
-					handler.postDelayed(runnable, 10000);
+					isGettingSensorData = true;
+					handler.postDelayed(runnable, fetchTime); 
 				}
 			};
+			
+			handler.post(runnable);
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     }
     
-    public void updateUI() {
-		tvAccelerometer_x.setText(collectedDataMap.get("accx"));
-		tvAccelerometer_y.setText(collectedDataMap.get("accy"));
-		tvAccelerometer_z.setText(collectedDataMap.get("accz"));
-		
-		tvGyroscope_x.setText(collectedDataMap.get("gyrox"));
-		tvGyroscope_y.setText(collectedDataMap.get("gyroy"));
-		tvGyroscope_z.setText(collectedDataMap.get("gyroz"));
-		
-		tvMagneticField_x.setText(collectedDataMap.get("magneticx"));
-		tvMagneticField_y.setText(collectedDataMap.get("magneticy"));
-		tvMagneticField_z.setText(collectedDataMap.get("magneticz"));
-		
-		tvLight.setText(collectedDataMap.get("light"));
-		tvProximity.setText(collectedDataMap.get("proximity"));
-		
-		tvCellId.setText(collectedDataMap.get("cellid"));
-		tvCellLac.setText(collectedDataMap.get("celllac"));	
-		tvCellNeighbors.setText(collectedDataMap.get("cellneighbors"));
-		
-		tvGpsAccuracy.setText(collectedDataMap.get("gpsaccuracy"));
-		tvGpsAltitude.setText(collectedDataMap.get("gpsaltitude"));
-		tvGpsLatitude.setText(collectedDataMap.get("gpslatitude"));
-		tvGpsLongitude.setText(collectedDataMap.get("longitude"));
-		tvGpsBearing.setText(collectedDataMap.get("gpsbearing"));
-		tvGpsSpeed.setText(collectedDataMap.get("gpsspeed"));
-		
-		tvRingerMode.setText(collectedDataMap.get("ringermode"));
-
-		tvAirplaneMode.setText(collectedDataMap.get("airplanemode"));
-		
-		tvBluetoothMode.setText(collectedDataMap.get("bluetoothmode"));
-
-		tvDeviceId.setText(collectedDataMap.get("deviceid"));
-		
-		tvPhoneType.setText(collectedDataMap.get("phonetype"));
-
-		tvWifiSsid.setText(collectedDataMap.get("wifissid"));
-		tvWifiRssi.setText(collectedDataMap.get("wifirssi"));
-		
-		tvIncomingNumber.setText(collectedDataMap.get("incomingnumber"));
-		tvOperatorState.setText(collectedDataMap.get("operatorstate"));
-		tvOperatorRoaming.setText(collectedDataMap.get("operatorroaming"));
-		tvOperatorName.setText(collectedDataMap.get("operatorname"));
-		tvCellSignalStrength.setText(collectedDataMap.get("cellsignalstrength"));
-
-		tvBatteryPlugged.setText(collectedDataMap.get("batteryplugged"));
-		tvBatteryLevel.setText(collectedDataMap.get("batterylevel"));
-		tvBatteryTemperature.setText(collectedDataMap.get("batterytemperature"));
-		
-		tvSimCountry.setText(collectedDataMap.get("simcountry"));
-		tvSimOperator.setText(collectedDataMap.get("simoperator"));
-		tvSimOperatorName.setText(collectedDataMap.get("simoperatorname"));
-		tvSimSerialNumber.setText(collectedDataMap.get("simserialnumber"));
-		tvSimSubscriberId.setText(collectedDataMap.get("simsubscriberid"));
-		tvSimState.setText(collectedDataMap.get("simstate"));
-		
-		tvScreenOn.setText(collectedDataMap.get("screenon"));			
-		tvScreenBrightness.setText(collectedDataMap.get("screenbrightness"));
+    public void addViewList() {
+    	collectedDataList = new ArrayList<String>();        	
+    	collectedDataMap = sensorAccess.getUIData();
+    	listView = (ListView) findViewById(R.id.listview);
+    	
+    	convertMapToList();
+    	
+    	adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.list_view_item, collectedDataList);
+    	
+    	listView.setAdapter(adapter);
     }
     
+    public void updateUI() { 
+    	int index = listView.getFirstVisiblePosition();
+    	collectedDataMap = sensorAccess.getUIData();
+    	
+    	convertMapToList();
+    	
+    	adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.list_view_item, collectedDataList);
+    	
+    	listView.setAdapter(adapter);
+    	listView.setSelectionFromTop(index, 0);
+    }
+    
+    public void convertMapToList() {
+    	collectedDataList = new ArrayList<String>();
+    	Set<String> keySet = collectedDataMap.getAllKeys();
+    	
+    	for (String string : keySet) {
+    		collectedDataList.add(string + ": " + collectedDataMap.get(string));
+    	}
+    		
+    }
+    
+    public void addShowSensorDataButton() {
+		showSensorDataButton = ((ToggleButton) findViewById(R.id.showSensorDataButton));
+		
+		if (isGettingSensorData) {
+			showSensorDataButton.setChecked(true);
+		} else showSensorDataButton.setChecked(false);
+		
+		Button.OnClickListener beginEndButtonListener = new Button.OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {				
+									
+				if (showSensorDataButton.isChecked()) {				
+					schedule();		
+				} else	{
+					handler.removeCallbacks(runnable);
+					sensorAccess.disableGps();
+				}
+			}			
+		};
+
+		showSensorDataButton.setOnClickListener(beginEndButtonListener);
+    }
+    
+    public void addSensorsOnOffButton() {
+    	sensorsButton = (ToggleButton) findViewById(R.id.serviceButton);
+    	
+    	Log.i("Lifecycle", "ComponentEnabled" + Boolean.toString((pm.getComponentEnabledSetting(receiver) == PackageManager.COMPONENT_ENABLED_STATE_ENABLED)));
+    	
+    	if (pm.getComponentEnabledSetting(receiver) == PackageManager.COMPONENT_ENABLED_STATE_ENABLED) {
+    		sensorsButton.setChecked(true);
+    	} else sensorsButton.setChecked(false);
+
+    	OnClickListener sensorsOnOffButtonListener = new OnClickListener() {
+
+			@Override 
+			public void onClick(View arg0) {
+				if (sensorsButton.isChecked()) {
+					setServiceAlwaysOn();				
+				}	else {
+					setServiceAlwaysOff();
+				}
+			}
+    		
+    	};
+
+    	sensorsButton.setOnClickListener(sensorsOnOffButtonListener);
+    }
+    
+    public Boolean getServiceState() {
+    	    ActivityManager activityManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+    	    for (RunningServiceInfo service : activityManager.getRunningServices(Integer.MAX_VALUE)) {
+    	        if (SensorService.class.getName().equals(service.service.getClassName())) {
+    	            return true;
+    	        }
+    	    }
+    	    return false;    	
+    }
+    
+    public void createService() {
+		int fetchTime = 10000;
+
+        Calendar calendar = Calendar.getInstance();
+        
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), fetchTime, pendingIntent);
+    }
+    
+    public void destroyService() {
+    	alarmManager.cancel(pendingIntent);
+    	stopService(service);
+    }
+    
+    public void setServiceAlwaysOn() {
+    	pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
+    	
+    	createService();
+    }
+    
+    public void setServiceAlwaysOff() {
+    	pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
+    	
+    	if (getServiceState()) {
+    		destroyService();
+    	}
+    }
 }
  

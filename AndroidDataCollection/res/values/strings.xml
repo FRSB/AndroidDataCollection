@@ -3,8 +3,7 @@
 
     <string name="app_name">Android Data Collection</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="button_begin">Begin</string>
-    <string name="button_end">End</string>
-
+    <string name="settings">Settings:</string>
+    <string name="show_sensor_data">Show sensor data:</string>
+    <string name="service">Service always on</string>	
 </resources>

@@ -1,5 +1,7 @@
 package de.unihalle.ebusiness.androiddatacollection;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -25,7 +27,6 @@ import android.telephony.NeighboringCellInfo;
 import android.telephony.SignalStrength;
 import android.telephony.TelephonyManager;
 import android.telephony.gsm.GsmCellLocation;
-import android.util.Log;
 
 	public class SensorAccess {
 		
@@ -45,7 +46,7 @@ import android.util.Log;
 		private Sensor accelerometerSensor;
 		private Sensor gyroscopeSensor;
 		private Sensor magneticFieldSensor;
-		private Sensor lightSensor;
+		private Sensor lightSensor; 
 		private Sensor proximitySensor;
 		
 		private WifiManager wifiManager;
@@ -57,18 +58,22 @@ import android.util.Log;
 
 	    private Context context;
 	    
-	    public SensorAccess(Context context) {
+	    private Boolean writeToFile;
+	    
+	    public SensorAccess(Context context, Boolean writeToFile) {
 	    	this.context = context;
 	    	collectedDataMap = new CollectedDataMap();
 	    	
-	    	String headline = collectedDataMap.getHeadline();	
+	    	this.writeToFile = writeToFile;
 	    	
-	    	dataWriter = new DataWriter(headline);
-	    	dataWriter.emptyFile(headline);
+	    	if (writeToFile) {
+		    	String headline = collectedDataMap.getHeadline();	
+		    	dataWriter = new DataWriter(headline);
+	    	}
 	    }
 	    
 	    public void startSensors() {
-	    	collectedDataMap.put("time", Long.toString(System.currentTimeMillis()));    	
+	    	collectedDataMap.put("time", getTimestamp());    	
 	    	setUpListenerSensors();						
 			getCellInformation();
 			getGpsLocation();
@@ -85,10 +90,13 @@ import android.util.Log;
 	    
 	    public void stopSensors() {
 			sensorManager.unregisterListener(sensorEventListener);
-			locationManager.removeUpdates(locationListener);
+			// gps stays always on, check battery consumption
+//			locationManager.removeUpdates(locationListener);
 			telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_NONE);
-
-			dataWriter.writeToFile(collectedDataMap.getAllValues());
+			
+			if (writeToFile) {
+				dataWriter.writeToFile(collectedDataMap.getAllValues());
+			}
 		}
 	    	    
 	    public CollectedDataMap getUIData() {
@@ -189,6 +197,46 @@ import android.util.Log;
 	    public void getCellInformation() {
 	    	try {
 				telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+				int networkType = telephonyManager.getNetworkType();
+				
+				switch (networkType) {
+					case TelephonyManager.NETWORK_TYPE_EDGE: {
+						collectedDataMap.put("networktype", "NETWORK_TYPE_EDGE");
+						break;
+					}
+					case TelephonyManager.NETWORK_TYPE_GPRS: {
+						collectedDataMap.put("networktype", "NETWORK_TYPE_GPRS");
+						break;
+					}
+					case TelephonyManager.NETWORK_TYPE_HSPA: {
+						collectedDataMap.put("networktype", "NETWORK_TYPE_HSPA");
+						break;
+					}
+					case TelephonyManager.NETWORK_TYPE_HSDPA: {
+						collectedDataMap.put("networktype", "NETWORK_TYPE_HSDPA");
+						break;
+					}
+					case TelephonyManager.NETWORK_TYPE_HSUPA: {
+						collectedDataMap.put("networktype", "NETWORK_TYPE_HSUPA");
+						break;
+					}
+					case TelephonyManager.NETWORK_TYPE_HSPAP: {
+						collectedDataMap.put("networktype", "NETWORK_TYPE_HSPAP");
+						break;
+					}
+					case TelephonyManager.NETWORK_TYPE_UMTS: {
+						collectedDataMap.put("networktype", "NETWORK_TYPE_UMTS");
+						break;
+					}
+					case TelephonyManager.NETWORK_TYPE_LTE: {
+						collectedDataMap.put("networktype", "NETWORK_TYPE_LTE");
+						break;
+					}
+					case TelephonyManager.NETWORK_TYPE_UNKNOWN: {
+						collectedDataMap.put("networktype", "NETWORK_TYPE_UNKKNOWN");
+						break;
+					}
+				};
 				
 				GsmCellLocation cellLocation = (GsmCellLocation) telephonyManager.getCellLocation();
 				
@@ -259,7 +307,7 @@ import android.util.Log;
 					}
 				};
 				
-				locationManager.requestLocationUpdates("gps", 30000, 1, locationListener);
+				locationManager.requestLocationUpdates("gps", 0, 1, locationListener);
 				
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -461,4 +509,16 @@ import android.util.Log;
 			}
 	    }
 	 
+	    public String getTimestamp() {
+	    	
+	    	SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+	    	Calendar cal = Calendar.getInstance();
+	    	
+			return simpleDateFormat.format(cal.getTime()).toString();
+	    	
+	    }
+	    
+	    public void disableGps() {
+	    	locationManager.removeUpdates(locationListener);
+	    }
 }

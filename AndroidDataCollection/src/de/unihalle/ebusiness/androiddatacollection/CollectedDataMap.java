@@ -23,6 +23,7 @@ public class CollectedDataMap {
 		collectedSensorData.put("magneticx", "");
 		collectedSensorData.put("magneticy", "");
 		collectedSensorData.put("magneticz", "");
+		collectedSensorData.put("networktype", "");
 		collectedSensorData.put("cellid", "");
 		collectedSensorData.put("celllac", "");
 		collectedSensorData.put("cellneighbors", "");
@@ -93,6 +94,12 @@ public class CollectedDataMap {
 		values = values.substring(0, values.length() - 1);
 		
 		return values;
+	}
+	
+	public Set<String> getAllKeys() {
+		Set<String> keySet = collectedSensorData.keySet();
+		
+		return keySet;
 	}
 	
 	public String toString() {
