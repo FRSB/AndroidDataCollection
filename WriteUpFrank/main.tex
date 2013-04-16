@@ -102,7 +102,7 @@
 
 \begin{document}
 
-\input{title.tex}
+\input{inc.title.tex}
 
 % \setcounter{page}{0}\clearpage\newpage
 \renewcommand{\baselinestretch}{1.25}\normalsize
@@ -139,8 +139,7 @@ AA & Abkürzungsaffe
 
 \pagenumbering{arabic} \setcounter{page}{1}
 
-\section{Einleitung}
-%\input{sec.introduction}
+\input{inc.sec.introduction}
 
 %\input{sec.methods}
 \section{Methoden}
@@ -163,16 +162,13 @@ $ \displaystyle l(P) = \sum_{i=1}^m\sum_{j=1}^m n_{ij} \cdot \ln p_{ij},\quad s.
 \item $ \displaystyle 1 - \sum_{j=1}^m \frac{n_{ij}}{\lambda_i} = 0$
 \item $ \displaystyle \sum_{j=1}^m n_{ij} = \lambda_i$
 \item $ \displaystyle \hat p_{ij} = \frac{n_{ij}}{\sum_{j=1}^m n_{ij}}$
+\end{enumerate}
 
 \section{Auswertung}
 %\input{sec.experiments}
 
-\section{Schlussbetrachtung}
-%\input{sec.conclusion}
+\input{inc.sec.conclusion}
 
-
-
-\end{enumerate}
 
 
 
