@@ -49,6 +49,8 @@ public class MainActivity extends Activity {
 	private ComponentName receiver;
 	private PackageManager pm;
 	
+	private int fetchTime = 1000;
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,13 +101,10 @@ public class MainActivity extends Activity {
     }
     
     public void schedule() {
-    	try {
-    		final int fetchTime = 10000;
-    		
+    	try {  		
 			runnable = new Runnable() {
 				@Override
-				public void run() {
-					
+				public void run() {					
 					sensorAccess.startSensors();
 					sensorAccess.stopSensors();					
 					updateUI();
@@ -172,7 +171,6 @@ public class MainActivity extends Activity {
 					schedule();		
 				} else	{
 					handler.removeCallbacks(runnable);
-					sensorAccess.disableGps();
 				}
 			}			
 		};
@@ -216,9 +214,7 @@ public class MainActivity extends Activity {
     }
     
     public void createService() {
-		int fetchTime = 10000;
-
-        Calendar calendar = Calendar.getInstance();
+    	Calendar calendar = Calendar.getInstance();
         
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), fetchTime, pendingIntent);
     }

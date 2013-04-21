@@ -38,6 +38,7 @@ public class SensorService extends Service {
     	Log.i("Lifecycle", "ServiceOnDestroy");
     	try {
 			sensorAccess.stopSensors();
+			sensorAccess.closeWriter();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

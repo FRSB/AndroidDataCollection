@@ -76,7 +76,7 @@ import android.telephony.gsm.GsmCellLocation;
 	    	collectedDataMap.put("time", getTimestamp());    	
 	    	setUpListenerSensors();						
 			getCellInformation();
-			getGpsLocation();
+			getLocation();
 			getRinger();
 			getAirplaneMode();
 			getBluetoothMode();
@@ -90,8 +90,6 @@ import android.telephony.gsm.GsmCellLocation;
 	    
 	    public void stopSensors() {
 			sensorManager.unregisterListener(sensorEventListener);
-			// gps stays always on, check battery consumption
-//			locationManager.removeUpdates(locationListener);
 			telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_NONE);
 			
 			if (writeToFile) {
@@ -261,21 +259,10 @@ import android.telephony.gsm.GsmCellLocation;
 	        
 	    }
 	    
-	    public void getGpsLocation() {
+	    public void getLocation() {
 	    	try {
 				locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);			
-							   	
-				Location location = locationManager.getLastKnownLocation("gps");
-				
-				if (location != null) {
-					collectedDataMap.put("gpsaccuracy", Double.toString(location.getAccuracy()));
-					collectedDataMap.put("gpsaltitude", Double.toString(location.getAltitude()));
-					collectedDataMap.put("gpslatitude", Double.toString(location.getLatitude()));
-					collectedDataMap.put("gpslongitude", Double.toString(location.getLongitude()));
-					collectedDataMap.put("gpsbearing", Double.toString(location.getBearing()));
-					collectedDataMap.put("gpsspeed", Double.toString(location.getSpeed()));
-				}
-				
+							   				
 				locationListener = new LocationListener() {
 					
 					@Override
@@ -299,15 +286,16 @@ import android.telephony.gsm.GsmCellLocation;
 					@Override
 					public void onLocationChanged(Location location) {
 						collectedDataMap.put("gpsaccuracy", Double.toString(location.getAccuracy()));
-						collectedDataMap.put("gpsaltitude", Double.toString(location.getAltitude()));
 						collectedDataMap.put("gpslatitude", Double.toString(location.getLatitude()));
 						collectedDataMap.put("gpslongitude", Double.toString(location.getLongitude()));
-						collectedDataMap.put("gpsbearing", Double.toString(location.getBearing()));
-						collectedDataMap.put("gpsspeed", Double.toString(location.getSpeed()));			
+						locationManager.removeUpdates(locationListener);
 					}
 				};
 				
-				locationManager.requestLocationUpdates("gps", 0, 1, locationListener);
+				if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+					locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10000, 100, locationListener);
+				}
+				
 				
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -518,7 +506,7 @@ import android.telephony.gsm.GsmCellLocation;
 	    	
 	    }
 	    
-	    public void disableGps() {
-	    	locationManager.removeUpdates(locationListener);
+	    public void closeWriter() {
+	    	dataWriter.closeWriter();
 	    }
 }

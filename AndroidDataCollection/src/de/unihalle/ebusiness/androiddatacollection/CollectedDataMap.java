@@ -28,11 +28,11 @@ public class CollectedDataMap {
 		collectedSensorData.put("celllac", "");
 		collectedSensorData.put("cellneighbors", "");
 		collectedSensorData.put("gpsaccuracy", "");
-		collectedSensorData.put("gpsaltitude", "");
+//		collectedSensorData.put("gpsaltitude", "");
 		collectedSensorData.put("gpslatitude", "");
 		collectedSensorData.put("gpslongitude", "");
-		collectedSensorData.put("gpsbearing", "");
-		collectedSensorData.put("gpsspeed", "");
+//		collectedSensorData.put("gpsbearing", "");
+//		collectedSensorData.put("gpsspeed", "");
 		collectedSensorData.put("ringermode", "");
 		collectedSensorData.put("airplanemode", "");
 		collectedSensorData.put("bluetoothmode", "");
@@ -78,6 +78,7 @@ public class CollectedDataMap {
 			headline += string + ";";
 		}
 		
+		// remove last ";"
 		headline = headline.substring(0, headline.length() - 1);
 		
 		return headline;
@@ -91,6 +92,7 @@ public class CollectedDataMap {
 			values += string + ";";
 		}
 		
+		// remove last ";"
 		values = values.substring(0, values.length() - 1);
 		
 		return values;
