@@ -2,20 +2,21 @@ package de.unihalle.ebusiness.androiddatacollection;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
-import net.lingala.zip4j.core.ZipFile;
-import net.lingala.zip4j.model.ZipParameters;
-import net.lingala.zip4j.util.Zip4jConstants;
+import java.util.zip.GZIPOutputStream;
 import android.os.Environment;
-import android.util.Log;
 
 public class DataWriter {
 	private BufferedWriter bufferedWriter;
 	private File path;
 	private File file;
+	private File fileC;
 	private String headline;
-	private ZipFile zipFile;
-	private ZipParameters parameters;
+	private GZIPOutputStream gzipOutputStream;
+	private FileOutputStream fileOutputStream;
+	private int gzipBufferCounter = 0;
+	private int gzipBufferSize = 16384;
 	
 	public DataWriter(String headline) {
 		this.headline = headline;
@@ -28,19 +29,16 @@ public class DataWriter {
 				//remember .nomedia
 	    		path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
 	    		path.mkdirs();
-	    		file = new File(path, Long.toString(System.currentTimeMillis()) + ".csv");
-
-	    		zipFile = new ZipFile(path + "/test.zip");
+	    		file = new File(path, "data" + ".csv");
+	    		fileC = new File(path, "data" + ".csv.gz");
+	    		fileOutputStream = new FileOutputStream(fileC, true);
 	    		
-	    		bufferedWriter = new BufferedWriter(new FileWriter(file, true));
+	    		gzipOutputStream = new GZIPOutputStream(fileOutputStream, gzipBufferSize);
+	    		bufferedWriter = new BufferedWriter(new FileWriter(file, true));	    		
 	    		
-	    		parameters = new ZipParameters();
-	    		parameters.setCompressionMethod(Zip4jConstants.COMP_DEFLATE);
-	    		parameters.setCompressionLevel(Zip4jConstants.DEFLATE_LEVEL_NORMAL);
-	    		
-	    		if (file.canRead()) {
+	    		if (fileC.length() <= 20) {
 		    		bufferedWriter.write(headline + "\n");
-		    		bufferedWriter.flush();
+		    		gzipOutputStream.write((headline + "\n").getBytes());
 	    		}
     		}
 		} catch (Exception e) {
@@ -52,15 +50,20 @@ public class DataWriter {
 	public void writeToFile(String string) {
 		try {
 			if (file.canRead()) {
+				gzipBufferCounter++;
 				bufferedWriter.write(string + "\n");
+				gzipOutputStream.write((string + "\n").getBytes());	
+
 			} else {
 				openWriter();
 			}
 			
-			if (file.length() > 8000) {
-				zipFile.addFile(file, parameters);
-				file.delete();
+			if (gzipBufferCounter >= 60) {
+				gzipOutputStream.finish();
+				gzipOutputStream = new GZIPOutputStream(fileOutputStream, gzipBufferSize);
+	    		gzipBufferCounter = 0;
 			}
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -83,9 +86,9 @@ public class DataWriter {
 		try {
 			bufferedWriter.flush();
 			bufferedWriter.close();
-			zipFile.addFile(file, parameters);
-			file.delete();
-			Log.i("Storage", Boolean.toString(file.canRead()));
+			gzipOutputStream.finish();
+			fileOutputStream.close();
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
