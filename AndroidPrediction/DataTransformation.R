@@ -40,3 +40,17 @@ encodeCells = function(data) {
   result[[3]] = cellIdToCellName
   return(result)
 }
+
+# removes duplicate consecutive states from a cellId sequence
+# 1,2,3,3,1,1,4 gives 1,2,3,1,4
+# in:   - cellIds, vector of cell ids
+# out:  - cellIds, vector of cell ids without duplicate consecutive states
+removeDuplicateConsecutiveStates = function(cellIds) {
+  result = cellIds[1]
+  for (i in 2:length(cellIds)) {
+    if (result[length(result)] != cellIds[i]) {
+      result = c(result,cellIds[i]) 
+    }
+  }
+  return(result)
+}
