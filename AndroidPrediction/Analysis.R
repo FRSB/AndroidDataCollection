@@ -6,6 +6,7 @@ rm(list = ls())
 
 # load required libraries and packages
 source("MarkovChains.R")
+source("DataTransformation.R")
 library(hash)
 
 # Generate dummy data set
