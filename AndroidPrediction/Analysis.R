@@ -12,10 +12,14 @@ library(hash)
 # generate dummy data set
 cellIds = c(1,1,1,1,1,1,1,2,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4,1,2,3,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4,1,2,3,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4,1,2,3,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4,1,2,3,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4,1,2,3,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4,1,2,3,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4)
 cells = rep("cell", length(cellIds))
-data = paste(cells, cellIds)
+cells = paste(cells, cellIds)
+
+# read real data
+data = read.csv("testdata.csv", sep=";")
+cells = data$cellid
 
 # data transformation
-cellData = encodeCells(data)
+cellData = encodeCells(cells)
 cellIds = cellData[[1]]
 cellIds = removeDuplicateConsecutiveStates(cellIds)
 windowedCellIds = applyWindow(cellIds)
