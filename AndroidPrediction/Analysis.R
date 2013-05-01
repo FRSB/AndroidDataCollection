@@ -14,21 +14,6 @@ cellIds = c(1,2,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4,1,2,3,4,1,3,4,1,2,4,1,4,1,2,3,1,
 cells = rep("cell", length(cellIds))
 data = paste(cells, cellIds)
 
-# data transformation (cell -> cellId)
-# input: data, output: data, cellNameToCellId, cellIdToCellName
-states = unique(data)
-cellNameToCellId = hash(keys=states, values=1:length(states))
-cellIdToCellName = vector(length=length(states))
-i = 1
-for (state in states) {
-  cellIdToCellName[i] = state
-  i = i + 1
-}
-for (i in 1:length(data)) {
-  cellIds[i] = cellNameToCellId[[as.character(data[i])]]
-}
-data=cellIds
-
 # infer dummy data
 t1 = FirstOrderMarkovChain.inferTransitionTensor(data)
 t2 = SecondOrderMarkovChain.inferTransitionTensor(data)
