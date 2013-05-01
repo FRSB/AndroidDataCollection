@@ -9,19 +9,24 @@ source("MarkovChains.R")
 source("DataTransformation.R")
 library(hash)
 
-# Generate dummy data set
+# generate dummy data set
 cellIds = c(1,2,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4,1,2,3,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4,1,2,3,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4,1,2,3,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4,1,2,3,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4,1,2,3,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4,1,2,3,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4)
 cells = rep("cell", length(cellIds))
 data = paste(cells, cellIds)
 
+# data transformation (encoding and windowing)
+cellData = encodeCells(data)
+cellIds = cellData[[1]]
+windowedCellIds = applyWindow(cellIds)
+
 # infer dummy data
-t1 = FirstOrderMarkovChain.inferTransitionTensor(data)
-t2 = SecondOrderMarkovChain.inferTransitionTensor(data)
+t1 = FirstOrderMarkovChain.inferTransitionTensor(windowedCellIds)
+t2 = SecondOrderMarkovChain.inferTransitionTensor(windowedCellIds)
 
 # apply models on dummy data 
-p1 = applyFirstOrderMarkovChain(t1,data)
-p2 = applySecondOrderMarkovChain(t2,data)
+p1 = applyFirstOrderMarkovChain(t1,windowedCellIds)
+p2 = applySecondOrderMarkovChain(t2,windowedCellIds)
 
 # count number of right predictions
-dim(p1[p1$tNext==p1$prediction,])[1]/dim(p1)[1]
-dim(p2[p2$tNext==p2$prediction,])[1]/dim(p2)[1]
+dim(p1[p1$tNext==p1$tPred,])[1]/dim(p1)[1]
+dim(p2[p2$tNext==p2$tPred,])[1]/dim(p2)[1]
