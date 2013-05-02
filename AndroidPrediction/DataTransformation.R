@@ -25,6 +25,7 @@ applyWindow = function(cellIds) {
 encodeCells = function(data) {
   result = list()
   states = unique(data)
+  cellIds = vector()
   cellNameToCellId = hash(keys=states, values=1:length(states))
   cellIdToCellName = vector(length=length(states))
   i = 1
@@ -52,5 +53,29 @@ removeDuplicateConsecutiveStates = function(cellIds) {
       result = c(result,cellIds[i]) 
     }
   }
+  return(result)
+}
+
+# splits windowed data set into test and training data
+# this is used by the cross validation procedure
+# in:   - data, windowed sequence of cell ids
+#       - slices, number of slices (5 to 10 is working good)
+#       - testSlice, index of the slice that will be test data
+# out:  - list of training data and test data
+#         result[[1]] = trainingData
+#         result[[2]] = testData
+splitData = function(data, slices, testSlice) {
+  size = dim(data)[1]
+  sliceSize = round(size/slices)
+  if (testSlice == slices) {
+    testData = data[(sliceSize*(slices-1)+1):size,]
+    trainingData = data[-((sliceSize*(slices-1)+1):size),]
+  } else {
+    testData = data[((testSlice-1)*sliceSize+1):(testSlice*sliceSize),]
+    trainingData = data[-(((testSlice-1)*sliceSize+1):(testSlice*sliceSize)),]
+  }
+  result = list()
+  result[[1]] = trainingData
+  result[[2]] = testData
   return(result)
 }

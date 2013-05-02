@@ -15,8 +15,8 @@ cells = rep("cell", length(cellIds))
 cells = paste(cells, cellIds)
 
 # read real data
-data = read.csv("testdata.csv", sep=";")
-cells = data$cellid
+#data = read.csv("testdata.csv", sep=";")
+#cells = data$cellid
 
 # data transformation
 cellData = encodeCells(cells)
