@@ -33,5 +33,5 @@ p1 = applyFirstOrderMarkovChain(t1,windowedCellIds)
 p2 = applySecondOrderMarkovChain(t2,windowedCellIds)
 
 # count number of right predictions
-dim(p1[p1$tNext==p1$tPred,])[1]/dim(p1)[1]
-dim(p2[p2$tNext==p2$tPred,])[1]/dim(p2)[1]
+calculateAccuracy(p1)
+calculateAccuracy(p2)
