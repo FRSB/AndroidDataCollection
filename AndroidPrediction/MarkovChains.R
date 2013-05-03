@@ -56,7 +56,7 @@ FirstOrderMarkovChain.predictNextState = function(transitionTensor, currentState
 # in:   - transitionTensor, either infered or given transition probabilities of 1st order markov chain
 #       - data, windowed test data (only t3, t2 and t1 are used)
 # out:  - windowed data with added column "tPred"
-applyFirstOrderMarkovChain = function(transitionTensor, data) {
+FirstOrderMarkovChain.predictStates = function(transitionTensor, data) {
   tPred = vector(length = length(data)-3)
   for (i in 1:dim(data)[1]) {
     tPred[i] = FirstOrderMarkovChain.predictNextState(transitionTensor, data$t1[i])
@@ -130,7 +130,7 @@ SecondOrderMarkovChain.predictNextState = function(transitionTensor, currentStat
 # in:   - transitionTensor, either infered or given transition probabilities of 1st order markov chain
 #       - data, windowed test data (only t3, t2 and t1 are used)
 # out:  - windowed data with added column "tPred"
-applySecondOrderMarkovChain = function(transitionTensor, data) {
+SecondOrderMarkovChain.predictStates = function(transitionTensor, data) {
   tPred= vector(length = length(data)-3)
   for (i in 1:dim(data)[1]) {
     tPred[i] = SecondOrderMarkovChain.predictNextState(transitionTensor, c(data$t2[i],data$t1[i]))

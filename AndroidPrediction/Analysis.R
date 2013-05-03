@@ -7,6 +7,7 @@ rm(list = ls())
 # load required libraries and packages
 source("MarkovChains.R")
 source("DataTransformation.R")
+source("Evaluation.R")
 library(hash)
 
 # generate dummy data set
@@ -29,9 +30,12 @@ t1 = FirstOrderMarkovChain.inferTransitionTensor(windowedCellIds)
 t2 = SecondOrderMarkovChain.inferTransitionTensor(windowedCellIds)
 
 # apply models on dummy data 
-p1 = applyFirstOrderMarkovChain(t1,windowedCellIds)
-p2 = applySecondOrderMarkovChain(t2,windowedCellIds)
+p1 = FirstOrderMarkovChain.predictStates(t1,windowedCellIds)
+p2 = SecondOrderMarkovChain.predictStates(t2,windowedCellIds)
 
 # count number of right predictions
 calculateAccuracy(p1)
 calculateAccuracy(p2)
+
+# apply cross validation
+applyNFoldCrossValidation(n=10, method="random", data=windowedCellIds, inferencer=FirstOrderMarkovChain.inferTransitionTensor, predictor=FirstOrderMarkovChain.predictStates, evaluator=calculateAccuracy)
