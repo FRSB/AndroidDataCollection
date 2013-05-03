@@ -8,6 +8,7 @@ rm(list = ls())
 source("MarkovChains.R")
 source("DataTransformation.R")
 source("Evaluation.R")
+source("Locations.R")
 library(hash)
 
 # generate dummy data set
@@ -16,8 +17,12 @@ cells = rep("cell", length(cellIds))
 cells = paste(cells, cellIds)
 
 # read real data
-#data = read.csv("testdata.csv", sep=";")
-#cells = data$cellid
+data = read.csv("testdata.csv", sep=";")
+cells = data$cellid
+
+# plot cell locations
+cellLocations = estimateCellLocations(data)
+plot(x=cellLocations$latitude, y=cellLocations$longitude)
 
 # data transformation
 cellData = encodeCells(cells)
