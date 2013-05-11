@@ -13,7 +13,6 @@ library(hash)
 
 # generate dummy data set
 cellIds = c(1,1,1,1,1,1,1,2,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4,1,2,3,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4,1,2,3,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4,1,2,3,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4,1,2,3,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4,1,2,3,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4,1,2,3,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4)
-cellIds = c(1,2,3,4,1,2,3,4,1,2,3,4)
 cells = rep("cell", length(cellIds))
 cells = paste(cells, cellIds)
 
@@ -34,14 +33,19 @@ windowedCellIds = applyWindow(cellIds)
 # infer dummy data
 t1 = FirstOrderMarkovChain.inferTransitionTensor(windowedCellIds)
 t2 = SecondOrderMarkovChain.inferTransitionTensor(windowedCellIds)
+t3 = ThirdOrderMarkovChain.inferTransitionTensor(windowedCellIds)
 
 # apply models on dummy data 
 p1 = FirstOrderMarkovChain.predictStates(t1,windowedCellIds)
 p2 = SecondOrderMarkovChain.predictStates(t2,windowedCellIds)
+p3 = ThirdOrderMarkovChain.predictStates(t3,windowedCellIds)
 
 # count number of right predictions
-calculateAccuracy(p1)
-calculateAccuracy(p2)
+#calculateAccuracy(p1)
+#calculateAccuracy(p2)
+#calculateAccuracy(p3)
 
 # apply cross validation
-#applyNFoldCrossValidation(n=2, method="random", data=windowedCellIds, inferencer=FirstOrderMarkovChain.inferTransitionTensor, predictor=FirstOrderMarkovChain.predictStates, evaluator=calculateAccuracy)
+applyNFoldCrossValidation(n=10, method="random", data=windowedCellIds, inferencer=FirstOrderMarkovChain.inferTransitionTensor, predictor=FirstOrderMarkovChain.predictStates, evaluator=calculateAccuracy)
+applyNFoldCrossValidation(n=10, method="random", data=windowedCellIds, inferencer=SecondOrderMarkovChain.inferTransitionTensor, predictor=SecondOrderMarkovChain.predictStates, evaluator=calculateAccuracy)
+applyNFoldCrossValidation(n=10, method="random", data=windowedCellIds, inferencer=ThirdOrderMarkovChain.inferTransitionTensor, predictor=ThirdOrderMarkovChain.predictStates, evaluator=calculateAccuracy)
