@@ -145,6 +145,19 @@ AA & Abkürzungsaffe
 \section{Methoden}
 \subsection{Datenerhebung}
 \subsection{Datenanalyse}
+\paragraph{Markov-Ketten}
+
+\begin{itemize}
+\item im folgenden am Beispiel Markov-Ketten erster Ordnung
+\item Zeitdiskrete Markov-Kette
+\item Zustandsraum $S \in \{1, 2, 3, \ldots\}$
+\item homogene Markov-Kette: $p_{ij}(t)=p_{ij}$ (stationäre Übergangswahrscheinlichkeiten)
+\item $P = p_{ij}$ ist Übergangsmatrix ($p_{ij} \geq 0$, $\sum_{j_\in S} p_{ij} = 1$)
+\item Stochastischer Prozess $X=\{X_t, t\in N_0\}$, $S$ diskret heißt Markov-Kette $p$-ter Ordnung, gdw. $\forall i_0, i_1, \ldots, i_{t+1} \in S, t \geq p+1$ gilt\\
+$P(X_{t+1} = i_{t+1} | X_t=i_t, \ldots, X_{t-p+1} = i_{t-p+1}, \ldots, X_0 = i_0)$\\
+$= P(X_{t+1} = i_{t+1} | X_t=i_t, \ldots, X_{t-p+1} = i_{t-p+1})$ (Markov-Eigenschaft)
+\item Inferenz bei homogenen Markov-Ketten erster Ordnung $\hat p_{ij} = \frac{n_{ij}}{n_{i}}$, mit $n_{ij}$ als Anzahl beobachteter Übergänge von $i$ nach $j$.
+\item \textbf{Maximum Likelihood erster Ordnung}
 \begin{enumerate}
 %\item $ \displaystyle L(p_0,P|X) = \prod_{t=1}^T L(x_t|x_{t-1}, P) \cdot L(x_0|p_0)$
 %\item $ \displaystyle L(p_0,P) = P(X_0 = i_0, \ldots, X_T = i_T)$
@@ -163,6 +176,7 @@ $ \displaystyle l(P) = \sum_{i=1}^m\sum_{j=1}^m n_{ij} \cdot \ln p_{ij},\quad s.
 \item $ \displaystyle \sum_{j=1}^m n_{ij} = \lambda_i$
 \item $ \displaystyle \hat p_{ij} = \frac{n_{ij}}{\sum_{j=1}^m n_{ij}}$
 \end{enumerate}
+\end{itemize}
 
 \section{Auswertung}
 %\input{sec.experiments}

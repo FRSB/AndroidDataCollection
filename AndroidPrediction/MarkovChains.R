@@ -10,15 +10,14 @@
 # First order Markov chain
 ##########################
 
-# Infer transition matrix from vector of states (observation sequence)
-# one state per row, states have to be integers beginning from 1
-# in:   - data, vector of observations
+# infer transition matrix windowed vector of states
+# in:   - data, windowed observation sequence (names = t3, t2, t1, tNext)
 # out:  - transitionTensor containing the transition probabilities of 1st order markov chain
 FirstOrderMarkovChain.inferTransitionTensor = function(data) {
-  numStates = length(unique(data))
+  numStates = length(unique(c(data$tNext,data[1,])))
   transitionMatrix = matrix(1, nrow=numStates, ncol=numStates) #1 for laplace correction
-  for (i in 2:length(data)) {
-    transitionMatrix[data[i-1],data[i]] = transitionMatrix[data[i-1],data[i]] + 1
+  for (i in 1:dim(data)[1]) {
+    transitionMatrix[data$t1[i],data$tNext[i]] = transitionMatrix[data$t1[i],data$tNext[i]] + 1
   }
   stateSums = apply(transitionMatrix,1,sum)
   zeroRows=which(stateSums==0)
@@ -53,40 +52,37 @@ FirstOrderMarkovChain.predictNextState = function(transitionTensor, currentState
   return(which.max(transitionTensor[currentState,]))
 }
 
-# use 1st order markov chain as predictor
-applyFirstOrderMarkovChain = function(transitionTensor, data) {
-  prediction = vector(length = length(data)-2)
-  tNow = vector(length = length(data)-2)
-  tNext = vector(length = length(data)-2)
-  for (i in 2:(length(data)-1)) {
-    prediction[i-1] = FirstOrderMarkovChain.predictNextState(transitionTensor, data[i])
-    tNext[i-1] = data[i+1]
-    tNow[i-1] = data[i]
+# apply prediction to windowed test data
+# in:   - transitionTensor, either infered or given transition probabilities of 1st order markov chain
+#       - data, windowed test data (only t3, t2 and t1 are used)
+# out:  - windowed data with added column "tPred"
+FirstOrderMarkovChain.predictStates = function(transitionTensor, data) {
+  tPred = vector(length = length(data)-3)
+  for (i in 1:dim(data)[1]) {
+    tPred[i] = FirstOrderMarkovChain.predictNextState(transitionTensor, data$t1[i])
   }
-  result = data.frame(tNow, tNext, prediction)
-  names(result) = c("tNow", "tNext", "prediction")
+  result = data.frame(data, tPred)
   return (result)
 }
 
 # Second order Markov chain
 ###########################
 
-# Infer transition matrix from vector of states (observation sequence)
-# one state per row, states have to be integers beginning from 1
-# in:   - data, vector of observations
+# Infer transition matrix from windowed state sequence
+# in:   - data, windowed observation sequence (names = t3, t2, t1, tNext)
 # out:  - transitionTensor containing the transition probabilities of 2nd order markov chain
 SecondOrderMarkovChain.inferTransitionTensor = function(data) {
-  numStates = length(unique(data))
-  stateSums = matrix(numStates, nrow=numStates, ncol=numStates) #1 forlaplace correction
+  numStates = length(unique(c(data$tNext,data[1,])))
+  stateSums = matrix(numStates, nrow=numStates, ncol=numStates) #1 for laplace correction
   transitionTensor = list()
   for (i in 1:numStates) {
     transitionTensor[[i]] = matrix(1, nrow=numStates, ncol=numStates) #1 for laplace correction
   }
-  for (i in 3:length(data)) {
-    transitionTensor[[data[i]]][data[i-2],data[i-1]] =
-      transitionTensor[[data[i]]][data[i-2],data[i-1]] + 1
-    stateSums[data[i-2],data[i-1]] = 
-      stateSums[data[i-2],data[i-1]] + 1
+  for (i in 1:dim(data)[1]) {
+    transitionTensor[[data$tNext[i]]][data$t2[i],data$t1[i]] =
+      transitionTensor[[data$tNext[i]]][data$t2[i],data$t1[i]] + 1
+    stateSums[data$t2[i],data$t1[i]] = 
+      stateSums[data$t2[i],data$t1[i]] + 1
   }
   for (i in 1:numStates) {
     transitionTensor[[i]] = transitionTensor[[i]] / stateSums
@@ -130,19 +126,15 @@ SecondOrderMarkovChain.predictNextState = function(transitionTensor, currentStat
   return(which.max(transitionVector))
 }
 
-# use 2nd order markov chain as predictor
-applySecondOrderMarkovChain = function(transitionTensor, data) {
-  prediction = vector(length = length(data)-2)
-  tPrev1 = vector(length = length(data)-2)
-  tNow = vector(length = length(data)-2)
-  tNext = vector(length = length(data)-2)
-  for (i in 2:(length(data)-1)) {
-    prediction[i-1] = SecondOrderMarkovChain.predictNextState(transitionTensor, c(data[i-1],data[i]))
-    tPrev1[i-1] = data[i-1]
-    tNext[i-1] = data[i+1]
-    tNow[i-1] = data[i]
+# apply prediction to windowed test data
+# in:   - transitionTensor, either infered or given transition probabilities of 1st order markov chain
+#       - data, windowed test data (only t3, t2 and t1 are used)
+# out:  - windowed data with added column "tPred"
+SecondOrderMarkovChain.predictStates = function(transitionTensor, data) {
+  tPred= vector(length = length(data)-3)
+  for (i in 1:dim(data)[1]) {
+    tPred[i] = SecondOrderMarkovChain.predictNextState(transitionTensor, c(data$t2[i],data$t1[i]))
   }
-  result = data.frame(tPrev1, tNow, tNext, prediction)
-  names(result) = c("tPrev1","tNow", "tNext", "prediction")
+  result = data.frame(data, tPred)
   return (result)
 }

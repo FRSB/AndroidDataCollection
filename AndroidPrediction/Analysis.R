@@ -6,36 +6,41 @@ rm(list = ls())
 
 # load required libraries and packages
 source("MarkovChains.R")
+source("DataTransformation.R")
+source("Evaluation.R")
+source("Locations.R")
 library(hash)
 
-# Generate dummy data set
-cellIds = c(1,2,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4,1,2,3,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4,1,2,3,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4,1,2,3,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4,1,2,3,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4,1,2,3,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4,1,2,3,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4)
+# generate dummy data set
+cellIds = c(1,1,1,1,1,1,1,2,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4,1,2,3,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4,1,2,3,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4,1,2,3,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4,1,2,3,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4,1,2,3,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4,1,2,3,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4)
 cells = rep("cell", length(cellIds))
-data = paste(cells, cellIds)
+cells = paste(cells, cellIds)
 
-# data transformation (cell -> cellId)
-# input: data, output: data, cellNameToCellId, cellIdToCellName
-states = unique(data)
-cellNameToCellId = hash(keys=states, values=1:length(states))
-cellIdToCellName = vector(length=length(states))
-i = 1
-for (state in states) {
-  cellIdToCellName[i] = state
-  i = i + 1
-}
-for (i in 1:length(data)) {
-  cellIds[i] = cellNameToCellId[[as.character(data[i])]]
-}
-data=cellIds
+# read real data
+data = read.csv("testdata.csv", sep=";")
+cells = data$cellid
+
+# plot cell locations
+cellLocations = estimateCellLocations(data)
+plot(x=cellLocations$latitude, y=cellLocations$longitude)
+
+# data transformation
+cellData = encodeCells(cells)
+cellIds = cellData[[1]]
+cellIds = removeDuplicateConsecutiveStates(cellIds)
+windowedCellIds = applyWindow(cellIds)
 
 # infer dummy data
-t1 = FirstOrderMarkovChain.inferTransitionTensor(data)
-t2 = SecondOrderMarkovChain.inferTransitionTensor(data)
+t1 = FirstOrderMarkovChain.inferTransitionTensor(windowedCellIds)
+t2 = SecondOrderMarkovChain.inferTransitionTensor(windowedCellIds)
 
 # apply models on dummy data 
-p1 = applyFirstOrderMarkovChain(t1,data)
-p2 = applySecondOrderMarkovChain(t2,data)
+p1 = FirstOrderMarkovChain.predictStates(t1,windowedCellIds)
+p2 = SecondOrderMarkovChain.predictStates(t2,windowedCellIds)
 
 # count number of right predictions
-dim(p1[p1$tNext==p1$prediction,])[1]/dim(p1)[1]
-dim(p2[p2$tNext==p2$prediction,])[1]/dim(p2)[1]
+calculateAccuracy(p1)
+calculateAccuracy(p2)
+
+# apply cross validation
+applyNFoldCrossValidation(n=10, method="random", data=windowedCellIds, inferencer=FirstOrderMarkovChain.inferTransitionTensor, predictor=FirstOrderMarkovChain.predictStates, evaluator=calculateAccuracy)
