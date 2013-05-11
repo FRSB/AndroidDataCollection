@@ -49,7 +49,7 @@ public class MainActivity extends Activity {
 	private ComponentName receiver;
 	private PackageManager pm;
 	
-	private int fetchTime = 1000; // in milliseconds
+	private int fetchTime = 60000; // in milliseconds
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {

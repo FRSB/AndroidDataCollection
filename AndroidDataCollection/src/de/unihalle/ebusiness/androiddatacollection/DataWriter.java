@@ -2,21 +2,20 @@ package de.unihalle.ebusiness.androiddatacollection;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
-import java.util.zip.GZIPOutputStream;
+
 import android.os.Environment;
 
 public class DataWriter {
 	private BufferedWriter bufferedWriter;
 	private File path;
 	private File file;
-	private File fileC;
+//	private File fileC;
 	private String headline;
-	private GZIPOutputStream gzipOutputStream;
-	private FileOutputStream fileOutputStream;
-	private int gzipBufferCounter = 0;
-	private int gzipBufferSize = 16384;
+//	private GZIPOutputStream gzipOutputStream;
+//	private FileOutputStream fileOutputStream;
+//	private int gzipBufferCounter = 0;
+//	private int gzipBufferSize = 16384;
 	
 	public DataWriter(String headline) {
 		this.headline = headline;
@@ -30,15 +29,15 @@ public class DataWriter {
 	    		path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
 	    		path.mkdirs();
 	    		file = new File(path, "data" + ".csv");
-	    		fileC = new File(path, "data" + ".csv.gz");
-	    		fileOutputStream = new FileOutputStream(fileC, true);
+//	    		fileC = new File(path, "data" + ".csv.gz");
+//	    		fileOutputStream = new FileOutputStream(fileC, true);
 	    		
-	    		gzipOutputStream = new GZIPOutputStream(fileOutputStream, gzipBufferSize);
+//	    		gzipOutputStream = new GZIPOutputStream(fileOutputStream, gzipBufferSize);
 	    		bufferedWriter = new BufferedWriter(new FileWriter(file, true));	    		
 	    		
-	    		if (fileC.length() <= 20) {
+	    		if (file.length() <= 10) {
 		    		bufferedWriter.write(headline + "\n");
-		    		gzipOutputStream.write((headline + "\n").getBytes());
+//		    		gzipOutputStream.write((headline + "\n").getBytes());
 	    		}
     		}
 		} catch (Exception e) {
@@ -50,19 +49,19 @@ public class DataWriter {
 	public void writeToFile(String string) {
 		try {
 			if (file.canRead()) {
-				gzipBufferCounter++;
+//				gzipBufferCounter++;
 				bufferedWriter.write(string + "\n");
-				gzipOutputStream.write((string + "\n").getBytes());	
+//				gzipOutputStream.write((string + "\n").getBytes());	
 
 			} else {
 				openWriter();
 			}
 			
-			if (gzipBufferCounter >= 60) {
-				gzipOutputStream.finish();
-				gzipOutputStream = new GZIPOutputStream(fileOutputStream, gzipBufferSize);
-	    		gzipBufferCounter = 0;
-			}
+//			if (gzipBufferCounter >= 60) {
+//				gzipOutputStream.finish();
+//				gzipOutputStream = new GZIPOutputStream(fileOutputStream, gzipBufferSize);
+//	    		gzipBufferCounter = 0;
+//			}
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -86,8 +85,8 @@ public class DataWriter {
 		try {
 			bufferedWriter.flush();
 			bufferedWriter.close();
-			gzipOutputStream.finish();
-			fileOutputStream.close();
+//			gzipOutputStream.finish();
+//			fileOutputStream.close();
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

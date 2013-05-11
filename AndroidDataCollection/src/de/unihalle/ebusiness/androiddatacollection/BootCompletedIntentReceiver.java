@@ -14,11 +14,10 @@ public class BootCompletedIntentReceiver extends BroadcastReceiver{
 	private Intent service;
 	private AlarmManager alarmManager;
 	private PendingIntent pendingIntent;
+	private int fetchTime = 60000;
 	
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		
-		int fetchTime = 10000;
 		
 		service = new Intent(context, SensorService.class);
     	

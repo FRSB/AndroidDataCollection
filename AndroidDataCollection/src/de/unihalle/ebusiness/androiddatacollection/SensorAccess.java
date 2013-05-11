@@ -84,7 +84,7 @@ import android.telephony.gsm.GsmCellLocation;
 			getWifiInformation();
 			getOperatorInformation();
 			getBatteryStatus();
-			getSimInformation();
+//			getSimInformation();
 			getScreenBrightness();
 	    }
 	    
@@ -356,17 +356,17 @@ import android.telephony.gsm.GsmCellLocation;
 	    	try {
 				collectedDataMap.put("deviceid", telephonyManager.getDeviceId());
 				
-				telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-				
-				if (telephonyManager.getPhoneType() == 1) {
-					collectedDataMap.put("phonetype", "Phone_Type_GSM");
-				} else {
-					    	if (telephonyManager.getPhoneType() == 2) {
-					    		collectedDataMap.put("phonetype", "Phone_Type_CDMA");
-					    	} else {
-					    		collectedDataMap.put("phonetype", "Phone_Type_NONE");
-					    		}
-				}
+//				telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+//				
+//				if (telephonyManager.getPhoneType() == 1) {
+//					collectedDataMap.put("phonetype", "Phone_Type_GSM");
+//				} else {
+//					    	if (telephonyManager.getPhoneType() == 2) {
+//					    		collectedDataMap.put("phonetype", "Phone_Type_CDMA");
+//					    	} else {
+//					    		collectedDataMap.put("phonetype", "Phone_Type_NONE");
+//					    		}
+//				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -417,7 +417,7 @@ import android.telephony.gsm.GsmCellLocation;
 						};
 						
 						collectedDataMap.put("operatorroaming", Boolean.toString(serviceState.getRoaming()));
-						collectedDataMap.put("operatorname", serviceState.getOperatorAlphaLong());
+//						collectedDataMap.put("operatorname", serviceState.getOperatorAlphaLong());
 					}
 					
 					public void onSignalStrengthsChanged (SignalStrength signalStrength) {
