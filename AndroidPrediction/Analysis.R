@@ -17,8 +17,8 @@ cells = rep("cell", length(cellIds))
 cells = paste(cells, cellIds)
 
 # read real data
-data = read.csv("testdata.csv", sep=";")
-cells = data$cellid
+#data = read.csv("testdata.csv", sep=";")
+#cells = data$cellid
 
 # plot cell locations
 cellLocations = estimateCellLocations(data)
@@ -43,4 +43,4 @@ calculateAccuracy(p1)
 calculateAccuracy(p2)
 
 # apply cross validation
-applyNFoldCrossValidation(n=10, method="random", data=windowedCellIds, inferencer=FirstOrderMarkovChain.inferTransitionTensor, predictor=FirstOrderMarkovChain.predictStates, evaluator=calculateAccuracy)
+#applyNFoldCrossValidation(n=2, method="random", data=windowedCellIds, inferencer=FirstOrderMarkovChain.inferTransitionTensor, predictor=FirstOrderMarkovChain.predictStates, evaluator=calculateAccuracy)

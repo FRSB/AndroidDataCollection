@@ -73,7 +73,7 @@ FirstOrderMarkovChain.predictStates = function(transitionTensor, data) {
 # out:  - transitionTensor containing the transition probabilities of 2nd order markov chain
 SecondOrderMarkovChain.inferTransitionTensor = function(data) {
   numStates = length(unique(c(data$tNext,data[1,])))
-  stateSums = matrix(numStates, nrow=numStates, ncol=numStates) #1 for laplace correction
+  stateSums = matrix(numStates, nrow=numStates, ncol=numStates) #numStates for sum of 1 (laplace correction)
   transitionTensor = list()
   for (i in 1:numStates) {
     transitionTensor[[i]] = matrix(1, nrow=numStates, ncol=numStates) #1 for laplace correction
@@ -138,3 +138,42 @@ SecondOrderMarkovChain.predictStates = function(transitionTensor, data) {
   result = data.frame(data, tPred)
   return (result)
 }
+
+# Third order Markov chain
+###########################
+
+# Infer transition matrix from windowed state sequence
+# in:   - data, windowed observation sequence (names = t3, t2, t1, tNext)
+# out:  - transitionTensor containing the transition probabilities of 2nd order markov chain
+SecondOrderMarkovChain.inferTransitionTensor = function(data) {
+  numStates = length(unique(c(data$tNext,data[1,])))
+  stateSums = list()
+  for (i in 1:numStates) {
+    stateSums[[i]] = matrix(numStates, nrow=numStates, ncol=numStates) #numStates for sum of 1 (laplace correction)
+  }
+  transitionTensor = list()
+  for (i in 1:numStates) {
+    transitionTensor[[i]] = list()
+    for (j in 1:numStates) {
+      transitionTensor[[i]][[j]] = matrix(1, nrow=numStates, ncol=numStates) #1 for laplace correction
+    }
+  }
+  
+  for (i in 1:dim(data)[1]) {
+    transitionTensor[[data$tNext[i]]][[data$t3[i]]][data$t2[i],data$t1[i]] =
+      transitionTensor[[data$tNext[i]]][[data$t3[i]]][data$t2[i],data$t1[i]] + 1
+    stateSums[[data$t3[i]]][data$t2[i],data$t1[i]] = 
+      stateSums[[data$t3[i]]][data$t2[i],data$t1[i]] + 1
+  }
+  for (i in 1:numStates) {
+    for (j in 1:numStates) {
+      for (k in 1:numStates) {
+        for (l in 1:numStates) {
+          transitionTensor[[l]][[i]][j,k] = transitionTensor[[l]][[i]][j,k] / stateSums[[i]][j,k]
+        }
+      }
+    }
+  }
+  return(transitionTensor)
+}
+
