@@ -425,7 +425,7 @@ import android.telephony.gsm.GsmCellLocation;
 					public void onSignalStrengthsChanged (SignalStrength signalStrength) {
 						collectedDataMap.put("cellsignalstrength", "\"" + "GSM: " + Integer.toString(signalStrength.getGsmSignalStrength()) + " UMTS: " + Integer.toString(signalStrength.getCdmaDbm()) + "\"");
 					}
-				};
+				}; 
 				
 				telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_SERVICE_STATE);
 				telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);

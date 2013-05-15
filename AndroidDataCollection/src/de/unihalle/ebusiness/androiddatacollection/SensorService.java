@@ -10,7 +10,7 @@ public class SensorService extends Service {
 	private SensorAccess sensorAccess;
 	
 	@Override
-	public IBinder onBind(Intent arg0) {
+	public IBinder onBind(Intent arg0) { 
 		// TODO Auto-generated method stub
 		return null;
 	}

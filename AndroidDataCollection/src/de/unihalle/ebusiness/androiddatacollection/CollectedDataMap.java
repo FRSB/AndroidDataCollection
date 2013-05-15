@@ -9,7 +9,7 @@ public class CollectedDataMap {
 	private TreeMap<String, String> collectedSensorData; 
 	
 	public CollectedDataMap() {
-		collectedSensorData = new TreeMap<String, String>();
+		collectedSensorData = new TreeMap<String, String>(); 
 		
 		collectedSensorData.put("time", "");
 		collectedSensorData.put("light", "");

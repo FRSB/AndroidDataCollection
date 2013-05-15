@@ -23,7 +23,7 @@ public class BootCompletedIntentReceiver extends BroadcastReceiver{
     	
     	pendingIntent = PendingIntent.getService(context, 0, service, 0);
 
-        alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE); 
 
         Calendar calendar = Calendar.getInstance();
         

@@ -59,7 +59,7 @@ public class MainActivity extends Activity {
  
     	sensorAccess = new SensorAccess(this, false); //no writing to file if false
     	
-    	handler = new Handler();
+    	handler = new Handler(); 
     	
     	service = new Intent(this, SensorService.class);    	
     	

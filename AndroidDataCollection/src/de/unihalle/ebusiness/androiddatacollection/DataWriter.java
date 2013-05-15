@@ -47,7 +47,7 @@ public class DataWriter {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
+	} 
 	
 	public void emptyFile() {
 		try {
