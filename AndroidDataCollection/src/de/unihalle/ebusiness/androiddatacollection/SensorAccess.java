@@ -3,6 +3,11 @@ package de.unihalle.ebusiness.androiddatacollection;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
+
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -18,12 +23,9 @@ import android.os.Bundle;
 import android.os.PowerManager;
 import android.provider.Settings;
 import android.provider.Settings.SettingNotFoundException;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
+import android.telephony.NeighboringCellInfo;
 import android.telephony.PhoneStateListener;
 import android.telephony.ServiceState;
-import android.telephony.NeighboringCellInfo;
 import android.telephony.SignalStrength;
 import android.telephony.TelephonyManager;
 import android.telephony.gsm.GsmCellLocation;
@@ -73,7 +75,7 @@ import android.telephony.gsm.GsmCellLocation;
 	    }
 	    
 	    public void startSensors() {
-	    	collectedDataMap.put("time", getTimestamp());    	
+	    	collectedDataMap.put("time", "\"" + getTimestamp() + "\"");    	
 	    	setUpListenerSensors();						
 			getCellInformation();
 			getLocation();
@@ -199,39 +201,39 @@ import android.telephony.gsm.GsmCellLocation;
 				
 				switch (networkType) {
 					case TelephonyManager.NETWORK_TYPE_EDGE: {
-						collectedDataMap.put("networktype", "NETWORK_TYPE_EDGE");
+						collectedDataMap.put("networktype", "\"" + "NETWORK_TYPE_EDGE" + "\"");
 						break;
 					}
 					case TelephonyManager.NETWORK_TYPE_GPRS: {
-						collectedDataMap.put("networktype", "NETWORK_TYPE_GPRS");
+						collectedDataMap.put("networktype", "\"" + "NETWORK_TYPE_GPRS" + "\"");
 						break;
 					}
 					case TelephonyManager.NETWORK_TYPE_HSPA: {
-						collectedDataMap.put("networktype", "NETWORK_TYPE_HSPA");
+						collectedDataMap.put("networktype", "\"" + "NETWORK_TYPE_HSPA" + "\"");
 						break;
 					}
 					case TelephonyManager.NETWORK_TYPE_HSDPA: {
-						collectedDataMap.put("networktype", "NETWORK_TYPE_HSDPA");
+						collectedDataMap.put("networktype", "\"" + "NETWORK_TYPE_HSDPA" + "\"");
 						break;
 					}
 					case TelephonyManager.NETWORK_TYPE_HSUPA: {
-						collectedDataMap.put("networktype", "NETWORK_TYPE_HSUPA");
+						collectedDataMap.put("networktype", "\"" + "NETWORK_TYPE_HSUPA" + "\"");
 						break;
 					}
 					case TelephonyManager.NETWORK_TYPE_HSPAP: {
-						collectedDataMap.put("networktype", "NETWORK_TYPE_HSPAP");
+						collectedDataMap.put("networktype", "\"" + "NETWORK_TYPE_HSPAP" + "\"");
 						break;
 					}
 					case TelephonyManager.NETWORK_TYPE_UMTS: {
-						collectedDataMap.put("networktype", "NETWORK_TYPE_UMTS");
+						collectedDataMap.put("networktype", "\"" + "NETWORK_TYPE_UMTS" + "\"");
 						break;
 					}
 					case TelephonyManager.NETWORK_TYPE_LTE: {
-						collectedDataMap.put("networktype", "NETWORK_TYPE_LTE");
+						collectedDataMap.put("networktype", "\"" + "NETWORK_TYPE_LTE" + "\"");
 						break;
 					}
 					case TelephonyManager.NETWORK_TYPE_UNKNOWN: {
-						collectedDataMap.put("networktype", "NETWORK_TYPE_UNKKNOWN");
+						collectedDataMap.put("networktype", "\"" + "NETWORK_TYPE_UNKNOWN" + "\"");
 						break;
 					}
 				};
@@ -249,7 +251,7 @@ import android.telephony.gsm.GsmCellLocation;
 						neighboringCellString = neighboringCellString + cell.getCid() + ", " + cell.getLac() + ", " + cell.getRssi() + " | ";
 					}
 					
-					collectedDataMap.put("cellneighbors", neighboringCellString);
+					collectedDataMap.put("cellneighbors", "\"" + neighboringCellString + "\"");
 				}
 				
 			} catch (Exception e) {
@@ -310,13 +312,13 @@ import android.telephony.gsm.GsmCellLocation;
 				
 				switch (audioManager.getRingerMode()) {
 					case AudioManager.RINGER_MODE_NORMAL:
-						collectedDataMap.put("ringermode", "RINGER_MODE_NORMAL");
+						collectedDataMap.put("ringermode", "\"" + "RINGER_MODE_NORMAL" + "\"");
 						break;
 					case AudioManager.RINGER_MODE_VIBRATE:
-						collectedDataMap.put("ringermode", "RINGER_MODE_VIBRATE");
+						collectedDataMap.put("ringermode", "\"" + "RINGER_MODE_VIBRATE" + "\"");
 						break;
 					case AudioManager.RINGER_MODE_SILENT:
-						collectedDataMap.put("ringermode", "RINGER_MODE_SILENT");
+						collectedDataMap.put("ringermode", "\"" + "RINGER_MODE_SILENT" + "\"");
 						break;
 				}
 			} catch (Exception e) {
@@ -329,9 +331,9 @@ import android.telephony.gsm.GsmCellLocation;
 	    	try {
 	
 				if (Settings.System.getInt(context.getContentResolver(), Settings.Global.AIRPLANE_MODE_ON) == 1) {
-					collectedDataMap.put("airplanemode", "AIRPLANE_MODE_ON");
+					collectedDataMap.put("airplanemode", "\"" + "AIRPLANE_MODE_ON" + "\"");
 				} else {
-					collectedDataMap.put("airplanemode", "AIRPLANE_MODE_OFF");
+					collectedDataMap.put("airplanemode", "\"" + "AIRPLANE_MODE_OFF" + "\"");
 				}
 			} catch (SettingNotFoundException e) {
 				// TODO Auto-generated catch block
@@ -342,9 +344,9 @@ import android.telephony.gsm.GsmCellLocation;
 	    public void getBluetoothMode() {    	
 	    	try {
 				if (Settings.System.getInt(context.getContentResolver(), Settings.Global.BLUETOOTH_ON) == 1) {
-					collectedDataMap.put("bluetoothmode", "BLUETOOTH_MODE_ON");
+					collectedDataMap.put("bluetoothmode", "\"" + "BLUETOOTH_MODE_ON" + "\"");
 				} else {
-					collectedDataMap.put("bluetoothmode", "BLUETOOTH_MODE_OFF");
+					collectedDataMap.put("bluetoothmode", "\"" + "BLUETOOTH_MODE_OFF" + "\"");
 				}
 			} catch (SettingNotFoundException e) {
 				// TODO Auto-generated catch block
@@ -380,7 +382,7 @@ import android.telephony.gsm.GsmCellLocation;
 				
 				if (wifiInfo.getSSID() != null) {
 					// null if not connected
-					collectedDataMap.put("wifissid", wifiInfo.getSSID());
+					collectedDataMap.put("wifissid", "\"" + wifiInfo.getSSID().replace(";", ",") + "\"");
 					collectedDataMap.put("wifirssi", Integer.toString(wifiInfo.getRssi()));
 				}
 				
@@ -403,16 +405,16 @@ import android.telephony.gsm.GsmCellLocation;
 					public void onServiceStateChanged (ServiceState serviceState) {
 						switch (serviceState.getState()) {
 							case 0:
-								collectedDataMap.put("operatorstate", "STATE_IN_SERVICE");
+								collectedDataMap.put("operatorstate", "\"" + "STATE_IN_SERVICE" + "\"");
 								break;
 							case 1:				
-								collectedDataMap.put("operatorstate", "STATE_OUT_OF_SERVICE");
+								collectedDataMap.put("operatorstate", "\"" + "STATE_OUT_OF_SERVICE" + "\"");
 								break;
 							case 2:				
-								collectedDataMap.put("operatorstate", "STATE_EMERGENCY_ONLY");
+								collectedDataMap.put("operatorstate", "\"" + "STATE_EMERGENCY_ONLY" + "\"");
 								break;
 							case 3:				
-								collectedDataMap.put("operatorstate", "STATE_POWER_OFF");
+								collectedDataMap.put("operatorstate", "\"" + "STATE_POWER_OFF" + "\"");
 								break;
 						};
 						
@@ -421,7 +423,7 @@ import android.telephony.gsm.GsmCellLocation;
 					}
 					
 					public void onSignalStrengthsChanged (SignalStrength signalStrength) {
-						collectedDataMap.put("cellsignalstrength", "GSM: " + Integer.toString(signalStrength.getGsmSignalStrength()) + " UMTS: " + Integer.toString(signalStrength.getCdmaDbm()));
+						collectedDataMap.put("cellsignalstrength", "\"" + "GSM: " + Integer.toString(signalStrength.getGsmSignalStrength()) + " UMTS: " + Integer.toString(signalStrength.getCdmaDbm()) + "\"");
 					}
 				};
 				
@@ -466,17 +468,17 @@ import android.telephony.gsm.GsmCellLocation;
 
 				
 				switch (telephonyManager.getSimState()) {
-					case 0:	collectedDataMap.put("simstate", "SIM_STATE_UNKNOWN");
+					case 0:	collectedDataMap.put("simstate", "\"" + "SIM_STATE_UNKNOWN" + "\"");
 							break;
-					case 1:	collectedDataMap.put("simstate", "SIM_STATE_ABSENT");
+					case 1:	collectedDataMap.put("simstate", "\"" + "SIM_STATE_ABSENT" + "\"");
 							break;
-					case 2:	collectedDataMap.put("simstate", "SIM_STATE_PIN_REQUIRED");
+					case 2:	collectedDataMap.put("simstate", "\"" + "SIM_STATE_PIN_REQUIRED" + "\"");
 							break;
-					case 3:	collectedDataMap.put("simstate", "SIM_STATE_PUK_REQUIRED");
+					case 3:	collectedDataMap.put("simstate", "\"" + "SIM_STATE_PUK_REQUIRED" + "\"");
 							break;
-					case 4:	collectedDataMap.put("simstate", "SIM_STATE_NETWORK_LOCKED");
+					case 4:	collectedDataMap.put("simstate", "\"" + "SIM_STATE_NETWORK_LOCKED" + "\"");
 							break;
-					case 5:	collectedDataMap.put("simstate", "SIM_STATE_READY");
+					case 5:	collectedDataMap.put("simstate", "\"" + "SIM_STATE_READY" + "\"");
 							break;    
 				}
 			} catch (Exception e) {
@@ -497,13 +499,13 @@ import android.telephony.gsm.GsmCellLocation;
 			}
 	    }
 	 
-	    public String getTimestamp() {
+	    @SuppressLint("SimpleDateFormat")
+		public String getTimestamp() {
 	    	
 	    	SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
 	    	Calendar cal = Calendar.getInstance();
 	    	
-			return simpleDateFormat.format(cal.getTime()).toString();
-	    	
+			return simpleDateFormat.format(cal.getTime()).toString();	    	
 	    }
 	    
 	    public void closeWriter() {

@@ -214,8 +214,7 @@ public class MainActivity extends Activity {
     }
     
     public void createService() {
-    	Calendar calendar = Calendar.getInstance();
-        
+    	Calendar calendar = Calendar.getInstance();        
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), fetchTime, pendingIntent);
     }
     
@@ -225,14 +224,12 @@ public class MainActivity extends Activity {
     }
     
     public void setServiceAlwaysOn() {
-    	pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
-    	
+    	pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);    	
     	createService();
     }
     
     public void setServiceAlwaysOff() {
-    	pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
-    	
+    	pm.setComponentEnabledSetting(receiver, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);    	
     	if (getServiceState()) {
     		destroyService();
     	}
