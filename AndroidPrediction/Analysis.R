@@ -24,13 +24,6 @@ cells = data$cellid
 cellLocations = estimateCellLocations(data)
 plot(y=cellLocations$latitude, x=cellLocations$longitude)
 
-removeInfrequentCells = function(cells, threshold=1) {
-  frequentCells = names(which(table(cells)>threshold))
-  cells = cells[cells %in% frequentCells]
-  cells = removeDuplicateConsecutiveStates(cells)
-  return(cells)
-}
-
 # data transformation
 cells = removeDuplicateConsecutiveStates(cells)
 cells = removeInfrequentCells(cells)

@@ -56,6 +56,13 @@ removeDuplicateConsecutiveStates = function(cellIds) {
   return(result)
 }
 
+removeInfrequentCells = function(cells, threshold=1) {
+  frequentCells = names(which(table(cells)>threshold))
+  cells = cells[cells %in% frequentCells]
+  cells = removeDuplicateConsecutiveStates(cells)
+  return(cells)
+}
+
 # splits windowed data set into test and training data
 # this is used by the cross validation procedure
 # in:   - data, windowed sequence of cell ids
