@@ -20,6 +20,7 @@ calculateAccuracy = function(predictedData) {
 #       - method, "random" or "linear" for random or linear sampling
 # out:  - averaged evaluation measure over n times cross validations
 applyNFoldCrossValidation = function(data, inferencer, predictor, evaluator, n=10, method="random") {
+  numStates = length(unique(c(data$tNext,data[1,])))
   if (method == "random") {
     data = data[sample(nrow(data)),]
   } else if (method == "linear") {
@@ -32,7 +33,7 @@ applyNFoldCrossValidation = function(data, inferencer, predictor, evaluator, n=1
     splits = splitData(data,slices=n,testSlice=i)
     trainingData = splits[[1]]
     testData = splits[[2]]
-    model = inferencer(trainingData)
+    model = inferencer(trainingData, numStates)
     predictions = predictor(model, testData)
     averageAccuracy = averageAccuracy + evaluator(predictions)
   }

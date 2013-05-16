@@ -13,8 +13,7 @@
 # infer transition matrix windowed vector of states
 # in:   - data, windowed observation sequence (names = t3, t2, t1, tNext)
 # out:  - transitionTensor containing the transition probabilities of 1st order markov chain
-FirstOrderMarkovChain.inferTransitionTensor = function(data) {
-  numStates = length(unique(c(data$tNext,data[1,])))
+FirstOrderMarkovChain.inferTransitionTensor = function(data, numStates) {
   transitionMatrix = matrix(1, nrow=numStates, ncol=numStates) #1 for laplace correction
   for (i in 1:dim(data)[1]) {
     transitionMatrix[data$t1[i],data$tNext[i]] = transitionMatrix[data$t1[i],data$tNext[i]] + 1
@@ -71,8 +70,7 @@ FirstOrderMarkovChain.predictStates = function(transitionTensor, data) {
 # Infer transition matrix from windowed state sequence
 # in:   - data, windowed observation sequence (names = t3, t2, t1, tNext)
 # out:  - transitionTensor containing the transition probabilities of 2nd order markov chain
-SecondOrderMarkovChain.inferTransitionTensor = function(data) {
-  numStates = length(unique(c(data$tNext,data[1,])))
+SecondOrderMarkovChain.inferTransitionTensor = function(data, numStates) {
   stateSums = matrix(numStates, nrow=numStates, ncol=numStates) #numStates for sum of 1 (laplace correction)
   transitionTensor = list()
   for (i in 1:numStates) {
@@ -145,8 +143,7 @@ SecondOrderMarkovChain.predictStates = function(transitionTensor, data) {
 # Infer transition matrix from windowed state sequence
 # in:   - data, windowed observation sequence (names = t3, t2, t1, tNext)
 # out:  - transitionTensor containing the transition probabilities of 3rd order markov chain
-ThirdOrderMarkovChain.inferTransitionTensor = function(data) {
-  numStates = length(unique(c(data$tNext,data[1,])))
+ThirdOrderMarkovChain.inferTransitionTensor = function(data, numStates) {
   stateSums = list()
   for (i in 1:numStates) {
     stateSums[[i]] = matrix(numStates, nrow=numStates, ncol=numStates) #numStates for sum of 1 (laplace correction)
