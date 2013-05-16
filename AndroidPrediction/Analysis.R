@@ -22,7 +22,7 @@ cells = data$cellid
 
 # plot cell locations
 cellLocations = estimateCellLocations(data)
-plot(x=cellLocations$latitude, y=cellLocations$longitude)
+plot(y=cellLocations$latitude, x=cellLocations$longitude)
 
 removeInfrequentCells = function(cells, threshold=1) {
   frequentCells = names(which(table(cells)>threshold))
