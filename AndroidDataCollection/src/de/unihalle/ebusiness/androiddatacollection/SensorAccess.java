@@ -384,6 +384,9 @@ import android.telephony.gsm.GsmCellLocation;
 					// null if not connected
 					collectedDataMap.put("wifissid", "\"" + wifiInfo.getSSID().replace(";", ",") + "\"");
 					collectedDataMap.put("wifirssi", Integer.toString(wifiInfo.getRssi()));
+				} else {
+					collectedDataMap.put("wifissid", "\"" + "\"");
+					collectedDataMap.put("wifirssi", "");
 				}
 				
 			} catch (Exception e) {
@@ -425,7 +428,7 @@ import android.telephony.gsm.GsmCellLocation;
 					public void onSignalStrengthsChanged (SignalStrength signalStrength) {
 						collectedDataMap.put("cellsignalstrength", "\"" + "GSM: " + Integer.toString(signalStrength.getGsmSignalStrength()) + " UMTS: " + Integer.toString(signalStrength.getCdmaDbm()) + "\"");
 					}
-				}; 
+				};
 				
 				telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_SERVICE_STATE);
 				telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
