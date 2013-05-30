@@ -25,4 +25,12 @@ Possible Extensions
 - Online prediction (on mobile device)
 - Location sensitive advertising (based on predictions)
 
+How-To Install
+--------------
 
+- go to "Settings - Security - Enable Unknown Sources" or "Settings - Application - Enable Unknown Sources"
+- open http://users.informatik.uni-halle.de/~abuwy with browser, download AndroidDataCollection.apk, after finishing the download, open and install file by using the symbol in statusbar/download-symbol in menu or file manager (probably not preinstalled)
+- open AndroidDataCollection from menu
+- activate "Service always on"
+
+- to get the data, connect the phone to a PC, open up a file manager, get into file sytem of the device, copy the data.csv contained in the download-Folder
