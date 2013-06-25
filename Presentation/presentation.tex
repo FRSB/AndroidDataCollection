@@ -1,0 +1,165 @@
+\documentclass{beamer}
+\usepackage[ngerman]{babel}
+\usepackage[ansinew]{inputenc}
+\usepackage{csquotes}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{nicefrac}
+\usepackage{eurosym}
+\usepackage{xcolor}
+\usepackage{alltt}
+\usepackage{tikz}
+\usepackage{ragged2e} 
+\usepackage{tabu}
+\usetikzlibrary{trees}
+\usepackage{calc,color,colortbl,nicefrac}
+\newtheorem*{bem}{Bemerkung}
+\usepackage{multirow}
+
+%smaller footnotes
+\renewcommand{\footnotesize}{\tiny}
+%reduce spacing in footnotes
+\setlength{\footnotesep}{0em}
+
+%use for inline citation formatting
+\newcommand{\textct}[1]{{\textsuperscript{\tiny \color{gray}#1}}}
+
+\newlength{\myX}
+\newlength{\myY}
+
+%absolute figure positioning
+\usepackage[absolute,overlay]{textpos}
+  \setlength{\TPHorizModule}{1mm}
+  \setlength{\TPVertModule}{1mm}
+
+%quote environment with reference 
+\def\signed #1{{\leavevmode\unskip\nobreak\hfil\penalty50\hskip2em
+  \hbox{}\nobreak\hfil(#1)%
+  \parfillskip=0pt \finalhyphendemerits=0 \endgraf}}
+\newsavebox\mybox
+\newenvironment{aquote}[1]
+  {\savebox\mybox{#1}\begin{quote}}
+  {\signed{\usebox\mybox}\end{quote}}
+
+\definecolor{purp}{HTML}{3333b3}
+\definecolor{dgrey}{rgb}{0.8,0.8,0.8}
+\definecolor{bgrey}{rgb}{0.95,0.95,0.95}
+
+\usepackage{graphicx}
+\graphicspath{{img/}}
+
+\newlength{\stdlength}
+% Standardlaenge fuer Skript und Folien
+\setlength{\stdlength}{8cm}
+
+\usetheme{Copenhagen}
+\usefonttheme{professionalfonts}
+\usecolortheme{default}
+
+\bibliography{literature}
+\usepackage[style=authoryear, backend=bibtex]{biblatex} 
+\addbibresource{literature.bib}
+
+\defbibenvironment{bibliography}
+{\list{}
+{\setlength{\leftmargin}{\bibhang}%
+\setlength{\itemindent}{-\leftmargin}%
+\setlength{\itemsep}{6px}%
+\setlength{\parsep}{\bibparsep}}}
+{\endlist}
+{\item \scriptsize}
+
+\definecolor{mygrey}{RGB}{80,80,80}
+
+\setbeamertemplate{headline}
+{%
+\hfill
+\textbf{\insertsection} \
+\insertsubsection \
+\insertframenumber / \inserttotalframenumber
+}
+\setbeamertemplate{navigation symbols}{}
+
+\title{Bewegungsvorhersage mittels mobiler Endgeräte}
+\author{
+Sebastian Bär, Frank Rosner
+}
+
+\institute{
+Martin-Luther-Universität Halle-Wittenberg
+}
+\date{19. Juni 2013}
+
+\begin{document}
+
+\frame{\titlepage 
+\parbox{0cm}{\tiny 
+\vspace{-30pt}\color{mygrey}
+\begin{tabbing}
+XXXXXXXXXXXXXXXXXXXXXX\=XXXXXXXXXXX\= \kill \\
+\>Veranstaltung:\> "`Seminar zum E-Business"'\\
+\\
+\>Dozenten:\> Prof. Dr. Ralf Peters\\
+\>\> Dr. Thomas Wöhner\\
+\>\> Sebastian Köhler\\
+\>\> Uwe Bretschneider\\
+
+\end{tabbing}
+}
+}
+
+\begin{frame}
+\frametitle{Gliederung}
+\tableofcontents
+\end{frame}
+
+\section{Problemstellung}
+\frame{\frametitle{Gliederung} \tableofcontents[currentsection]}
+
+\section{Zielstellung und Methodik}
+\frame{\frametitle{Gliederung} \tableofcontents[currentsection]}
+
+\section{Datensammlung}
+\frame{\frametitle{Gliederung} \tableofcontents[currentsection]}
+
+\section{Bewegungsvorhersage}
+\frame{\frametitle{Gliederung} \tableofcontents[currentsection]}
+
+\section{Ergebnisse}
+\frame{\frametitle{Gliederung} \tableofcontents[currentsection]}
+
+\section{Schlussbetrachtung}
+\frame{\frametitle{Gliederung} \tableofcontents[currentsection]}
+
+\section{Quellen}
+\frame{\frametitle{Gliederung} \tableofcontents[currentsection]}
+\begin{frame}[allowframebreaks]
+\frametitle{Quellen}
+\def\bibfont{\scriptsize}
+\printbibliography
+\end{frame}
+
+% cite all resources to be printed in bibliography
+% this frame will not be shown
+\begin{frame}<0>
+\frametitle{Quellen}
+
+\end{frame}
+
+\begin{frame}
+\thispagestyle{empty}
+\begin{center}
+\Huge
+Vielen Dank für Ihre Aufmerksamkeit!\\
+\\ \ 
+\\
+Fragen?
+\end{center}
+\end{frame}
+
+\end{document}
+
+
+
