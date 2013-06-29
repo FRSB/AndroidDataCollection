@@ -123,6 +123,128 @@ XXXXXXXXXXXXXXXXXXXXXX\=XXXXXXXXXXX\= \kill \\
 
 \section{Datensammlung}
 \frame{\frametitle{Gliederung} \tableofcontents[currentsection]}
+\begin{frame}{Android Überblick}
+\begin{figure}[h]
+\centering
+\includegraphics[height=60mm]{img/android_stack.pdf}
+\caption[Android Stack]{Android Stack, Quelle: }
+\end{figure}
+\end{frame}
+
+\begin{frame}{Android-SDK}
+\begin{itemize}
+\item enthält Eclipse als IDE
+\item Debug-Treiber zur Anbindung von Geräten
+\item Emulator zum Testen
+\item Debug-Monitor
+\item Layout-Editor
+\item SQLite Datenbank-Treiber
+\item XML-Editor
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Aufbau einer Applikation}
+\begin{itemize}
+\item die Activity übernimmt Darstellung des User-Interface sowie Ausführung von Logik
+\item ein Service übernimmt Aufgaben im Hintergrund
+\item Intents sind abstrakte Beschreibungen von Operationen, die eine App benötigt und eine andere anbieten kann
+\item BroadcastReceiver warten auf Intents und verarbeitet diese
+\item AndroidManifest enthält Informationen darüber welche Android-Versionen untersützt werden, Versionen der App, welche Berechtigungen nötig sind
+\item darüber hinaus wird ein Layout-XML benötigt
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Aufbau AndroidDataCollection}
+\begin{figure}[h]
+\centering
+\includegraphics[height=60mm]{img/class_diagram.pdf}
+\caption[Android Stack]{Klassendiagramm, Quelle: }
+% Lebenszyklus einzelner Komponenten ansprechen
+\end{figure}
+\end{frame}
+
+\begin{frame}{Benutzeroberfläche}
+\begin{figure}[h]
+\centering
+\includegraphics[height=60mm]{img/class_diagram.pdf}
+\caption[Benutzeroberfläche]{Benutzeroberfläche, Quelle: }
+% Lebenszyklus einzelner Komponenten ansprechen
+\end{figure}
+\end{frame}
+
+\begin{frame}{AndroidManifest}
+%<uses-sdk>
+%    android:minSdkVersion="9"
+%    android:targetSdkVersion="17"
+%</uses-sdk>
+%<uses-permission android:name="android.permission.ACCESS\_COARSE\_LOCATION" />
+%<uses-permission android:name="android.permission.ACCESS\_FINE\_LOCATION" />
+%<uses-permission android:name="android.permission.READ\_PHONE\_STATE" />
+%<uses-permission android:name="android.permission.ACCESS\_WIFI\_STATE" />
+%<uses-permission android:name="android.permission.WRITE\_EXTERNAL\_STORAGE" />
+%<uses-permission android:name="android.permission.RECEIVE\_BOOT\_COMPLETED" />
+\end{frame}
+
+\begin{frame}{MainActivity}
+%    public void createService() {
+%    	Calendar calendar = Calendar.getInstance();        
+%        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), fetchTime, pendingIntent);
+%    }
+\end{frame}
+
+\begin{frame}{SensorService}
+%	public void onCreate() {
+%		sensorAccess = new SensorAccess(this, true); //no writing to file if false
+%	}
+%	
+%    public int onStartCommand(Intent intent, int flags, int startId) {
+%        try {
+%			sensorAccess.startSensors();
+%			sensorAccess.stopSensors();
+%		} catch (Exception e) {
+%			e.printStackTrace();
+%		}
+%        return START_STICKY;
+%    }
+\end{frame}
+
+\begin{frame}{SensorAccess}
+%public void getLocation() {
+%   	try {
+%		locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);			
+%					   				
+%		locationListener = new LocationListener() {					
+%			...
+%			
+%			@Override
+%			public void onLocationChanged(Location location) {
+%				collectedDataMap.put("gpsaccuracy", Double.toString(location.getAccuracy()));
+%				collectedDataMap.put("gpslatitude", Double.toString(location.getLatitude()));
+%				collectedDataMap.put("gpslongitude", Double.toString(location.getLongitude()));
+%				locationManager.removeUpdates(locationListener);
+%			}
+%		};
+%		
+%		if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+%			locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10000, 100, locationListener);
+%		}
+%...
+%}
+\end{frame}
+
+\begin{frame}{BootCompletedIntentReceiver}
+%	@Override
+%	public void onReceive(Context context, Intent intent) {
+%		
+%		service = new Intent(context, SensorService.class);    	
+%    	pendingIntent = PendingIntent.getService(context, 0, service, 0);
+%        alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+%        Calendar calendar = Calendar.getInstance();
+%        
+%        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), fetchTime, pendingIntent);
+%	}
+\end{frame}
+
 
 \section{Bewegungsvorhersage}
 \frame{\frametitle{Gliederung} \tableofcontents[currentsection]}
@@ -153,8 +275,6 @@ XXXXXXXXXXXXXXXXXXXXXX\=XXXXXXXXXXX\= \kill \\
 \begin{center}
 \Huge
 Vielen Dank für Ihre Aufmerksamkeit!\\
-\\ \ 
-\\
 Fragen?
 \end{center}
 \end{frame}
