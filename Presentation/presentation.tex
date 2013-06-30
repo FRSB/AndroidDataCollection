@@ -17,6 +17,7 @@
 \usepackage{calc,color,colortbl,nicefrac}
 \newtheorem*{bem}{Bemerkung}
 \usepackage{multirow}
+\usepackage{tikz}
 
 %smaller footnotes
 \renewcommand{\footnotesize}{\tiny}
@@ -250,6 +251,29 @@ XXXXXXXXXXXXXXXXXXXXXX\=XXXXXXXXXXX\= \kill \\
 
 \section{Bewegungsvorhersage}
 \frame{\frametitle{Gliederung} \tableofcontents[currentsection]}
+
+\begin{frame}{Modellierung}
+\begin{itemize}
+\item Nutzer bewegt sich durch die Stadt und ändert seine Position
+\end{itemize}
+
+\begin{itemize}
+\item Modellierung einer Bewegung als diskrete Zustandsänderung:
+	\begin{itemize}
+	\item Nutzer $u$ hat zum Zeitpunkt $t_n$ eine Position $p \in \mathcal P$
+	\item Beobachtungszeitraum $T = t_0, \ldots, t_n$
+	\item Positionsraum $\mathcal P$ $\mathrel{\widehat{=}}$ Menge der Mobilfunkzellen
+	\end{itemize}
+\end{itemize}
+
+\vspace*{1em}
+
+\begin{center}
+\scalebox{.7}{%
+\input{img/moving_user.tex}
+}
+\end{center}
+\end{frame}
 
 \section{Ergebnisse}
 \frame{\frametitle{Gliederung} \tableofcontents[currentsection]}
