@@ -18,6 +18,7 @@
 \newtheorem*{bem}{Bemerkung}
 \usepackage{multirow}
 \usepackage{tikz}
+\usepackage{scalefnt}
 
 %smaller footnotes
 \renewcommand{\footnotesize}{\tiny}
@@ -260,9 +261,9 @@ XXXXXXXXXXXXXXXXXXXXXX\=XXXXXXXXXXX\= \kill \\
 \begin{itemize}
 \item Modellierung einer Bewegung als diskrete Zustandsänderung:
 	\begin{itemize}
-	\item Nutzer $u$ hat zum Zeitpunkt $t_n$ eine Position $p \in \mathcal P$
+	\item Nutzer $u$ hat zum Zeitpunkt $t_n$ eine Position $x \in X$
 	\item Beobachtungszeitraum $T = t_0, \ldots, t_n$
-	\item Positionsraum $\mathcal P$ $\mathrel{\widehat{=}}$ Menge der Mobilfunkzellen
+	\item Zustandsraum $X$ $\mathrel{\widehat{=}}$ Menge der Mobilfunkzellen
 	\end{itemize}
 \end{itemize}
 
@@ -273,6 +274,37 @@ XXXXXXXXXXXXXXXXXXXXXX\=XXXXXXXXXXX\= \kill \\
 \input{img/moving_user.tex}
 }
 \end{center}
+\end{frame}
+
+\begin{frame}{Modellierung -- Markov Modelle}
+\begin{itemize}
+\item Zustandsraum $X = 1, \ldots, m$
+\item Zustandsänderungen in Transitionsdiagramm
+\item Übergangswahrscheinlichkeiten in Transitionsmatrix $A$
+	\begin{itemize}
+	\item[$\Rightarrow$] Annahme: stationäre\\ Übergangswahrscheinlichkeiten
+	\end{itemize}
+\end{itemize}
+
+\vspace*{-2.5em}
+\begin{columns}
+\column{0.5\textwidth}
+$$A=\begin{bmatrix}
+A_{11} & A_{12} & A_{13} \\
+A_{21} & A_{22} & A_{23} \\
+A_{31} & A_{32} & A_{33}
+\end{bmatrix}$$
+\column{0.5\textwidth}
+\begin{center}
+\scalebox{.3}{%
+\scalefont{2}
+\input{img/transition_chart.tex}
+}
+\end{center}
+\vspace*{.5em}
+\hfill \tiny In Anlehnung an \cite{bishop2006pattern}, S.~611 \hspace*{4em}
+\end{columns}
+
 \end{frame}
 
 \section{Ergebnisse}
