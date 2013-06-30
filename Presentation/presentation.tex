@@ -155,7 +155,7 @@ XXXXXXXXXXXXXXXXXXXXXX\=XXXXXXXXXXX\= \kill \\
 \begin{frame}{Zielstellung und Methodik}
 \textbf{Zielstellung}
 \begin{itemize}
-\item Android-App zur Bewegungssdatensammlung entwickeln
+\item Android-App zur Bewegungsdatensammlung entwickeln
 \item Auswerten der Positions- und Bewegungsdaten
 	\begin{itemize}
 	\item[$\Rightarrow$] Visualisierung
@@ -178,7 +178,10 @@ XXXXXXXXXXXXXXXXXXXXXX\=XXXXXXXXXXX\= \kill \\
 \begin{frame}{Android Überblick}
 \begin{figure}[h]
 \centering
-\includegraphics[height=70mm]{android_stack.pdf}
+\includegraphics[height=60mm]{android_stack.pdf}
+\newline
+\medskip
+\hfill \tiny \cite[Vgl.][S. 8]{gargenta2011learning} \hspace*{23em}
 \end{figure}
 \end{frame}
 
@@ -191,17 +194,23 @@ XXXXXXXXXXXXXXXXXXXXXX\=XXXXXXXXXXX\= \kill \\
 \item Layout-Editor
 \item SQLite Datenbank-Treiber
 \item XML-Editor
+\newline
+\medskip
+\hfill \tiny \cite[Vgl.][]{google2013tools} \hspace*{4em}
 \end{itemize}
 \end{frame}
 
 \begin{frame}{Aufbau einer Applikation}
 \begin{itemize}
-\item \textbf{Activitys} übernehmen Darstellung des User-Interface sowie Ausführung von Logik
+\item \textbf{Activities} übernehmen Darstellung des User-Interface sowie Ausführung von Logik
 \item \textbf{Services} verarbeiten Aufgaben im Hintergrund
 \item \textbf{Intents} sind abstrakte Beschreibungen von Operationen, die eine App benötigt und eine andere anbieten kann
 \item \textbf{BroadcastReceiver} warten auf Intents und verarbeitet diese
 \item \textbf{AndroidManifest} enthält Informationen darüber welche Android-Versionen untersützt werden, Versionen der App, welche Berechtigungen nötig sind
 \item darüber hinaus wird ein \textbf{Layout}-XML benötigt
+\newline
+\medskip
+\hfill \tiny \cite[Vgl.][]{google2013fundamentals} \hspace*{4em}
 \end{itemize}
 \end{frame}
 
@@ -224,26 +233,25 @@ XXXXXXXXXXXXXXXXXXXXXX\=XXXXXXXXXXX\= \kill \\
 \includegraphics[width=1\linewidth]{android_manifest_cropped.pdf}
 \end{frame}
 
-\begin{frame}{MainActivity}
-\includegraphics[width=1\linewidth]{createService_cropped.pdf}
-\end{frame}
+%\begin{frame}{MainActivity}
+%\includegraphics[width=1\linewidth]{createService_cropped.pdf}
+%\end{frame}
 
-\begin{frame}{SensorService}
-\includegraphics[width=1\linewidth]{onCreate_cropped.pdf}
+%\begin{frame}{SensorService}
+%\includegraphics[width=1\linewidth]{onCreate_cropped.pdf}
+%\end{frame}
 
-\end{frame}
-
-\begin{frame}{SensorService}
-\includegraphics[width=1\linewidth]{onStartCommand_cropped.pdf}
-\end{frame}
+%\begin{frame}{SensorService}
+%\includegraphics[width=1\linewidth]{onStartCommand_cropped.pdf}
+%\end{frame}
 
 \begin{frame}{SensorAccess}
 \includegraphics[width=1\linewidth]{getLocation_cropped.pdf}
 \end{frame}
 
-\begin{frame}{BootCompletedIntentReceiver}
-\includegraphics[width=1\linewidth]{onReceive_cropped.pdf}
-\end{frame}
+%\begin{frame}{BootCompletedIntentReceiver}
+%\includegraphics[width=1\linewidth]{onReceive_cropped.pdf}
+%\end{frame}
 
 
 \section{Bewegungsvorhersage}
@@ -371,12 +379,19 @@ $$\hat A_{ij} = \frac{u_{ij}}{u_{i \bullet}}$$
 
 \begin{frame}{Mobilfunkzellen}
 \begin{center}
-\includegraphics[height=70mm]{map.png}
+\includegraphics[width=1\linewidth]{map.png}
 \end{center}
 \end{frame}
 
 \section{Schlussbetrachtung}
 \frame{\frametitle{Gliederung} \tableofcontents[currentsection]}
+\begin{frame}{Kritische Würdigung}
+\begin{itemize}
+\item Daten bisher unverschlüsselt und unkomprimiert gespeichert
+\item Ortung nur über Mobilfunk
+\item nicht alle gesammelten Daten für Vorhersage betrachtet
+\end{itemize}
+\end{frame}
 
 \section{Quellen}
 \frame{\frametitle{Gliederung} \tableofcontents[currentsection]}
