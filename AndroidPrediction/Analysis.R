@@ -78,3 +78,10 @@ HiddenMarkovModel.infer = function(data, numStates) {
 HiddenMarkovModel.sample = function(model, initialState, length) {
   return(simHMM(model, length)$observation)
 }
+
+HiddenMarkovModel.predictNextState = function(model, currentState) {
+  hiddenState = which.max(model$emissionProbs[,currentState])
+  nextHiddenState = which.max(model$transProbs[hiddenState,])
+  nextEmission = which.max(model$emissionProbs[nextHiddenState,])
+  return(nextEmission)
+}
