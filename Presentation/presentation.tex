@@ -173,76 +173,28 @@ XXXXXXXXXXXXXXXXXXXXXX\=XXXXXXXXXXX\= \kill \\
 \end{frame}
 
 \begin{frame}{AndroidManifest}
-%<uses-sdk>
-%    android:minSdkVersion="9"
-%    android:targetSdkVersion="17"
-%</uses-sdk>
-%<uses-permission android:name="android.permission.ACCESS\_COARSE\_LOCATION" />
-%<uses-permission android:name="android.permission.ACCESS\_FINE\_LOCATION" />
-%<uses-permission android:name="android.permission.READ\_PHONE\_STATE" />
-%<uses-permission android:name="android.permission.ACCESS\_WIFI\_STATE" />
-%<uses-permission android:name="android.permission.WRITE\_EXTERNAL\_STORAGE" />
-%<uses-permission android:name="android.permission.RECEIVE\_BOOT\_COMPLETED" />
+\includegraphics[width=1\linewidth]{android_manifest_cropped.pdf}
 \end{frame}
 
 \begin{frame}{MainActivity}
-%    public void createService() {
-%    	Calendar calendar = Calendar.getInstance();        
-%        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), fetchTime, pendingIntent);
-%    }
+\includegraphics[width=1\linewidth]{createService_cropped.pdf}
 \end{frame}
 
 \begin{frame}{SensorService}
-%	public void onCreate() {
-%		sensorAccess = new SensorAccess(this, true); //no writing to file if false
-%	}
-%	
-%    public int onStartCommand(Intent intent, int flags, int startId) {
-%        try {
-%			sensorAccess.startSensors();
-%			sensorAccess.stopSensors();
-%		} catch (Exception e) {
-%			e.printStackTrace();
-%		}
-%        return START_STICKY;
-%    }
+\includegraphics[width=1\linewidth]{onCreate_cropped.pdf}
+
+\end{frame}
+
+\begin{frame}{SensorService}
+\includegraphics[width=1\linewidth]{onStartCommand_cropped.pdf}
 \end{frame}
 
 \begin{frame}{SensorAccess}
-%public void getLocation() {
-%   	try {
-%		locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);			
-%					   				
-%		locationListener = new LocationListener() {					
-%			...
-%			
-%			@Override
-%			public void onLocationChanged(Location location) {
-%				collectedDataMap.put("gpsaccuracy", Double.toString(location.getAccuracy()));
-%				collectedDataMap.put("gpslatitude", Double.toString(location.getLatitude()));
-%				collectedDataMap.put("gpslongitude", Double.toString(location.getLongitude()));
-%				locationManager.removeUpdates(locationListener);
-%			}
-%		};
-%		
-%		if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-%			locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10000, 100, locationListener);
-%		}
-%...
-%}
+\includegraphics[width=1\linewidth]{getLocation_cropped.pdf}
 \end{frame}
 
 \begin{frame}{BootCompletedIntentReceiver}
-%	@Override
-%	public void onReceive(Context context, Intent intent) {
-%		
-%		service = new Intent(context, SensorService.class);    	
-%    	pendingIntent = PendingIntent.getService(context, 0, service, 0);
-%        alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-%        Calendar calendar = Calendar.getInstance();
-%        
-%        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), fetchTime, pendingIntent);
-%	}
+\includegraphics[width=1\linewidth]{onReceive_cropped.pdf}
 \end{frame}
 
 

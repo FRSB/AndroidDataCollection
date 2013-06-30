@@ -1,0 +1,10 @@
+<uses-sdk>
+    android:minSdkVersion="9"
+    android:targetSdkVersion="17"
+</uses-sdk>
+<uses-permission android:name="android.permission.ACCESS\_COARSE\_LOCATION" />
+<uses-permission android:name="android.permission.ACCESS\_FINE\_LOCATION" />
+<uses-permission android:name="android.permission.READ\_PHONE\_STATE" />
+<uses-permission android:name="android.permission.ACCESS\_WIFI\_STATE" />
+<uses-permission android:name="android.permission.WRITE\_EXTERNAL\_STORAGE" />
+<uses-permission android:name="android.permission.RECEIVE\_BOOT\_COMPLETED" />
