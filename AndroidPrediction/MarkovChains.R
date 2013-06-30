@@ -224,3 +224,43 @@ ThirdOrderMarkovChain.predictStates = function(transitionTensor, data) {
   result = data.frame(data, tPred)
   return (result)
 }
+
+# Hidden Markov Model
+######################
+
+HiddenMarkovModel.infer = function(data, numStates) {
+  cellIds = c(data$t3, data$t2, data$t1, data$tNext)
+  uniqueCellIds = 1:numStates
+  hmmStates = 1:trunc(numStates)
+  
+  transProbs = runif(length(hmmStates)**2,0,100)
+  transProbs = matrix(transProbs, nrow=length(hmmStates), ncol=length(hmmStates))
+  transProbs = sweep(transProbs, 1, rowSums(transProbs), FUN="/")
+  emissionProbs = runif(length(uniqueCellIds)*length(hmmStates),0,100)
+  emissionProbs = matrix(emissionProbs, nrow=length(hmmStates), ncol=length(uniqueCellIds))
+  emissionProbs = sweep(emissionProbs, 1, rowSums(emissionProbs), FUN="/")
+  
+  hmm = initHMM(States=hmmStates,Symbols=uniqueCellIds,transProbs=transProbs, emissionProbs=emissionProbs)
+  bw = baumWelch(hmm,cellIds,10)
+  return(bw$hmm)
+}
+
+HiddenMarkovModel.sample = function(model, initialState, length) {
+  return(simHMM(model, length)$observation)
+}
+
+HiddenMarkovModel.predictNextState = function(model, currentState) {
+  hiddenState = which.max(model$emissionProbs[,currentState])
+  nextHiddenState = which.max(model$transProbs[hiddenState,])
+  nextEmission = which.max(model$emissionProbs[nextHiddenState,])
+  return(nextEmission)
+}
+
+HiddenMarkovModel.predictStates = function(model, data) {
+  tPred = vector(length = length(data)-3)
+  for (i in 1:dim(data)[1]) {
+    tPred[i] = HiddenMarkovModel.predictNextState(model, data$t1[i])
+  }
+  result = data.frame(data, tPred)
+  return (result)
+}
