@@ -339,7 +339,22 @@ $$p(x_k = i | x_{k-1} = j) = A_{ij}$$
 
 \begin{frame}{Bewegungsvorhersage}
 
+\textbf{Vorgehen}
+\begin{enumerate}
+\item Schätzen der Modellparameter (Trainingsphase)
+\item Vorhersage der nächsten Position (Recallphase)
+\end{enumerate}
+\vspace*{.5em}
+\textbf{Parameterschätzung}
+\begin{itemize}
+\item $u_{ij}$ ist Anzahl der beob. Zustandsübergänge von $i$ nach $j$
+\item Maximum-Likelihood-Schätzung der Transitionsmatrix $A$
+\end{itemize}
+\vspace*{0.5em}
+$$\hat A_{ij} = \frac{u_{ij}}{u_{i \bullet}}$$
+\vspace*{.5em}
 \textbf{Vorhersagemodelle}
+\vspace*{-.5em}
 \begin{itemize}
 \item Markov-Kette 1. Ordnung
 \item Markov-Kette 2. Ordnung
