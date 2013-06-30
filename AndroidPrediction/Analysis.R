@@ -3,6 +3,7 @@ rm(list = ls())
 # install required libraries and packages
 .libPaths("lib") #remove this line to use your personal library instead
 #install.packages("hash")
+#install.packages("HMM")
 
 # load required libraries and packages
 source("MarkovChains.R")
@@ -10,11 +11,12 @@ source("DataTransformation.R")
 source("Evaluation.R")
 source("Locations.R")
 library(hash)
+library(HMM)
 
 # generate dummy data set
-#cellIds = c(1,1,1,1,1,1,1,2,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4,1,2,3,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4,1,2,3,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4,1,2,3,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4,1,2,3,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4,1,2,3,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4,1,2,3,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4)
-#cells = rep("cell", length(cellIds))
-#cells = paste(cells, cellIds)
+cellIds = c(1,1,1,1,1,1,1,2,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4,1,2,3,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4,1,2,3,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4,1,2,3,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4,1,2,3,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4,1,2,3,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4,1,2,3,4,1,3,4,1,2,4,1,4,1,2,3,1,2,3,4)
+cells = rep("cell", length(cellIds))
+cells = paste(cells, cellIds)
 
 # read real data
 data = read.csv("olddata.csv", sep=";")
@@ -54,3 +56,16 @@ calculateAccuracy(p2)
 applyNFoldCrossValidation(n=10, method="random", data=windowedCellIds, inferencer=FirstOrderMarkovChain.inferTransitionTensor, predictor=FirstOrderMarkovChain.predictStates, evaluator=calculateAccuracy)
 applyNFoldCrossValidation(n=10, method="random", data=windowedCellIds, inferencer=SecondOrderMarkovChain.inferTransitionTensor, predictor=SecondOrderMarkovChain.predictStates, evaluator=calculateAccuracy)
 applyNFoldCrossValidation(n=10, method="random", data=windowedCellIds, inferencer=ThirdOrderMarkovChain.inferTransitionTensor, predictor=ThirdOrderMarkovChain.predictStates, evaluator=calculateAccuracy)
+
+uniqueCellIds = unique(cellIds)
+hmmStates = c("A", "B", "C", "D")
+transProbs = runif(length(hmmStates)**2,0,100)
+transProbs = matrix(transProbs, nrow=length(hmmStates), ncol=length(hmmStates))
+transProbs = sweep(transProbs, 1, rowSums(transProbs), FUN="/")
+emissionProbs = runif(length(uniqueCellIds)*length(hmmStates),0,100)
+emissionProbs = matrix(emissionProbs, nrow=length(hmmStates), ncol=length(uniqueCellIds))
+emissionProbs = sweep(emissionProbs, 1, rowSums(emissionProbs), FUN="/")
+
+hmm = initHMM(States=hmmStates,Symbols=uniqueCellIds,transProbs=transProbs, emissionProbs=emissionProbs)
+bw = baumWelch(hmm,cellIds,10)
+bw$hmm
