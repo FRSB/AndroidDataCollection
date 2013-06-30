@@ -41,6 +41,7 @@ numStates = length(unique(c(windowedCellIds$tNext,windowedCellIds[1,])))
 t1 = FirstOrderMarkovChain.inferTransitionTensor(windowedCellIds, numStates)
 t2 = SecondOrderMarkovChain.inferTransitionTensor(windowedCellIds, numStates)
 #t3 = ThirdOrderMarkovChain.inferTransitionTensor(windowedCellIds, numStates)
+hmm = HiddenMarkovModel.infer(windowedCellIds, numStates)
 
 # apply models on dummy data 
 p1 = FirstOrderMarkovChain.predictStates(t1,windowedCellIds)
@@ -57,15 +58,23 @@ applyNFoldCrossValidation(n=10, method="random", data=windowedCellIds, inference
 applyNFoldCrossValidation(n=10, method="random", data=windowedCellIds, inferencer=SecondOrderMarkovChain.inferTransitionTensor, predictor=SecondOrderMarkovChain.predictStates, evaluator=calculateAccuracy)
 applyNFoldCrossValidation(n=10, method="random", data=windowedCellIds, inferencer=ThirdOrderMarkovChain.inferTransitionTensor, predictor=ThirdOrderMarkovChain.predictStates, evaluator=calculateAccuracy)
 
-uniqueCellIds = unique(cellIds)
-hmmStates = c("A", "B", "C", "D")
-transProbs = runif(length(hmmStates)**2,0,100)
-transProbs = matrix(transProbs, nrow=length(hmmStates), ncol=length(hmmStates))
-transProbs = sweep(transProbs, 1, rowSums(transProbs), FUN="/")
-emissionProbs = runif(length(uniqueCellIds)*length(hmmStates),0,100)
-emissionProbs = matrix(emissionProbs, nrow=length(hmmStates), ncol=length(uniqueCellIds))
-emissionProbs = sweep(emissionProbs, 1, rowSums(emissionProbs), FUN="/")
+HiddenMarkovModel.infer = function(data, numStates) {
+  cellIds = c(data$t3, data$t2, data$t1, data$tNext)
+  uniqueCellIds = 1:numStates
+  hmmStates = c("A", "B", "C", "D")
+  
+  transProbs = runif(length(hmmStates)**2,0,100)
+  transProbs = matrix(transProbs, nrow=length(hmmStates), ncol=length(hmmStates))
+  transProbs = sweep(transProbs, 1, rowSums(transProbs), FUN="/")
+  emissionProbs = runif(length(uniqueCellIds)*length(hmmStates),0,100)
+  emissionProbs = matrix(emissionProbs, nrow=length(hmmStates), ncol=length(uniqueCellIds))
+  emissionProbs = sweep(emissionProbs, 1, rowSums(emissionProbs), FUN="/")
+  
+  hmm = initHMM(States=hmmStates,Symbols=uniqueCellIds,transProbs=transProbs, emissionProbs=emissionProbs)
+  bw = baumWelch(hmm,cellIds,10)
+  return(bw$hmm)
+}
 
-hmm = initHMM(States=hmmStates,Symbols=uniqueCellIds,transProbs=transProbs, emissionProbs=emissionProbs)
-bw = baumWelch(hmm,cellIds,10)
-bw$hmm
+HiddenMarkovModel.sample = function(model, initialState, length) {
+  return(simHMM(model, length)$observation)
+}
