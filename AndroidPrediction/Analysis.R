@@ -22,7 +22,10 @@ cells = data$cellid
 
 # plot cell locations
 cellLocations = estimateCellLocations(data)
-plot(y=cellLocations$latitude, x=cellLocations$longitude)
+pdf("cell_locations.pdf",title="Cell Locations")
+plot(y=cellLocations$latitude, x=cellLocations$longitude,ylab="Latitude",xlab="Longitude", type="p", pch=16)
+grid(col="gray35")
+dev.off()
 
 # data transformation
 cells = removeDuplicateConsecutiveStates(cells)
