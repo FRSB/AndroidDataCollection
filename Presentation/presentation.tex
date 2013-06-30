@@ -259,11 +259,12 @@ XXXXXXXXXXXXXXXXXXXXXX\=XXXXXXXXXXX\= \kill \\
 \end{itemize}
 
 \begin{itemize}
-\item Modellierung einer Bewegung als diskrete Zustandsänderung:
+\item Modellierung einer Bewegung als stochastischer Prozess
 	\begin{itemize}
-	\item Nutzer $u$ hat zum Zeitpunkt $t_n$ eine Position $x \in X$
+	\item Nutzer $u$ hat zum Zeitpunkt $t$ eine Position $x_t \in S$
 	\item Beobachtungszeitraum $T = t_0, \ldots, t_n$
-	\item Zustandsraum $X$ $\mathrel{\widehat{=}}$ Menge der Mobilfunkzellen
+	\item Zustandsraum $S$ $\mathrel{\widehat{=}}$ Menge der Mobilfunkzellen
+	\item Bewegung ist diskrete Zustandsänderung
 	\end{itemize}
 \end{itemize}
 
@@ -276,10 +277,10 @@ XXXXXXXXXXXXXXXXXXXXXX\=XXXXXXXXXXX\= \kill \\
 \end{center}
 \end{frame}
 
-\begin{frame}{Modellierung -- Markov Modelle}
+\begin{frame}{Markov Modelle - Transitionsdiagramm}
 \begin{itemize}
-\item Zustandsraum $X = 1, \ldots, m$
-\item Zustandsänderungen in Transitionsdiagramm
+\item Zustandsraum $S = 1, \ldots, m$
+\item Zustandsänderungen als Transitionsdiagramm
 \item Übergangswahrscheinlichkeiten in Transitionsmatrix $A$
 	\begin{itemize}
 	\item[$\Rightarrow$] Annahme: stationäre\\ Übergangswahrscheinlichkeiten
@@ -294,6 +295,12 @@ A_{11} & A_{12} & A_{13} \\
 A_{21} & A_{22} & A_{23} \\
 A_{31} & A_{32} & A_{33}
 \end{bmatrix}$$
+\begin{align*}
+A_{ij} &\geq 0\\ %nichtnegativ
+\sum\limits_{j \in S} A_{ij} &= 1 %Zeilensumme = 1
+\end{align*}
+\vspace*{-4em}
+
 \column{0.5\textwidth}
 \begin{center}
 \scalebox{.3}{%
@@ -302,10 +309,45 @@ A_{31} & A_{32} & A_{33}
 }
 \end{center}
 \vspace*{.5em}
-\hfill \tiny In Anlehnung an \cite{bishop2006pattern}, S.~611 \hspace*{4em}
+\hfill \tiny Vgl. \cite{bishop2006pattern}, S.~611 \hspace*{4em}
 \end{columns}
 
 \end{frame}
+
+\begin{frame}{Markov Modelle - Grafisches Modell}
+\begin{itemize}
+\item Zustandsraum $S = 1, \ldots, m$, Zeitreihe $T = t_0, t_1, \ldots$
+\item Zustandsänderungen als graphisches Modell
+\end{itemize}
+\begin{center}
+\scalebox{.6}{%
+\scalefont{2}
+\input{img/graphical_model.tex}
+}
+\end{center}
+
+\begin{itemize}
+\item Verbundverteilung für $n$ Beobachtungen $x_1, \ldots x_n$
+\end{itemize}
+$$p(x_1, \ldots, x_n) = p(x_1) \prod\limits_{k=2}^{n}p(x_k | x_{k-1})$$
+
+\begin{itemize}
+\item Beziehung der bed. Wahrscheinlichkeit zur Transitionsmatrix
+\end{itemize}
+$$p(x_k = i | x_{k-1} = j) = A_{ij}$$
+\end{frame}
+
+\begin{frame}{Bewegungsvorhersage}
+
+\textbf{Vorhersagemodelle}
+\begin{itemize}
+\item Markov-Kette 1. Ordnung
+\item Markov-Kette 2. Ordnung
+\item Hidden-Markov-Modell
+\end{itemize}
+
+\end{frame}
+
 
 \section{Ergebnisse}
 \frame{\frametitle{Gliederung} \tableofcontents[currentsection]}
