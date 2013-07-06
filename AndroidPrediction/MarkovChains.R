@@ -229,9 +229,9 @@ ThirdOrderMarkovChain.predictStates = function(transitionTensor, data) {
 ######################
 
 HiddenMarkovModel.infer = function(data, numStates) {
-  cellIds = c(data$t3, data$t2, data$t1, data$tNext)
+  cellIds = c(data$t3[1], data$t2[1], data$t1[1], data$tNext)
   uniqueCellIds = 1:numStates
-  hmmStates = 1:trunc(numStates)
+  hmmStates = 1:10
   
   transProbs = runif(length(hmmStates)**2,0,100)
   transProbs = matrix(transProbs, nrow=length(hmmStates), ncol=length(hmmStates))
