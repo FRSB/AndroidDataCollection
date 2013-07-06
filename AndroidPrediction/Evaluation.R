@@ -50,10 +50,10 @@ applyNFoldCrossValidation = function(data, inferencer, predictor, evaluator, n=1
 #       - warmUp, number of states to warm up the classifier
 # out:  - accumulated averaged accuracy
 applyGrowingWindowValidation = function(data, inferencer, predictor, evaluator, warmUp=1) {
-  numStates = length(unique(c(data$tNext,data[1,])))
   currentAccuracies = vector()
   cumulatedAccuracies = vector()
   for (i in warmUp:(nrow(data)-1)) {
+    numStates = length(unique(c(data$tNext[1:i],data[1,])))
     trainingData = data[1:i,]
     testData = data[i+1,]
     model = inferencer(trainingData, numStates)
