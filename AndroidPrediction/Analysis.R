@@ -42,9 +42,17 @@ cellIds = cellData[[1]]
 windowedCellIds = applyWindow(cellIds)
 
 # apply growing window evaluation
-a1=applyGrowingWindowValidation(data=windowedCellIds, inferencer=FirstOrderMarkovChain.inferTransitionTensor, predictor=FirstOrderMarkovChain.predictStates, evaluator=calculateAccuracy)
-a2=applyGrowingWindowValidation(data=windowedCellIds, inferencer=SecondOrderMarkovChain.inferTransitionTensor, predictor=SecondOrderMarkovChain.predictStates, evaluator=calculateAccuracy)
+a1=applyGrowingWindowValidation(data=windowedCellIds, inferencer=FirstOrderMarkovChain.inferTransitionTensor, predictor=FirstOrderMarkovChain.predictStates, evaluator=calculateAccuracy, warmUp=1)
+a2=applyGrowingWindowValidation(data=windowedCellIds, inferencer=SecondOrderMarkovChain.inferTransitionTensor, predictor=SecondOrderMarkovChain.predictStates, evaluator=calculateAccuracy, warmUp=1)
+a3=applyGrowingWindowValidation(data=windowedCellIds[1:nrow(windowedCellIds)], inferencer=ThirdOrderMarkovChain.inferTransitionTensor, predictor=ThirdOrderMarkovChain.predictStates, evaluator=calculateAccuracy, warmUp=1)
+#a4=applyGrowingWindowValidation(data=windowedCellIds, inferencer=HiddenMarkovModel.infer, predictor=HiddenMarkovModel.predictStates, evaluator=calculateAccuracy, warmUp=1)
 
+pdf("prediction_accuracy.pdf", title="Prediction Accuracy", width=9)
+plot(a1, type="l", col="blue", xlab="Anzahl Beobachtungen", ylab="Kumulierte Vorhersagegenauigkeit", ylim=c(0,0.5), lwd=2)
+lines(a2, col="darkmagenta", lwd=2)
+lines(a3, col="darkgreen", lwd=2)
+legend(440, 0.1, c("MK 1. Ordnung", "MK 2. Ordnung", "MK 3. Ordnung"), lty=c(1,1), lwd=c(2,2), col=c("blue", "darkmagenta", "darkgreen"))
+dev.off()
 # infer dummy data
 #numStates = length(unique(c(windowedCellIds$tNext,windowedCellIds[1,])))
 #t1 = FirstOrderMarkovChain.inferTransitionTensor(windowedCellIds, numStates)
