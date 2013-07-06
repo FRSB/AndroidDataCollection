@@ -36,7 +36,7 @@ dev.off()
 # data transformation
 cells = removeNA(cells)
 cells = removeDuplicateConsecutiveStates(cells)
-cells = removeInfrequentCells(cells)
+#cells = removeInfrequentCells(cells)
 cellData = encodeCells(cells)
 cellIds = cellData[[1]]
 windowedCellIds = applyWindow(cellIds)
