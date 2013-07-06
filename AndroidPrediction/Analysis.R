@@ -19,13 +19,17 @@ cells = rep("cell", length(cellIds))
 cells = paste(cells, cellIds)
 
 # read real data
-data = read.csv("olddata.csv", sep=";")
+data = read.csv("pp_sb_data.csv", sep=";")
 cells = data$cellid
 
 # plot cell locations
 cellLocations = estimateCellLocations(data)
-pdf("cell_locations.pdf",title="Cell Locations")
-plot(y=cellLocations$latitude, x=cellLocations$longitude,ylab="Latitude",xlab="Longitude", type="p", pch=16)
+pdf("cell_locations.pdf",title="Cell Locations",width=12)
+plot(y=cellLocations$latitude, x=cellLocations$longitude,ylab="Latitude",xlab="Longitude", type="p", pch=16, xaxt="n")
+rect(par("usr")[1], par("usr")[3], par("usr")[2], par("usr")[4], col = "lemonchiffon1")
+points(y=cellLocations$latitude, x=cellLocations$longitude, pch=16)
+axis(1, seq(10,13,0.2))
+par(xaxp = c(10,13,15))
 grid(col="gray35")
 dev.off()
 
