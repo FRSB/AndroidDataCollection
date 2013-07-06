@@ -53,7 +53,7 @@ applyGrowingWindowValidation = function(data, inferencer, predictor, evaluator, 
   numStates = length(unique(c(data$tNext,data[1,])))
   currentAccuracies = vector()
   cumulatedAccuracies = vector()
-  for (i in 1:nrow(data)-1) {
+  for (i in warmUp:(nrow(data)-1)) {
     trainingData = data[1:i,]
     testData = data[i+1,]
     model = inferencer(trainingData, numStates)

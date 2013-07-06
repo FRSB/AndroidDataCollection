@@ -86,3 +86,7 @@ splitData = function(data, slices, testSlice) {
   result[[2]] = testData
   return(result)
 }
+
+removeNA = function(vec) {
+  return(vec[!is.na(vec)])
+}

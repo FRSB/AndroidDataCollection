@@ -34,6 +34,7 @@ grid(col="gray35")
 dev.off()
 
 # data transformation
+cells = removeNA(cells)
 cells = removeDuplicateConsecutiveStates(cells)
 cells = removeInfrequentCells(cells)
 cellData = encodeCells(cells)
