@@ -36,27 +36,31 @@ cellData = encodeCells(cells)
 cellIds = cellData[[1]]
 windowedCellIds = applyWindow(cellIds)
 
+# apply growing window evaluation
+a1=applyGrowingWindowValidation(data=windowedCellIds, inferencer=FirstOrderMarkovChain.inferTransitionTensor, predictor=FirstOrderMarkovChain.predictStates, evaluator=calculateAccuracy)
+a2=applyGrowingWindowValidation(data=windowedCellIds, inferencer=SecondOrderMarkovChain.inferTransitionTensor, predictor=SecondOrderMarkovChain.predictStates, evaluator=calculateAccuracy)
+
 # infer dummy data
-numStates = length(unique(c(windowedCellIds$tNext,windowedCellIds[1,])))
-t1 = FirstOrderMarkovChain.inferTransitionTensor(windowedCellIds, numStates)
-t2 = SecondOrderMarkovChain.inferTransitionTensor(windowedCellIds, numStates)
+#numStates = length(unique(c(windowedCellIds$tNext,windowedCellIds[1,])))
+#t1 = FirstOrderMarkovChain.inferTransitionTensor(windowedCellIds, numStates)
+#t2 = SecondOrderMarkovChain.inferTransitionTensor(windowedCellIds, numStates)
 #t3 = ThirdOrderMarkovChain.inferTransitionTensor(windowedCellIds, numStates)
-tHmm = HiddenMarkovModel.infer(windowedCellIds, numStates)
+#tHmm = HiddenMarkovModel.infer(windowedCellIds, numStates)
 
 # apply models on dummy data 
-p1 = FirstOrderMarkovChain.predictStates(t1,windowedCellIds)
-p2 = SecondOrderMarkovChain.predictStates(t2,windowedCellIds)
+#p1 = FirstOrderMarkovChain.predictStates(t1,windowedCellIds)
+#p2 = SecondOrderMarkovChain.predictStates(t2,windowedCellIds)
 #p3 = ThirdOrderMarkovChain.predictStates(t3,windowedCellIds)
-pHmm = HiddenMarkovModel.predictStates(tHmm,windowedCellIds)
+#pHmm = HiddenMarkovModel.predictStates(tHmm,windowedCellIds)
 
 # count number of right predictions
-calculateAccuracy(p1)
-calculateAccuracy(p2)
+#calculateAccuracy(p1)
+#calculateAccuracy(p2)
 #calculateAccuracy(p3)
-calculateAccuracy(pHmm)
+#calculateAccuracy(pHmm)
 
 # apply cross validation
-applyNFoldCrossValidation(n=10, method="random", data=windowedCellIds, inferencer=FirstOrderMarkovChain.inferTransitionTensor, predictor=FirstOrderMarkovChain.predictStates, evaluator=calculateAccuracy)
-applyNFoldCrossValidation(n=10, method="random", data=windowedCellIds, inferencer=SecondOrderMarkovChain.inferTransitionTensor, predictor=SecondOrderMarkovChain.predictStates, evaluator=calculateAccuracy)
+#applyNFoldCrossValidation(n=10, method="random", data=windowedCellIds, inferencer=FirstOrderMarkovChain.inferTransitionTensor, predictor=FirstOrderMarkovChain.predictStates, evaluator=calculateAccuracy)
+#applyNFoldCrossValidation(n=10, method="random", data=windowedCellIds, inferencer=SecondOrderMarkovChain.inferTransitionTensor, predictor=SecondOrderMarkovChain.predictStates, evaluator=calculateAccuracy)
 #applyNFoldCrossValidation(n=10, method="random", data=windowedCellIds, inferencer=ThirdOrderMarkovChain.inferTransitionTensor, predictor=ThirdOrderMarkovChain.predictStates, evaluator=calculateAccuracy)
-applyNFoldCrossValidation(n=10, method="random", data=windowedCellIds, inferencer=HiddenMarkovModel.infer, predictor=HiddenMarkovModel.predictStates, evaluator=calculateAccuracy)
+#applyNFoldCrossValidation(n=10, method="random", data=windowedCellIds, inferencer=HiddenMarkovModel.infer, predictor=HiddenMarkovModel.predictStates, evaluator=calculateAccuracy)
