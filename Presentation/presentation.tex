@@ -161,7 +161,7 @@ XXXXXXXXXXXXXXXXXXXXXX\=XXXXXXXXXXX\= \kill \\
 	\item[$\Rightarrow$] Visualisierung
 	\item[$\Rightarrow$] Vorhersage
 	\end{itemize}
-\end{itemize}
+\end{itemize}\pause
 
 \vspace*{1em}
 
@@ -224,7 +224,7 @@ XXXXXXXXXXXXXXXXXXXXXX\=XXXXXXXXXXX\= \kill \\
 \textbf{Android-Manifest}
 \begin{center}
 \includegraphics[width=1\linewidth]{android_manifest_cropped.pdf}
-\end{center}
+\end{center}\pause
 \textbf{Sensorzugriffe}
 \begin{center}
 \includegraphics[width=1\linewidth]{getLocation_cropped.pdf}
@@ -254,7 +254,7 @@ XXXXXXXXXXXXXXXXXXXXXX\=XXXXXXXXXXX\= \kill \\
 \begin{frame}{Modellierung}
 \begin{itemize}
 \item Nutzer bewegt sich durch die Stadt und ändert seine Position
-\end{itemize}
+\end{itemize}\pause
 
 \begin{itemize}
 \item Modellierung einer Bewegung als stochastischer Prozess
@@ -276,6 +276,7 @@ XXXXXXXXXXXXXXXXXXXXXX\=XXXXXXXXXXX\= \kill \\
 \end{frame}
 
 \begin{frame}{Markov Modelle - Transitionsdiagramm}
+\vspace*{-0.98em}
 \begin{itemize}
 \item Zustandsraum $S = 1, \ldots, m$
 \item Zustandsänderungen als Transitionsdiagramm
@@ -283,7 +284,7 @@ XXXXXXXXXXXXXXXXXXXXXX\=XXXXXXXXXXX\= \kill \\
 	\begin{itemize}
 	\item[$\Rightarrow$] Annahme: stationäre\\ Übergangswahrscheinlichkeiten
 	\end{itemize}
-\end{itemize}
+\end{itemize}\pause
 
 \vspace*{-2.5em}
 \begin{columns}
@@ -310,6 +311,7 @@ A_{ij} &\geq 0\\ %nichtnegativ
 \hfill \tiny Vgl. \cite{bishop2006pattern}, S.~611 \hspace*{4em}
 \end{columns}
 
+
 \end{frame}
 
 \begin{frame}{Markov Modelle - Grafisches Modell}
@@ -322,12 +324,12 @@ A_{ij} &\geq 0\\ %nichtnegativ
 \scalefont{2}
 \input{img/graphical_model.tex}
 }
-\end{center}
+\end{center}\pause
 
 \begin{itemize}
 \item Verbundverteilung für Beobachtungen $x_0, \ldots x_n$
 \end{itemize}
-$$p(x_0, \ldots, x_n) = p(x_0) \prod\limits_{k=1}^{n}p(x_k | x_{k-1})$$
+$$p(x_0, \ldots, x_n) = p(x_0) \prod\limits_{k=1}^{n}p(x_k | x_{k-1})$$\pause
 
 \begin{itemize}
 \item Beziehung der bed. Wahrscheinlichkeit zur Transitionsmatrix
@@ -341,7 +343,7 @@ $$p(x_k = i | x_{k-1} = j) = A_{ij}$$
 \begin{enumerate}
 \item Schätzen der Modellparameter (Trainingsphase)
 \item Vorhersage der nächsten Position (Recallphase)
-\end{enumerate}
+\end{enumerate}\pause
 \vspace*{.5em}
 \textbf{Parameterschätzung}
 \begin{itemize}
@@ -349,7 +351,7 @@ $$p(x_k = i | x_{k-1} = j) = A_{ij}$$
 \item Maximum-Likelihood-Schätzung der Transitionsmatrix $A$
 \end{itemize}
 \vspace*{0.5em}
-$$\hat A_{ij} = \frac{u_{ij}}{u_{i \bullet}}$$
+$$\hat A_{ij} = \frac{u_{ij}}{u_{i \bullet}}$$\pause
 \vspace*{.5em}
 \textbf{Vorhersagemodelle}
 \vspace*{-.5em}
@@ -392,30 +394,21 @@ $$\hat A_{ij} = \frac{u_{ij}}{u_{i \bullet}}$$
 \begin{itemize}
 \item Positionsdaten über Android-API abrufbar
 \item Bewegungsvorhersage mit mittlerer Genauigkeit möglich
-\end{itemize}
+\end{itemize}\pause
 \vspace*{.5em}
 \textbf{Kritische Würdigung}
 \begin{itemize}
 \item Daten bisher unverschlüsselt und unkomprimiert gespeichert
 \item Lokalisierung über Mobilfunk ist ungenau
 \item nicht alle gesammelten Daten für Vorhersage betrachtet
-\end{itemize}
+\end{itemize}\pause
 \vspace*{.5em}
 \textbf{Erweiterungsmöglichkeiten}
 \begin{itemize}
 \item Online-Vorhersage auf mobilem Endgerät
-\item Einbezug der Uhrzeit in Klassifikation
+\item Einbezug weiterer Features in Klassifikation (z.B.~Uhrzeit)
 \item Kombination von Modellen (Ensemble Learning)
 \end{itemize}
-\end{frame}
-
-
-\section{Quellen}
-\frame{\frametitle{Gliederung} \tableofcontents[currentsection]}
-\begin{frame}[allowframebreaks]
-\frametitle{Quellen}
-\def\bibfont{\scriptsize}
-\printbibliography
 \end{frame}
 
 % cite all resources to be printed in bibliography
@@ -432,6 +425,12 @@ $$\hat A_{ij} = \frac{u_{ij}}{u_{i \bullet}}$$
 Vielen Dank für Ihre Aufmerksamkeit!\\
 Fragen?
 \end{center}
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+\frametitle{Quellen}
+\def\bibfont{\scriptsize}
+\printbibliography
 \end{frame}
 
 \end{document}
