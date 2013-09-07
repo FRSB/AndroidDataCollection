@@ -146,16 +146,98 @@ AA & Abkürzungsaffe
 \item[Methodik und Vorgehensweise] Wie werden Ergebnisse ermittelt? Gliederung der Arbeit in Worten.
 \end{description}
 
-Computer sind heutzutage allgegenwärtig. Viele Menschen besitzen mobile Geräte, die in Sachen Rechenleistung stationären Computern nur noch in wenig nachstehen.
+Computer sind heutzutage allgegenwärtig. Viele Menschen besitzen mobile Geräte, die in Sachen Rechenleistung stationären Computern nur noch in wenig nachstehen. Der wirtschaftliche Nutzen des sogenannten "`ubiquitous computing"' ist vielseitig. So könnten beispielsweise Restaurantbesitzer besondere Mittagsangebote auf das Smartphone der potenziellen Kunden senden, die noch unentschlossen vor ihrem Lokal stehen. Könnte man vorhersehen, wo sich die Anwender zukünftig hinbewegen, so könnten Angebote schon im Vorfeld unterbreitet oder Informationen verschickt werden.
 
-Der wirtschaftliche Nutzen des sogenannten ?ubiquitous computing? ist vielseitig. So könnten beispielsweise Restaurantbesitzer besondere Mittagsangebote auf das Smartphone der potenziellen Kunden senden, die noch unentschlossen vor ihrem Lokal stehen. Könnte man vorhersehen, wo sich die Anwender zukünftig hinbewegen, so könnten Angebote schon im Vorfeld unterbreitet oder Informationen verschickt werden.
+Ziel des Projekts ist es, eine Handyanwendung zu programmieren, welche die nötigen Daten für eine verlässliche Positionsvorhersage sammelt, und diese auszuwerten. Somit soll untersucht werden, mit welcher Genauigkeit Bewegungen von Menschen vorhergesagt werden können. Im Rahmen dieser Arbeit liegt der Fokus auf der Positionsvorhersage.
 
-Die Idee des Projekts ist es, eine Handyanwendung zu programmieren, die die nötigen Daten für eine verlässliche Positionsvorhersage sammelt, und diese auszuwerten. Somit soll untersucht werden, ob es prinzipiell möglich wäre (und mit welcher Genauigkeit), Bewegungen von Menschen vorherzusagen.
+Methodik: Java / AndroidApp, R
+
+Related Work...
+
+Im ersten Abschnitt ...
 
 \section{Methoden}
 \subsection{Datenerhebung}
+
+\begin{itemize}
+\item Android-App zeichnet Daten live auf (Prozess im Hintergrund)
+\item Mobilfunkzelle (CID, LAC) und Positionskoordinaten alle $x$ Sekunden bestimmen
+\item CSV speichern -> runterspielen -> importieren
+\end{itemize}
+
+Visualisierung
+
+\begin{figure}[p]
+\begin{center}
+\includegraphics*[width=1\linewidth]{cell_locations}
+\caption{Locations}
+\label{img:locations}
+\end{center}
+\end{figure}
+
+\begin{figure}[p]
+\begin{center}
+\includegraphics*[width=.9\linewidth]{map.png}
+\caption{Karte}
+\label{img:map}
+\end{center}
+\end{figure}
+
 \subsection{Datenanalyse}
-\paragraph{Markov-Ketten}
+
+\paragraph{Modellbildung}
+
+\begin{itemize}
+\item Nutzer bewegt sich durch die Stadt und ändert seine Position
+\item Modellierung einer Bewegung als stochastischer Prozess
+	\begin{itemize}
+	\item Nutzer $u$ hat zum Zeitpunkt $t$ eine Position $x_t \in S$
+	\item Beobachtungszeitraum $T = t_0, \ldots, t_n$
+	\item Zustandsraum $S$ $\mathrel{\widehat{=}}$ Menge der Mobilfunkzellen
+	\item Bewegung ist diskrete Zustandsänderung
+	\end{itemize}
+\end{itemize}
+
+\paragraph{Markov-Ketten 1. Ordnung}
+
+\begin{itemize}
+\item Zustandsdiagramm
+\item Graphisches Modell
+\item ML-Schätzer
+\end{itemize}
+
+\paragraph{Markov-Ketten höherer Ordnung}
+
+\begin{itemize}
+\item Unterschied zu 1. Ordnung
+\item Schätzer (Herleitung im Anhang?)
+\end{itemize}
+
+\section{Auswertung}
+
+\subsection{Vorhersagegenauigkeit}
+
+\begin{itemize}
+\item 
+\end{itemize}
+
+\section{Schlussbetrachtung}
+
+\begin{description}
+\item[Zusammenfassung] die wichtigsten Ergebnisse der Arbeit werden zusammengefasst
+\item[Kritische Würdigung und Ausblick] Erläuterung der Schwächen und Grenzen der (Methodik der) Arbeit. Durch welche Verbesserungen und weiteren Schritte kann diesen Schwächen entgegengewirkt werden? Ggf. Ausblick auf weitere offene Forschungsfragen bezüglich der Arbeit.
+\end{description} 
+
+
+
+\newpage
+
+\parskip 12pt %Absatzabstand
+\renewcommand{\baselinestretch}{1.00}\normalsize
+
+\printbibliography
+
+\section*{Anhang}
 
 \begin{itemize}
 \item im folgenden am Beispiel Markov-Ketten erster Ordnung
@@ -188,23 +270,6 @@ $ \displaystyle l(P) = \sum_{i=1}^m\sum_{j=1}^m n_{ij} \cdot \ln p_{ij},\quad s.
 \end{enumerate}
 \end{itemize}
 
-\section{Auswertung}
-
-\section{Schlussbetrachtung}
-
-\begin{description}
-\item[Zusammenfassung] die wichtigsten Ergebnisse der Arbeit werden zusammengefasst
-\item[Kritische Würdigung und Ausblick] Erläuterung der Schwächen und Grenzen der (Methodik der) Arbeit. Durch welche Verbesserungen und weiteren Schritte kann diesen Schwächen entgegengewirkt werden? Ggf. Ausblick auf weitere offene Forschungsfragen bezüglich der Arbeit.
-\end{description} 
-
-
-
-\newpage
-
-\parskip 12pt %Absatzabstand
-\renewcommand{\baselinestretch}{1.00}\normalsize
-
-\printbibliography
 
 \end{document}
 
