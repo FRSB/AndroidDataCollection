@@ -97,8 +97,7 @@
 % \setlength{\tabcolsep}{5pt} %colspan
 % \renewcommand{\arraystretch}{1.3} %rowspan
 
-\parindent 0pt %Absatzeinrückung
-\parskip 12pt %Absatzabstand
+\usepackage{parskip}
 
 \begin{document}
 
@@ -139,9 +138,20 @@ AA & Abkürzungsaffe
 
 \pagenumbering{arabic} \setcounter{page}{1}
 
-\input{inc.sec.introduction}
+\section{Einleitung}
 
-%\input{sec.methods}
+\begin{description}
+\item[Problemstellung] Heranführen an das Thema. Warum soll Arbeit geschrieben werden. Offene Frage mit Problembeschreibung.
+\item[Zielstellung] Ein oder zwei Sätze zum Ziel.
+\item[Methodik und Vorgehensweise] Wie werden Ergebnisse ermittelt? Gliederung der Arbeit in Worten.
+\end{description}
+
+Computer sind heutzutage allgegenwärtig. Viele Menschen besitzen mobile Geräte, die in Sachen Rechenleistung stationären Computern nur noch in wenig nachstehen.
+
+Der wirtschaftliche Nutzen des sogenannten ?ubiquitous computing? ist vielseitig. So könnten beispielsweise Restaurantbesitzer besondere Mittagsangebote auf das Smartphone der potenziellen Kunden senden, die noch unentschlossen vor ihrem Lokal stehen. Könnte man vorhersehen, wo sich die Anwender zukünftig hinbewegen, so könnten Angebote schon im Vorfeld unterbreitet oder Informationen verschickt werden.
+
+Die Idee des Projekts ist es, eine Handyanwendung zu programmieren, die die nötigen Daten für eine verlässliche Positionsvorhersage sammelt, und diese auszuwerten. Somit soll untersucht werden, ob es prinzipiell möglich wäre (und mit welcher Genauigkeit), Bewegungen von Menschen vorherzusagen.
+
 \section{Methoden}
 \subsection{Datenerhebung}
 \subsection{Datenanalyse}
@@ -179,10 +189,13 @@ $ \displaystyle l(P) = \sum_{i=1}^m\sum_{j=1}^m n_{ij} \cdot \ln p_{ij},\quad s.
 \end{itemize}
 
 \section{Auswertung}
-%\input{sec.experiments}
 
-\input{inc.sec.conclusion}
+\section{Schlussbetrachtung}
 
+\begin{description}
+\item[Zusammenfassung] die wichtigsten Ergebnisse der Arbeit werden zusammengefasst
+\item[Kritische Würdigung und Ausblick] Erläuterung der Schwächen und Grenzen der (Methodik der) Arbeit. Durch welche Verbesserungen und weiteren Schritte kann diesen Schwächen entgegengewirkt werden? Ggf. Ausblick auf weitere offene Forschungsfragen bezüglich der Arbeit.
+\end{description} 
 
 
 
