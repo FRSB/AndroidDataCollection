@@ -28,6 +28,8 @@
 % \usepackage{times}
 \usepackage{mathptmx}
 \usepackage{nicefrac} 	
+\usepackage{tikz}
+\usepackage{scalefnt}
 \usepackage{titlesec}
 \titlespacing{\section}{0pt}{*2.5}{*1.5}
 \titlespacing{\subsection}{0pt}{*2}{*1}
@@ -174,9 +176,40 @@ Nach einer gewissen Zeit wird das Mobiltelefon über USB mit dem Computer verbund
 
 \subsubsection*{Modellbildung}
 
-Die Bewegungen eines Mobiltelefonnutzers werden als stochastischer Prozess modelliert. Es gibt einen Beobachtungszeitraum $T = \{0,\ldots,n\}$ und einen Zustandsraum $S = \{1, \ldots, m\}$. Ein Nutzer $u$ befindet sich zum Zeitpunkt $t \in T$ im Zustand $x_t \in S$. Ein Zustand entspricht der Mobilfunkzelle, an welcher der Nutzer angemeldet ist. Eine Bewegung von einer Mobilfunkzelle zur nächsten entspricht somit einer diskreten Zustandsänderung von $x_t$ zu $x_{t+1}$. Jeder Zustandsänderung wird eine gewisse Wahrscheinlichkeit in Abhängigkeit der vergangenen Bewegungen zugeordnet. Solche Modelle werden Markov-Modelle genannt.\footcite[Vgl.][S.~607~ff.]{bishop2006pattern} In den folgenden Absätzen sollen die zur Vorhersage verwendeten Modelle vorgestellt werden.
+Die Bewegungen eines Mobiltelefonnutzers werden als stochastischer Prozess modelliert. Es gibt einen Beobachtungszeitraum $T = \{0,\ldots,n\}$ und einen Zustandsraum $S = \{1, \ldots, m\}$. Ein Nutzer $u$ befindet sich zum Zeitpunkt $t \in T$ im Zustand $x_t \in S$. Ein Zustand entspricht der Mobilfunkzelle, an welcher der Nutzer angemeldet ist. Eine Bewegung von einer Mobilfunkzelle zur nächsten entspricht somit einer diskreten Zustandsänderung von $x_t$ zu $x_{t+1}$. Jeder Zustandsänderung wird eine gewisse Wahrscheinlichkeit in Abhängigkeit der vergangenen Zustände zugeordnet. Solche Modelle werden Markov-Modelle genannt.\footcite[Vgl.][S.~607~ff.]{bishop2006pattern} In den folgenden Absätzen sollen die zur Vorhersage verwendeten Modelle vorgestellt werden.
 
-\subsubsection*{Markov-Ketten 1. Ordnung}
+\subsubsection*{Markov-Ketten erster Ordnung}
+
+Will man die nächste Position eines Nutzers vorhersagen, erscheint es nützlich, dies in Abhängigkeit der aktuellen Position zu tun. Das entstehende Markov-Modell ist eine Markov-Kette erster Ordnung. Unter der Annahme stationärer Übergangswahrscheinlichkeiten\footnote{Hängt die Wahrscheinlichkeit $p(x_{t+1}|x_{t})$ für den Übergang von $x_t$ nach $x_{t+1}$ nicht von $t$ ab, spricht man von sogenannten stationären Übergangswahrscheinlichkeiten. Es spielt für den Übergang also keine Rolle an welchem Zeitpunkt er stattfindet. [CITATION MISSING (Lucas fragen)]} lässt sich das Modell mit Hilfe eines Transitionsdiagramms und der zugehörigen Transitionsmatrix beschreiben. Exemplarisch soll für die folgenden Erklärungen ein Modell mit drei Zuständen betrachtet werden. Das Transitionsdiagramm ist in Abbildung~\ref{img:transitions} dargestellt. Die zugehörigen Übergangswahrscheinlichkeiten werden in einer Transitionsmatrix der Form
+\begin{equation}
+A=\begin{bmatrix}
+A_{11} & A_{12} & A_{13} \\
+A_{21} & A_{22} & A_{23} \\
+A_{31} & A_{32} & A_{33}
+\end{bmatrix}
+\end{equation}
+dargestellt, wobei $A_{ij}$ der Wahrscheinlichkeit $p(x_{t+1} = j | x_t=i)$ für den Zustandsübergang von $x=i$ nach $x=j$ entspricht. Folgende Bedingungen an eine Wahrscheinlichkeitsverteilung müssen erfüllt sein:
+\begin{equation}
+\forall i,j \in S: A_{ij} \geq 0,
+\end{equation}
+\begin{equation}
+\forall i\in S: \sum_{j\in S} A_{ij} = 1.
+\end{equation}
+
+\begin{figure}
+\begin{center}
+	\begin{tabular}{@{}r@{}}
+		\scalebox{.6}{%
+			\scalefont{2}
+			\input{img/transition_chart.tex}
+			}\\
+		\footnotesize Quelle: \cite[][S.~611]{bishop2006pattern}
+	\end{tabular}
+	
+	\end{center}
+	\caption{Transitionsdiagramm für eine Markov-Kette erster Ordnung. Die Wahrscheinlichkeiten für einen Zustandsübergang von $x=i$ nach $x=j$ werden durch das Element $A_{ij}$ der zugehörigen Transitionsmatrix ausgedrückt.}
+	\label{img:transitions}
+\end{figure}
 
 \begin{itemize}
 \item Zustandsdiagramm
