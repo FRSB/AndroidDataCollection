@@ -178,8 +178,6 @@ Nach einer gewissen Zeit wird das Mobiltelefon über USB mit dem Computer verbund
 
 Die Bewegungen eines Mobiltelefonnutzers werden als stochastischer Prozess modelliert. Es gibt einen Beobachtungszeitraum $T = \{0,\ldots,n\}$ und einen Zustandsraum $S = \{1, \ldots, m\}$. Ein Nutzer $u$ befindet sich zum Zeitpunkt $t \in T$ im Zustand $x_t \in S$. Ein Zustand entspricht der Mobilfunkzelle, an welcher der Nutzer angemeldet ist. Eine Bewegung von einer Mobilfunkzelle zur nächsten entspricht somit einer diskreten Zustandsänderung von $x_t$ zu $x_{t+1}$. Jeder Zustandsänderung wird eine gewisse Wahrscheinlichkeit in Abhängigkeit der vergangenen Zustände zugeordnet. Solche Modelle werden Markov-Modelle genannt.\footcite[Vgl.][S.~607~ff.]{bishop2006pattern} In den folgenden Absätzen sollen die zur Vorhersage verwendeten Modelle vorgestellt werden.
 
-\subsubsection*{Markov-Ketten erster Ordnung}
-
 Will man die nächste Position eines Nutzers vorhersagen, erscheint es nützlich, dies in Abhängigkeit der aktuellen Position zu tun. Das entstehende Markov-Modell ist eine Markov-Kette erster Ordnung. Unter der Annahme stationärer Übergangswahrscheinlichkeiten\footnote{Hängt die Wahrscheinlichkeit $p(x_{t+1}|x_{t})$ für den Übergang von $x_t$ nach $x_{t+1}$ nicht von $t$ ab, spricht man von sogenannten stationären Übergangswahrscheinlichkeiten. Es spielt für den Übergang also keine Rolle an welchem Zeitpunkt er stattfindet. [CITATION MISSING (Lucas fragen)]} lässt sich das Modell mit Hilfe eines Transitionsdiagramms und der zugehörigen Transitionsmatrix beschreiben. Exemplarisch soll für die folgenden Erklärungen ein Modell mit drei Zuständen betrachtet werden. Das Transitionsdiagramm ist in Abbildung~\ref{img:transitions} dargestellt. Die zugehörigen Übergangswahrscheinlichkeiten werden in einer Transitionsmatrix der Form
 \begin{equation}
 A=\begin{bmatrix}
@@ -188,7 +186,7 @@ A_{21} & A_{22} & A_{23} \\
 A_{31} & A_{32} & A_{33}
 \end{bmatrix}
 \end{equation}
-dargestellt, wobei $A_{ij}$ der Wahrscheinlichkeit $p(x_{t+1} = j | x_t=i)$ für den Zustandsübergang von $x=i$ nach $x=j$ entspricht. Folgende Bedingungen an eine Wahrscheinlichkeitsverteilung müssen erfüllt sein:
+dargestellt, wobei $A_{ij}$ der Wahrscheinlichkeit $p(x_{t+1} = j | x_t=i)$ für den Zustandsübergang von $x=i$ nach $x=j$ entspricht. Zusätzlich müssen die Übergangswahrscheinlichkeiten in $A$ zeilenweise die Bedingungen an eine Wahrscheinlichkeitsverteilung erfüllen:
 \begin{equation}
 \forall i,j \in S: A_{ij} \geq 0,
 \end{equation}
@@ -203,7 +201,7 @@ dargestellt, wobei $A_{ij}$ der Wahrscheinlichkeit $p(x_{t+1} = j | x_t=i)$ für 
 			\scalefont{2}
 			\input{img/transition_chart.tex}
 			}\\
-		\footnotesize Quelle: \cite[][S.~611]{bishop2006pattern}
+		\footnotesize Quelle: \cite[In Anlehnung an][S.~611]{bishop2006pattern}
 	\end{tabular}
 	
 	\end{center}
@@ -224,17 +222,27 @@ dargestellt, wobei $A_{ij}$ der Wahrscheinlichkeit $p(x_{t+1} = j | x_t=i)$ für 
 \item Schätzer (Herleitung im Anhang?)
 \end{itemize}
 
+\subsubsection*{Vorhersage}
+
 \section{Experimente}
 
 \subsection{Datensätze}
 
 \subsection{Untersuchung der Vorhersagegenauigkeit}
 
-\begin{figure}[t]
+\begin{figure}[p]
 \begin{center}
-\includegraphics*[width=1\linewidth]{prediction_accuracy}
-\caption{Karte}
-\label{img:accuracy}
+\includegraphics*[width=.9\linewidth]{prediction_accuracy_sb}
+\caption{Genauigkeit}
+\label{img:accuracy_sb}
+\end{center}
+\end{figure}
+
+\begin{figure}[p]
+\begin{center}
+\includegraphics*[width=.9\linewidth]{prediction_accuracy_mb}
+\caption{Genauigkeit}
+\label{img:accuracy_mb}
 \end{center}
 \end{figure}
 
