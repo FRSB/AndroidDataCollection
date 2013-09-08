@@ -47,9 +47,9 @@
 \usepackage{parcolumns}
 % \usepackage{parskip}
 
-\bibliography{recommendation-in-social-networks_literature}
+\bibliography{literature}
 \usepackage[style=authoryear]{biblatex} 
-\addbibresource{recommendation-in-social-networks_literature.bib}
+\addbibresource{literature.bib}
 
 \DefineBibliographyStrings{ngerman}{
     references = {Literaturverzeichnis}
@@ -172,20 +172,11 @@ Nach einer gewissen Zeit wird das Mobiltelefon über USB mit dem Computer verbund
 \subsection{Datenanalyse}
 \label{subsec:analysis}
 
-\paragraph{Modellbildung}
+\subsubsection*{Modellbildung}
 
-\begin{itemize}
-\item Nutzer bewegt sich durch die Stadt und ändert seine Position
-\item Modellierung einer Bewegung als stochastischer Prozess
-	\begin{itemize}
-	\item Nutzer $u$ hat zum Zeitpunkt $t$ eine Position $x_t \in S$
-	\item Beobachtungszeitraum $T = t_0, \ldots, t_n$
-	\item Zustandsraum $S$ $\mathrel{\widehat{=}}$ Menge der Mobilfunkzellen
-	\item Bewegung ist diskrete Zustandsänderung
-	\end{itemize}
-\end{itemize}
+Die Bewegungen eines Mobiltelefonnutzers werden als stochastischer Prozess modelliert. Es gibt einen Beobachtungszeitraum $T = \{0,\ldots,n\}$ und einen Zustandsraum $S = \{1, \ldots, m\}$. Ein Nutzer $u$ befindet sich zum Zeitpunkt $t \in T$ im Zustand $x_t \in S$. Ein Zustand entspricht der Mobilfunkzelle, an welcher der Nutzer angemeldet ist. Eine Bewegung von einer Mobilfunkzelle zur nächsten entspricht somit einer diskreten Zustandsänderung von $x_t$ zu $x_{t+1}$. Jeder Zustandsänderung wird eine gewisse Wahrscheinlichkeit in Abhängigkeit der vergangenen Bewegungen zugeordnet. Solche Modelle werden Markov-Modelle genannt.\footcite[Vgl.][S.~607~ff.]{bishop2006pattern} In den folgenden Absätzen sollen die zur Vorhersage verwendeten Modelle vorgestellt werden.
 
-\paragraph{Markov-Ketten 1. Ordnung}
+\subsubsection*{Markov-Ketten 1. Ordnung}
 
 \begin{itemize}
 \item Zustandsdiagramm
@@ -193,7 +184,7 @@ Nach einer gewissen Zeit wird das Mobiltelefon über USB mit dem Computer verbund
 \item ML-Schätzer
 \end{itemize}
 
-\paragraph{Markov-Ketten höherer Ordnung}
+\subsubsection*{Markov-Ketten höherer Ordnung}
 
 \begin{itemize}
 \item Unterschied zu 1. Ordnung

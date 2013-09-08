@@ -13,3 +13,7 @@
 *.Rproj.user
 */lib/
 *.Rhistory
+*.out
+*.nav
+*.bak
+*/bib/
