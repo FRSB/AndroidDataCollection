@@ -124,9 +124,10 @@
 \addcontentsline{toc}{section}{Abkürzungsverzeichnis}
 
 \begin{tabular}{ll}
-% CF & Collaborative Filtering\\
-AA & Abkürzungsaffe\\
-AA & Abkürzungsaffe
+CSV & Comma-Separated Value\\
+GSM & Global System for Mobile Communications\\
+GPS & Global Positioning System\\
+UMTS & Universal Mobile Telecommunications System
 \end{tabular}
 
 \newpage
@@ -157,33 +158,19 @@ Related Work...
 Im ersten Abschnitt ...
 
 \section{Methoden}
-\subsection{Datenerhebung}
+\subsection{Datenerhebung und -vorerarbeitung}
 
-\begin{itemize}
-\item Android-App zeichnet Daten live auf (Prozess im Hintergrund)
-\item Mobilfunkzelle (CID, LAC) und Positionskoordinaten alle $x$ Sekunden bestimmen
-\item CSV speichern -> runterspielen -> importieren
-\end{itemize}
+Um Daten zur anschließenden Auswertung zu sammeln, wurde die Android-Anwendung \emph{AndroidDataCollection}\footnote{Quellcode und Dokumentation finden sich auf \emph{https://github.com/FRSB/AndroidDataCollection}.} entwickelt. Auf dem Mobiltelefon installiert, zeichnet sie minütlich Daten verschiedener Sensoren und Schnittstellen auf und speichert diese lokal in einer Datei. Für die in Abschnitt~\ref{subsec:analysis} beschriebenen Analysen sind folgende Informationen relevant: (1) Mobilfunkzellen-ID der aktuell verwendeten Zelle (GSM oder UMTS) und (2) Position des Mobiltelefons\footnote{Die Positionsbestimmung findet hierarchisch statt. Zunächst wird versucht, die ungefähre Position über die aktuell verwendete Mobilfunkzelle zu ermitteln. Falls ein Drahtlosnetzwerk zur Verfügung steht über das hinreichend genaue Positionsdaten verfügbar sind, wird die Position aktualisiert. Sollte das GPS-Signal anliegen und stark genug sein, überschreibt es die ungefähren Positionsdaten. So wird der API die bestmögliche Position übergeben. Nähere Informationen finden sich im Android Developers API Guide unter \emph{http://developer.android.com/guide/topics/location/strategies.html}.}.
 
-Visualisierung
+Nach einer gewissen Zeit wird das Mobiltelefon über USB mit dem Computer verbunden und die gesammelten Daten in Form einer CSV-Datei übertragen. Damit aus den minütlich aufgezeichneten Positionsdaten eine Bewegungsvorhersage möglich ist, müssen ein paar Datenaufbereitungen und -transformationen stattfinden. So werden zunächst fehlerhaft aufgezeichnete Datensätze und Aufzeichnungen ohne bestimmbare Mobilfunkzellen-ID entfernt. Anschließend folgen zwei Vorverarbeitungsschritte unabhängig voneinander: Extrahieren der Bewegungen und Schätzung der Mobilfunkzellenpositionen.
 
-\begin{figure}[p]
-\begin{center}
-\includegraphics*[width=1\linewidth]{cell_locations}
-\caption{Locations}
-\label{img:locations}
-\end{center}
-\end{figure}
-
-\begin{figure}[p]
-\begin{center}
-\includegraphics*[width=.9\linewidth]{map.png}
-\caption{Karte}
-\label{img:map}
-\end{center}
-\end{figure}
+\begin{description}
+\item[Extrahieren der Bewegungen.] Hierfür werden die aufgezeichneten Zellen in zeitlich korrekter Reihenfolge hintereinander gereiht. Aufeinanderfolgende Aufzeichnungen, bei denen sich die Mobilfunkzellen-ID nicht ändert, werden entfernt. So bleibt eine Folge von Zellenübergängen übrig, die später zur Vorhersage verwendet werden kann.
+\item[Schätzung der Mobilfunkzellenpositionen.] Um die aufgezeichneten Bewegungen visualisieren zu können, wird zu jeder gesehenen Mobilfunkzelle eine ungefähre Position bestimmt. Dies geschieht, indem die Daten nach Mobilfunkzelle gruppiert und anschließend die jeweils gemessenen Positionen des Mobiltelefons gemittelt werden. So entsteht eine Zuordnung von Mobilfunkzellen zu Positionen.
+\end{description}
 
 \subsection{Datenanalyse}
+\label{subsec:analysis}
 
 \paragraph{Modellbildung}
 
@@ -213,9 +200,19 @@ Visualisierung
 \item Schätzer (Herleitung im Anhang?)
 \end{itemize}
 
-\section{Auswertung}
+\section{Experimente}
 
-\subsection{Vorhersagegenauigkeit}
+\subsection{Datensätze}
+
+\subsection{Untersuchung der Vorhersagegenauigkeit}
+
+\begin{figure}[t]
+\begin{center}
+\includegraphics*[width=1\linewidth]{prediction_accuracy}
+\caption{Karte}
+\label{img:accuracy}
+\end{center}
+\end{figure}
 
 \begin{itemize}
 \item 
@@ -228,6 +225,13 @@ Visualisierung
 \item[Kritische Würdigung und Ausblick] Erläuterung der Schwächen und Grenzen der (Methodik der) Arbeit. Durch welche Verbesserungen und weiteren Schritte kann diesen Schwächen entgegengewirkt werden? Ggf. Ausblick auf weitere offene Forschungsfragen bezüglich der Arbeit.
 \end{description} 
 
+Kritik/Erweiterungsmöglichkeiten:
+\begin{itemize}
+\item mehr Daten -> Modelle unterbestimmt
+\item Einbezug weiterer Features (Uhrzeit)
+\item GPS und Rastern / Clustering -> HMM
+\item Ensemble Learning
+\end{itemize}
 
 
 \newpage

@@ -1,1 +1,15 @@
 *.class
+*.lof
+*.lot
+*.log
+*.dvi
+*.blg
+*.bbl
+*.aux
+*.toc
+*.synctex.gz
+*.snm
+*.thm
+*.Rproj.user
+*/lib/
+*.Rhistory
