@@ -176,7 +176,7 @@ Nach einer gewissen Zeit wird das Mobiltelefon über USB mit dem Computer verbund
 
 \subsubsection*{Modellbildung}
 
-Die Bewegungen eines Mobiltelefonnutzers werden als stochastischer Prozess modelliert. Es gibt einen Beobachtungszeitraum $T = \{0,\ldots,n\}$ und einen Zustandsraum $S = \{1, \ldots, m\}$. Ein Nutzer $u$ befindet sich zum Zeitpunkt $t \in T$ im Zustand $x_t \in S$. Ein Zustand entspricht der Mobilfunkzelle, an welcher der Nutzer angemeldet ist. Eine Bewegung von einer Mobilfunkzelle zur nächsten entspricht somit einer diskreten Zustandsänderung von $x_t$ zu $x_{t+1}$. Jeder Zustandsänderung wird eine gewisse Wahrscheinlichkeit in Abhängigkeit der vergangenen Zustände zugeordnet. Solche Modelle werden Markov-Modelle genannt.\footcite[Vgl.][S.~607~ff.]{bishop2006pattern} In den folgenden Absätzen sollen die zur Vorhersage verwendeten Modelle vorgestellt werden.
+Die Bewegungen eines Mobiltelefonnutzers werden als zeitdiskreter stochastischer Prozess modelliert. Sei der Beobachtungszeitraum $T = \{0,\ldots,n\}$ und der Zustandsraum $S = \{1, \ldots, m\}$. Ein Nutzer $u$ befindet sich zum Zeitpunkt $t \in T$ im Zustand $x_t \in S$. Ein Zustand entspricht der Mobilfunkzelle, an welcher der Nutzer angemeldet ist. Eine Bewegung von einer Mobilfunkzelle zur nächsten entspricht somit einer diskreten Zustandsänderung von $x_t$ zu $x_{t+1}$. Jeder Zustandsänderung wird eine Wahrscheinlichkeit in Abhängigkeit der vergangenen Zustände zugeordnet. Solche Modelle werden Markov-Modelle genannt.\footcite[Vgl.][S.~607~ff.]{bishop2006pattern} In den folgenden Absätzen sollen die zur Vorhersage verwendeten Modelle vorgestellt werden.
 
 Will man die nächste Position eines Nutzers vorhersagen, erscheint es nützlich, dies in Abhängigkeit der aktuellen Position zu tun. Das entstehende Markov-Modell ist eine Markov-Kette erster Ordnung.
 
@@ -187,14 +187,14 @@ Will man die nächste Position eines Nutzers vorhersagen, erscheint es nützlich, 
 			\scalefont{2}
 			\input{img/transition_chart.tex}
 			}\\
-		\footnotesize Quelle: \cite[In Anlehnung an][S.~611]{bishop2006pattern}
+		\footnotesize Quelle: In Anlehnung an \textcite{bishop2006pattern}, S.~611
 	\end{tabular}
 
 	\caption{Transitionsdiagramm für eine Markov-Kette erster Ordnung. Die Wahrscheinlichkeiten für einen Zustandsübergang von $x=i$ nach $x=j$ werden durch das Element $A_{ij}$ der zugehörigen Transitionsmatrix ausgedrückt.}
 	\label{img:transitions}
 \end{figure}
 
-Unter der Annahme stationärer Übergangswahrscheinlichkeiten\footnote{Hängt die Wahrscheinlichkeit $p(x_{t+1}|x_{t})$ für den Übergang von $x_t$ nach $x_{t+1}$ nicht von $t$ ab, spricht man von sogenannten stationären Übergangswahrscheinlichkeiten. Es spielt für den Übergang also keine Rolle an welchem Zeitpunkt er stattfindet. [CITATION MISSING (Lucas fragen)]} lässt sich das Modell mit Hilfe eines Transitionsdiagramms und der zugehörigen Transitionsmatrix beschreiben. Exemplarisch soll für die folgenden Erklärungen ein Modell mit drei Zuständen betrachtet werden. Das Transitionsdiagramm ist in Abbildung~\ref{img:transitions} dargestellt. Die zugehörigen Übergangswahrscheinlichkeiten werden in einer Transitionsmatrix der Form
+Unter der Annahme stationärer Übergangswahrscheinlichkeiten\footnote{Hängt die Wahrscheinlichkeit $p(x_{t+1}|x_{t})$ für den Übergang von $x_t$ nach $x_{t+1}$ nicht von $t$ ab, spricht man von sogenannten stationären Übergangswahrscheinlichkeiten. Es spielt für den Übergang also keine Rolle an welchem Zeitpunkt er stattfindet. Markov-Ketten mit stationären Übergangswahrscheinlichkeiten nennt man homogen. Vgl.~hierzu \textcite{ouvrard2009probabilites}, S.~411.} lässt sich das Modell mit Hilfe eines Transitionsdiagramms und der zugehörigen Transitionsmatrix beschreiben. Exemplarisch soll für die folgenden Erklärungen ein Modell mit drei Zuständen betrachtet werden. Das Transitionsdiagramm ist in Abbildung~\ref{img:transitions} dargestellt. Die zugehörigen Übergangswahrscheinlichkeiten werden in einer Transitionsmatrix der Form
 \begin{equation}
 A=\begin{bmatrix}
 A_{11} & A_{12} & A_{13} \\
@@ -202,7 +202,7 @@ A_{21} & A_{22} & A_{23} \\
 A_{31} & A_{32} & A_{33}
 \end{bmatrix}
 \end{equation}
-dargestellt, wobei $A_{ij}$ der Wahrscheinlichkeit $p(x_{t+1} = j | x_t=i)$ für den Zustandsübergang von $x=i$ nach $x=j$ entspricht. Zusätzlich müssen die Übergangswahrscheinlichkeiten in $A$ zeilenweise die Bedingungen an eine Wahrscheinlichkeitsverteilung erfüllen:
+dargestellt, wobei $A_{ij} = p(x_{t+1} = j | x_t=i)$ der Wahrscheinlichkeit für den Zustandsübergang von $x=i$ nach $x=j$ entspricht. Zusätzlich müssen die Übergangswahrscheinlichkeiten in $A$ zeilenweise die Bedingungen an eine Wahrscheinlichkeitsverteilung erfüllen:
 \begin{equation}
 \forall i,j \in S: A_{ij} \geq 0,
 \end{equation}
@@ -210,7 +210,12 @@ dargestellt, wobei $A_{ij}$ der Wahrscheinlichkeit $p(x_{t+1} = j | x_t=i)$ für 
 \forall i\in S: \sum_{j\in S} A_{ij} = 1.
 \end{equation}
 
-Andere Sichtweise: graphisches Modell.
+Das gerichtete graphische Modell einer Markov-Kette ist in Abbildung~\ref{img:graphical_model} dargestellt. Die Verbundverteilung der beobachteten Zustände $p(x_0, \ldots x_n)$ faktorisiert entsprechend der Unabhängigkeitsannahmen in
+\begin{equation}
+p(x_0, \ldots, x_n) = p(x_0) \prod\limits_{t=1}^{n}p(x_t | x_{t-1}).
+\end{equation}
+Die Parameter des Modells sind zum einen die Transitionsmatrix $A$, welche alle bedingten Wahrscheinlichkeiten enthält, sowie zum anderen der Vektor $\vec \pi$  mit $\pi_i = p(x_0 = i)$, welcher die Wahrscheinlichkeiten für die Startzustände angibt.
+
 
 \begin{figure}
 	\centering
@@ -222,24 +227,31 @@ Andere Sichtweise: graphisches Modell.
 	\label{img:graphical_model}
 \end{figure}
 
-\begin{itemize}
-\item Zustandsdiagramm
-\item Graphisches Modell
-\item ML-Schätzer
-\end{itemize}
-
 Markov-Ketten erster Ordnung treffen starke Unabhängigkeitsannahmen. Möchte man bei der Vorhersage nicht nur die direkte Vergangenheit betrachten, sondern weiter zurückblicken, müssen diese Annahmen abgeschwächt werden. Es ergeben sich Markov-Ketten höherer Ordnung. Entsprechend erhöht sich die Anzahl der Parameter des Modells. So berücksichtigt eine Markov-Kette zweiter Ordnung beim Vorhersagen von $x_{t+1}$ die Zustände $x_{t}$ und $x_{t-1}$. Die stationären Übergangswahrscheinlichkeiten einer Markov-Kette $n$-ter Ordnung können in einem $n+1$-dimensionalen Tensor repräsentiert werden.
 
-\begin{itemize}
-\item Unterschied zu 1. Ordnung
-\item Schätzer (Herleitung im Anhang?)
-\end{itemize}
-
 \subsubsection*{Parameterschätzung und Vorhersage}
+
+
 
 \section{Experimente}
 
 \subsection{Datensätze}
+
+\begin{figure}[p]
+\begin{center}
+\includegraphics*[width=1\linewidth]{cell_locations}
+\caption{Locations}
+\label{img:locations}
+\end{center}
+\end{figure} 
+
+\begin{figure}[p]
+\begin{center}
+\includegraphics*[width=.9\linewidth]{map.png}
+\caption{Karte}
+\label{img:map}
+\end{center}
+\end{figure} 
 
 \subsection{Untersuchung der Vorhersagegenauigkeit}
 
