@@ -19,6 +19,7 @@
 \usepackage{enumitem} % \begin{enumerate}[label={\alph*)}] \item \end{enumerate} für a) b) c)...
 \usepackage{amsmath}
 \usepackage{amssymb}
+\DeclareMathOperator*{\argmax}{\text{arg\,max}}
 \usepackage{setspace}
 \usepackage{ulem}
 	\normalem %stellt emph{} wieder auf kursiv, sonst unterstrichen
@@ -129,6 +130,7 @@
 CSV & Comma-Separated Value\\
 GSM & Global System for Mobile Communications\\
 GPS & Global Positioning System\\
+ML & Maximum Likelihood\\
 UMTS & Universal Mobile Telecommunications System
 \end{tabular}
 
@@ -227,11 +229,24 @@ Die Parameter des Modells sind zum einen die Transitionsmatrix $A$, welche alle 
 	\label{img:graphical_model}
 \end{figure}
 
-Markov-Ketten erster Ordnung treffen starke Unabhängigkeitsannahmen. Möchte man bei der Vorhersage nicht nur die direkte Vergangenheit betrachten, sondern weiter zurückblicken, müssen diese Annahmen abgeschwächt werden. Es ergeben sich Markov-Ketten höherer Ordnung. Entsprechend erhöht sich die Anzahl der Parameter des Modells. So berücksichtigt eine Markov-Kette zweiter Ordnung beim Vorhersagen von $x_{t+1}$ die Zustände $x_{t}$ und $x_{t-1}$. Die stationären Übergangswahrscheinlichkeiten einer Markov-Kette $n$-ter Ordnung können in einem $n+1$-dimensionalen Tensor repräsentiert werden.
+Markov-Ketten erster Ordnung treffen starke Unabhängigkeitsannahmen. Möchte man bei der Vorhersage nicht nur die direkte Vergangenheit betrachten, sondern weiter zurückblicken, müssen diese Annahmen abgeschwächt werden. Es ergeben sich Markov-Ketten höherer Ordnung. Entsprechend erhöht sich die Anzahl der Parameter des Modells. So berücksichtigt eine Markov-Kette zweiter Ordnung beim Vorhersagen von $x_{t+1}$ die Zustände $x_{t}$ und $x_{t-1}$. Die stationären Übergangswahrscheinlichkeiten einer Markov-Kette $k$-ter Ordnung können in einem $k+1$-dimensionalen Tensor repräsentiert werden.
 
 \subsubsection*{Parameterschätzung und Vorhersage}
 
+Zur Schätzung der Transitionsmatrix homogener Markov-Ketten erster Ordnung kann ein Maximum-Likelihood-Schätzer (ML) verwendet werden. Sei $N_{ij}$ die Anzahl der beobachteten Zustandsübergänge von Zustand $i$ nach Zustand $j$, dann ist der ML-Schätzer $\hat A$ für die Transitionsmatrix gegeben als\footnote{Vgl.~\cite{murphy2012machine},~S.~593}
+\begin{equation}
+\hat A_{ij} = \frac{N_{ij}}{\sum_{j}N_{ij}}.
+\end{equation}
+Bei gegebenem Zustand $x_{t} = i$ kann zur Vorhersage des nächsten Zustandes $\hat x_{t+1}$ der mit der größten Transitionswahrscheinlichkeit von $j$ ausgehend gewählt werden:
+\begin{equation}
+\hat x_{t+1} = \argmax_j\ \hat A_{ij},\quad x_{t} = i
+\end{equation}
 
+\begin{table}
+
+\caption{Schätzer und Vorhersage Markov-Ketten verschiedener Ordnung}
+\label{tab:markov}
+\end{table}
 
 \section{Experimente}
 
