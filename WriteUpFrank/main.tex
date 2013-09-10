@@ -19,7 +19,6 @@
 \usepackage{enumitem} % \begin{enumerate}[label={\alph*)}] \item \end{enumerate} für a) b) c)...
 \usepackage{amsmath}
 \usepackage{amssymb}
-\DeclareMathOperator*{\argmax}{\text{arg\,max}}
 \usepackage{setspace}
 \usepackage{ulem}
 	\normalem %stellt emph{} wieder auf kursiv, sonst unterstrichen
@@ -30,6 +29,7 @@
 \usepackage{mathptmx}
 \usepackage{nicefrac} 	
 \usepackage{tikz}
+\usepackage{tabularx}
 \usepackage{scalefnt}
 \usepackage{titlesec}
 \titlespacing{\section}{0pt}{*2.5}{*1.5}
@@ -41,14 +41,11 @@
 \usepackage{url}
 \urlstyle{leo}
 
-% Punkt + Komma Abstände bei Tausendern/Dezimalzahlen ans dt. anpassen
-% \mathcode`,="013B
-% \mathcode`.="613A
+\DeclareMathOperator*{\argmax}{\text{arg\,max}}
 
 %\usepackage{hyperref}
 \usepackage{csquotes}
 \usepackage{parcolumns}
-% \usepackage{parskip}
 
 \bibliography{literature}
 \usepackage[style=authoryear]{biblatex} 
@@ -241,10 +238,22 @@ Bei gegebenem Zustand $x_{t} = i$ kann zur Vorhersage des nächsten Zustandes $\h
 \begin{equation}
 \hat x_{t+1} = \argmax_j\ \hat A_{ij},\quad x_{t} = i
 \end{equation}
+Der Parameter $\vec \pi$ ist bei der Vorhersage unerheblich, sofern bereits eine Position bekannt ist. Er wird deshalb nicht geschätzt.
 
-\begin{table}
+Die Schätzer für die Transitionswahrscheinlichkeiten der Markov-Ketten höherer Ordnung sowie die zugehörige Vorhersagegleichung sind in Tabelle~\ref{tab:markov} dargestellt. Die Anzahl der Parameter (Elemente der Transitionsmatrix bzw. des Transitionstensors) wächst mit steigender Ordnung exponentiell.\footnote{Je weiter in die Vergangenheit geschaut wird, desto mehr Kombinationen von Zustandsübergängen gibt es. Da für jede Kombination die Summe der Übergangswahrscheinlichkeiten zu 1 summieren muss, werden nur $m^k \cdot (m-1)$ und nicht $m^{k+1}$ Parameter benötigt. Die letzte Wahrscheinlichkeit kann jeweils errechnet werden.} Die Herleitung der Schätzer findet sich in [CITATION NEEDED].
 
-\caption{Schätzer und Vorhersage Markov-Ketten verschiedener Ordnung}
+\renewcommand{\arraystretch}{1.2}
+\begin{table}[t]
+\centering
+\begin{tabular}{m{3cm}m{3.5cm}m{3cm}m{3.6cm}}
+\textbf{Modell} & \textbf{Anzahl Parameter} & \textbf{Schätzer} & \textbf{Vorhersage}\\
+\hline
+Markov-Kette erster Ordnung & $m \cdot (m - 1)$ & $\hat A_{ij} = \frac{N_{ij}}{\sum_{j}N_{ij}}$ & $\hat x_{t+1} = \argmax_j\ \hat A_{ij}$\\
+Markov-Kette zweiter Ordnung & $m^2 \cdot (m - 1)$ & $\hat A_{ijk} = \frac{N_{ijk}}{\sum_{k}N_{ijk}}$ & $\hat x_{t+1} = \argmax_k\ \hat A_{ijk}$\\
+Markov-Kette dritter Ordnung & $m^3 \cdot (m - 1)$ & $\hat A_{ijkl} = \frac{N_{ijkl}}{\sum_{l}N_{ijkl}}$ & $\hat x_{t+1} = \argmax_l\ \hat A_{ijkl}$\\
+
+\end{tabular}
+\caption{Eigenschaften von Markov-Ketten verschiedener Ordnung}
 \label{tab:markov}
 \end{table}
 
