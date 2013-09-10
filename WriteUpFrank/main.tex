@@ -160,6 +160,7 @@ Im ersten Abschnitt ...
 
 \section{Methoden}
 \subsection{Datenerhebung und -vorerarbeitung}
+\label{subsec:data_collection}
 
 Um Daten zur anschließenden Auswertung zu sammeln, wurde die Android-Anwendung \emph{AndroidDataCollection}\footnote{Quellcode und Dokumentation finden sich auf \emph{https://github.com/FRSB/AndroidDataCollection}.} entwickelt. Auf dem Mobiltelefon installiert, zeichnet sie minütlich Daten verschiedener Sensoren und Schnittstellen auf und speichert diese lokal in einer Datei. Für die in Abschnitt~\ref{subsec:analysis} beschriebenen Analysen sind folgende Informationen relevant: (1) Mobilfunkzellen-ID der aktuell verwendeten Zelle (GSM oder UMTS) und (2) Position des Mobiltelefons\footnote{Die Positionsbestimmung findet hierarchisch statt. Zunächst wird versucht, die ungefähre Position über die aktuell verwendete Mobilfunkzelle zu ermitteln. Falls ein Drahtlosnetzwerk zur Verfügung steht über das hinreichend genaue Positionsdaten verfügbar sind, wird die Position aktualisiert. Sollte das GPS-Signal anliegen und stark genug sein, überschreibt es die ungefähren Positionsdaten. So wird der API die bestmögliche Position übergeben. Nähere Informationen finden sich im Android Developers API Guide unter \emph{http://developer.android.com/guide/topics/location/strategies.html}.}.
 
@@ -177,23 +178,7 @@ Nach einer gewissen Zeit wird das Mobiltelefon über USB mit dem Computer verbund
 
 Die Bewegungen eines Mobiltelefonnutzers werden als zeitdiskreter stochastischer Prozess modelliert. Sei der Beobachtungszeitraum $T = \{0,\ldots,n\}$ und der Zustandsraum $S = \{1, \ldots, m\}$. Ein Nutzer $u$ befindet sich zum Zeitpunkt $t \in T$ im Zustand $x_t \in S$. Ein Zustand entspricht der Mobilfunkzelle, an welcher der Nutzer angemeldet ist. Eine Bewegung von einer Mobilfunkzelle zur nächsten entspricht somit einer diskreten Zustandsänderung von $x_t$ zu $x_{t+1}$. Jeder Zustandsänderung wird eine Wahrscheinlichkeit in Abhängigkeit der vergangenen Zustände zugeordnet. Solche Modelle werden Markov-Modelle genannt.\footcite[Vgl.][S.~607~ff.]{bishop2006pattern} In den folgenden Absätzen sollen die zur Vorhersage verwendeten Modelle vorgestellt werden.
 
-Will man die nächste Position eines Nutzers vorhersagen, erscheint es nützlich, dies in Abhängigkeit der aktuellen Position zu tun. Das entstehende Markov-Modell ist eine Markov-Kette erster Ordnung.
-
-\begin{figure}
-	\centering
-	\begin{tabular}{@{}r@{}}
-		\scalebox{.6}{%
-			\scalefont{2}
-			\input{img/transition_chart.tex}
-			}\\
-		\footnotesize Quelle: In Anlehnung an \textcite{bishop2006pattern}, S.~611
-	\end{tabular}
-
-	\caption{Transitionsdiagramm für eine Markov-Kette erster Ordnung. Die Wahrscheinlichkeiten für einen Zustandsübergang von $x=i$ nach $x=j$ werden durch das Element $A_{ij}$ der zugehörigen Transitionsmatrix ausgedrückt.}
-	\label{img:transitions}
-\end{figure}
-
-Unter der Annahme stationärer Übergangswahrscheinlichkeiten\footnote{Hängt die Wahrscheinlichkeit $p(x_{t+1}|x_{t})$ für den Übergang von $x_t$ nach $x_{t+1}$ nicht von $t$ ab, spricht man von sogenannten stationären Übergangswahrscheinlichkeiten. Es spielt für den Übergang also keine Rolle an welchem Zeitpunkt er stattfindet. Markov-Ketten mit stationären Übergangswahrscheinlichkeiten nennt man homogen. Vgl.~hierzu \textcite{ouvrard2009probabilites}, S.~411.} lässt sich das Modell mit Hilfe eines Transitionsdiagramms und der zugehörigen Transitionsmatrix beschreiben. Exemplarisch soll für die folgenden Erklärungen ein Modell mit drei Zuständen betrachtet werden. Das Transitionsdiagramm ist in Abbildung~\ref{img:transitions} dargestellt. Die zugehörigen Übergangswahrscheinlichkeiten werden in einer Transitionsmatrix der Form
+Will man die nächste Position eines Nutzers vorhersagen, erscheint es nützlich, dies in Abhängigkeit der aktuellen Position zu tun. Das entstehende Markov-Modell ist eine Markov-Kette erster Ordnung. Unter der Annahme stationärer Übergangswahrscheinlichkeiten\footnote{Hängt die Wahrscheinlichkeit $p(x_{t+1}|x_{t})$ für den Übergang von $x_t$ nach $x_{t+1}$ nicht von $t$ ab, spricht man von sogenannten stationären Übergangswahrscheinlichkeiten. Es spielt für den Übergang also keine Rolle an welchem Zeitpunkt er stattfindet. Markov-Ketten mit stationären Übergangswahrscheinlichkeiten nennt man homogen. Vgl.~hierzu \textcite{ouvrard2009probabilites}, S.~411.} lässt sich das Modell mit Hilfe eines Transitionsdiagramms und der zugehörigen Transitionsmatrix beschreiben. Exemplarisch soll für die folgenden Erklärungen ein Modell mit drei Zuständen betrachtet werden. Das Transitionsdiagramm ist in Abbildung~\ref{img:transitions} dargestellt. Die zugehörigen Übergangswahrscheinlichkeiten werden in einer Transitionsmatrix der Form
 \begin{equation}
 A=\begin{bmatrix}
 A_{11} & A_{12} & A_{13} \\
@@ -208,6 +193,20 @@ dargestellt, wobei $A_{ij} = p(x_{t+1} = j | x_t=i)$ der Wahrscheinlichkeit für 
 \begin{equation}
 \forall i\in S: \sum_{j\in S} A_{ij} = 1.
 \end{equation}
+
+\begin{figure}[t]
+	\centering
+	\begin{tabular}{@{}r@{}}
+		\scalebox{.6}{%
+			\scalefont{2}
+			\input{img/transition_chart.tex}
+			}\\
+		\footnotesize Quelle: In Anlehnung an \textcite{bishop2006pattern}, S.~611
+	\end{tabular}
+
+	\caption{Transitionsdiagramm für eine Markov-Kette erster Ordnung. Die Wahrscheinlichkeiten für einen Zustandsübergang von $x=i$ nach $x=j$ werden durch das Element $A_{ij}$ der zugehörigen Transitionsmatrix ausgedrückt.}
+	\label{img:transitions}
+\end{figure}
 
 Das gerichtete graphische Modell einer Markov-Kette ist in Abbildung~\ref{img:graphical_model} dargestellt. Die Verbundverteilung der beobachteten Zustände $p(x_0, \ldots x_n)$ faktorisiert entsprechend der Unabhängigkeitsannahmen in
 \begin{equation}
@@ -238,7 +237,7 @@ Bei gegebenem Zustand $x_{t} = i$ kann zur Vorhersage des nächsten Zustandes $\h
 \begin{equation}
 \hat x_{t+1} = \argmax_j\ \hat A_{ij},\quad x_{t} = i
 \end{equation}
-Der Parameter $\vec \pi$ ist bei der Vorhersage unerheblich, sofern bereits eine Position bekannt ist. Er wird deshalb nicht geschätzt.
+Der Parameter $\vec \pi = p(x_0)$ ist bei der Vorhersage unerheblich, sofern bereits eine Position bekannt ist. Er wird deshalb nicht geschätzt.
 
 Die Schätzer für die Transitionswahrscheinlichkeiten der Markov-Ketten höherer Ordnung sowie die zugehörige Vorhersagegleichung sind in Tabelle~\ref{tab:markov} dargestellt. Die Anzahl der Parameter (Elemente der Transitionsmatrix bzw. des Transitionstensors) wächst mit steigender Ordnung exponentiell.\footnote{Je weiter in die Vergangenheit geschaut wird, desto mehr Kombinationen von Zustandsübergängen gibt es. Da für jede Kombination die Summe der Übergangswahrscheinlichkeiten zu 1 summieren muss, werden nur $m^k \cdot (m-1)$ und nicht $m^{k+1}$ Parameter benötigt. Die letzte Wahrscheinlichkeit kann jeweils errechnet werden.} Die Herleitung der Schätzer findet sich in [CITATION NEEDED].
 
@@ -250,8 +249,7 @@ Die Schätzer für die Transitionswahrscheinlichkeiten der Markov-Ketten höherer O
 \hline
 Markov-Kette erster Ordnung & $m \cdot (m - 1)$ & $\hat A_{ij} = \frac{N_{ij}}{\sum_{j}N_{ij}}$ & $\hat x_{t+1} = \argmax_j\ \hat A_{ij}$\\
 Markov-Kette zweiter Ordnung & $m^2 \cdot (m - 1)$ & $\hat A_{ijk} = \frac{N_{ijk}}{\sum_{k}N_{ijk}}$ & $\hat x_{t+1} = \argmax_k\ \hat A_{ijk}$\\
-Markov-Kette dritter Ordnung & $m^3 \cdot (m - 1)$ & $\hat A_{ijkl} = \frac{N_{ijkl}}{\sum_{l}N_{ijkl}}$ & $\hat x_{t+1} = \argmax_l\ \hat A_{ijkl}$\\
-
+Markov-Kette dritter Ordnung & $m^3 \cdot (m - 1)$ & $\hat A_{ijkl} = \frac{N_{ijkl}}{\sum_{l}N_{ijkl}}$ & $\hat x_{t+1} = \argmax_l\ \hat A_{ijkl}$
 \end{tabular}
 \caption{Eigenschaften von Markov-Ketten verschiedener Ordnung}
 \label{tab:markov}
@@ -260,6 +258,27 @@ Markov-Kette dritter Ordnung & $m^3 \cdot (m - 1)$ & $\hat A_{ijkl} = \frac{N_{i
 \section{Experimente}
 
 \subsection{Datensätze}
+
+\newcommand{\SB}{SB}
+\newcommand{\MB}{MB}
+
+Während des Projekts wurden mit Hilfe der in Abschnitt~\ref{subsec:data_collection} vorgestellten Software von zwei Freiwilligen Mobilfunknutzern innerhalb eines Monats Daten gesammelt. Tabelle~\ref{tab:datasets} zeigt Größe und ... der Daten nach der Vorverarbeitung.
+
+\renewcommand{\arraystretch}{1.4}
+\newcolumntype{R}[1]{>{\raggedright\arraybackslash}m{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}m{#1}}
+\begin{table}[t]
+\centering
+\begin{tabular}{m{2cm}C{2.5cm}C{3cm}C{5cm}@{}}
+\textbf{Datensatz} & \textbf{Anzahl Zustände} & \textbf{Anzahl Beobachtunge\-n} & \textbf{Häufigkeitsverteilung\newline der Zustände}\\
+\hline
+\SB & 78 & 603 & \includegraphics*[width=5cm, trim=2cm 2cm 1.5cm 1cm]{sb_cell_table}\\
+\MB & 156 & 1533 &  
+\includegraphics*[width=5cm, trim=2cm 2cm 1.5cm 1.5cm]{mb_cell_table}
+\end{tabular}
+\caption{Metadaten der zwei gesammelten Datensätze}
+\label{tab:datasets}
+\end{table}
 
 \begin{figure}[p]
 \begin{center}
