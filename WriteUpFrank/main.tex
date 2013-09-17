@@ -180,13 +180,13 @@ Die Bewegungen eines Mobiltelefonnutzers werden als zeitdiskreter stochastischer
 
 Will man die nächste Position eines Nutzers vorhersagen, erscheint es nützlich, dies in Abhängigkeit der aktuellen Position zu tun. Das entstehende Markov-Modell ist eine Markov-Kette erster Ordnung. Unter der Annahme stationärer Übergangswahrscheinlichkeiten\footnote{Hängt die Wahrscheinlichkeit $p(x_{t+1}|x_{t})$ für den Übergang von $x_t$ nach $x_{t+1}$ nicht von $t$ ab, spricht man von sogenannten stationären Übergangswahrscheinlichkeiten. Es spielt für den Übergang also keine Rolle an welchem Zeitpunkt er stattfindet. Markov-Ketten mit stationären Übergangswahrscheinlichkeiten nennt man homogen. Vgl.~hierzu \textcite{ouvrard2009probabilites}, S.~411.} lässt sich das Modell mit Hilfe eines Transitionsdiagramms und der zugehörigen Transitionsmatrix beschreiben. Exemplarisch soll für die folgenden Erklärungen ein Modell mit drei Zuständen betrachtet werden. Das Transitionsdiagramm ist in Abbildung~\ref{img:transitions} dargestellt. Die zugehörigen Übergangswahrscheinlichkeiten werden in einer Transitionsmatrix der Form
 \begin{equation}
-A=\begin{bmatrix}
+\mathbf{A}=\begin{bmatrix}
 A_{11} & A_{12} & A_{13} \\
 A_{21} & A_{22} & A_{23} \\
 A_{31} & A_{32} & A_{33}
 \end{bmatrix}
 \end{equation}
-dargestellt, wobei $A_{ij} = p(x_{t+1} = j | x_t=i)$ der Wahrscheinlichkeit für den Zustandsübergang von $x=i$ nach $x=j$ entspricht. Zusätzlich müssen die Übergangswahrscheinlichkeiten in $A$ zeilenweise die Bedingungen an eine Wahrscheinlichkeitsverteilung erfüllen:
+dargestellt, wobei $A_{ij} = p(x_{t+1} = j | x_t=i)$ der Wahrscheinlichkeit für den Zustandsübergang von $x=i$ nach $x=j$ entspricht. Zusätzlich müssen die Übergangswahrscheinlichkeiten in $\mathbf{A}$ zeilenweise die Bedingungen an eine Wahrscheinlichkeitsverteilung erfüllen:
 \begin{equation}
 \forall i,j \in S: A_{ij} \geq 0,
 \end{equation}
@@ -212,7 +212,7 @@ Das gerichtete graphische Modell einer Markov-Kette ist in Abbildung~\ref{img:gr
 \begin{equation}
 p(x_0, \ldots, x_n) = p(x_0) \prod\limits_{t=1}^{n}p(x_t | x_{t-1}).
 \end{equation}
-Die Parameter des Modells sind zum einen die Transitionsmatrix $A$, welche alle bedingten Wahrscheinlichkeiten enthält, sowie zum anderen der Vektor $\vec \pi$  mit $\pi_i = p(x_0 = i)$, welcher die Wahrscheinlichkeiten für die Startzustände angibt.
+Die Parameter des Modells sind zum einen die Transitionsmatrix $\mathbf{A}$, welche alle bedingten Wahrscheinlichkeiten enthält, sowie zum anderen der Vektor $\vec \pi$  mit $\pi_i = p(x_0 = i)$, welcher die Wahrscheinlichkeiten für die Startzustände angibt.
 
 
 \begin{figure}
@@ -225,11 +225,11 @@ Die Parameter des Modells sind zum einen die Transitionsmatrix $A$, welche alle 
 	\label{img:graphical_model}
 \end{figure}
 
-Markov-Ketten erster Ordnung treffen starke Unabhängigkeitsannahmen. Möchte man bei der Vorhersage nicht nur die direkte Vergangenheit betrachten, sondern weiter zurückblicken, müssen diese Annahmen abgeschwächt werden. Es ergeben sich Markov-Ketten höherer Ordnung. Entsprechend erhöht sich die Anzahl der Parameter des Modells. So berücksichtigt eine Markov-Kette zweiter Ordnung beim Vorhersagen von $x_{t+1}$ die Zustände $x_{t}$ und $x_{t-1}$. Die stationären Übergangswahrscheinlichkeiten einer Markov-Kette $k$-ter Ordnung können in einem $k+1$-dimensionalen Tensor repräsentiert werden.
+Markov-Ketten erster Ordnung treffen starke Unabhängigkeitsannahmen. Möchte man bei der Vorhersage nicht nur die direkte Vergangenheit betrachten, sondern weiter zurückblicken, müssen diese Annahmen abgeschwächt werden. Es ergeben sich Markov-Ketten höherer Ordnung. Entsprechend erhöht sich die Anzahl der Parameter des Modells. So berücksichtigt eine Markov-Kette zweiter Ordnung beim Vorhersagen von $x_{t+1}$ die Zustände $x_{t}$ und $x_{t-1}$. Die stationären Übergangswahrscheinlichkeiten einer Markov-Kette $d$-ter Ordnung können in einem $d+1$-dimensionalen Tensor repräsentiert werden.
 
 \subsubsection*{Parameterschätzung und Vorhersage}
 
-Zur Schätzung der Transitionsmatrix homogener Markov-Ketten erster Ordnung kann ein Maximum-Likelihood-Schätzer (ML) verwendet werden. Sei $N_{ij}$ die Anzahl der beobachteten Zustandsübergänge von Zustand $i$ nach Zustand $j$, dann ist der ML-Schätzer $\hat A$ für die Transitionsmatrix gegeben als\footnote{Vgl.~\cite{murphy2012machine},~S.~593}
+Zur Schätzung der Transitionsmatrix homogener Markov-Ketten erster Ordnung kann ein Maximum-Likelihood-Schätzer (ML) verwendet werden. Sei $N_{ij}$ die Anzahl der beobachteten Zustandsübergänge von Zustand $i$ nach Zustand $j$, dann ist der ML-Schätzer $\mathbf{\hat A}$ für die Transitionsmatrix gegeben als\footnote{Vgl.~\cite{murphy2012machine},~S.~593}
 \begin{equation}
 \hat A_{ij} = \frac{N_{ij}}{\sum_{j}N_{ij}}.
 \end{equation}
@@ -239,7 +239,7 @@ Bei gegebenem Zustand $x_{t} = i$ kann zur Vorhersage des nächsten Zustandes $\h
 \end{equation}
 Der Parameter $\vec \pi = p(x_0)$ ist bei der Vorhersage unerheblich, sofern bereits eine Position bekannt ist. Er wird deshalb nicht geschätzt.
 
-Die Schätzer für die Transitionswahrscheinlichkeiten der Markov-Ketten höherer Ordnung sowie die zugehörige Vorhersagegleichung sind in Tabelle~\ref{tab:markov} dargestellt. Die Anzahl der Parameter (Elemente der Transitionsmatrix bzw. des Transitionstensors) wächst mit steigender Ordnung exponentiell.\footnote{Je weiter in die Vergangenheit geschaut wird, desto mehr Kombinationen von Zustandsübergängen gibt es. Da für jede Kombination die Summe der Übergangswahrscheinlichkeiten zu 1 summieren muss, werden nur $m^k \cdot (m-1)$ und nicht $m^{k+1}$ Parameter benötigt. Die letzte Wahrscheinlichkeit kann jeweils errechnet werden.} Die Herleitung der Schätzer findet sich in [CITATION NEEDED].
+Die Schätzer für die Transitionswahrscheinlichkeiten der Markov-Ketten höherer Ordnung sowie die zugehörige Vorhersagegleichung sind in Tabelle~\ref{tab:markov} dargestellt. Die Anzahl der Parameter (Elemente der Transitionsmatrix bzw. des Transitionstensors) wächst mit steigender Ordnung exponentiell.\footnote{Je weiter in die Vergangenheit geschaut wird, desto mehr Kombinationen von Zustandsübergängen gibt es. Da für jede Kombination die Summe der Übergangswahrscheinlichkeiten zu 1 summieren muss, werden nur $m^k \cdot (m-1)$ und nicht $m^{k+1}$ Parameter benötigt. Die letzte Wahrscheinlichkeit kann jeweils errechnet werden.} Die Herleitung der Schätzer findet sich in Anhang A.
 
 \renewcommand{\arraystretch}{1.2}
 \begin{table}[t]
@@ -280,6 +280,8 @@ Während des Projekts wurden mit Hilfe der in Abschnitt~\ref{subsec:data_collecti
 \label{tab:datasets}
 \end{table}
 
+Visualisierung der Zellen ...
+
 \begin{figure}[p]
 \begin{center}
 \includegraphics*[width=1\linewidth]{cell_locations}
@@ -298,6 +300,10 @@ Während des Projekts wurden mit Hilfe der in Abschnitt~\ref{subsec:data_collecti
 
 \subsection{Untersuchung der Vorhersagegenauigkeit}
 
+Markov Ketten angewendet
+
+Evaluation erklären
+
 \begin{figure}[p]
 \begin{center}
 \includegraphics*[width=.9\linewidth]{prediction_accuracy_sb}
@@ -314,8 +320,10 @@ Während des Projekts wurden mit Hilfe der in Abschnitt~\ref{subsec:data_collecti
 \end{center}
 \end{figure}
 
+Diskussion der Ergebnisse
 \begin{itemize}
-\item 
+\item Modellkomplexität zu hoch -> unterbestimmt
+\item Anzahl parameter zu hoch -> Laufzeitschwierigkeiten bei 3. Ordnung
 \end{itemize}
 
 \section{Schlussbetrachtung}
@@ -337,9 +345,41 @@ Kritik/Erweiterungsmöglichkeiten:
 \newpage
 
 \parskip 12pt %Absatzabstand
-\renewcommand{\baselinestretch}{1.00}\normalsize
+\renewcommand{\baselinestretch}{1.50}\normalsize
 
 \printbibliography
+
+\section*{Anhang A\quad Schätzer für Markov-Ketten}
+
+Gegeben sei eine zeitdiskrete, homogene Markov-Kette $d$-ter Ordnung mit $m$ Zuständen aus dem Zustandsraum $S$. Die Transitionswahrscheinlichkeiten sind im $(d+1)$-dimensionalen Transitionstensor $\mathbf{A} \in \mathbb{R}^{d+1}$ beschrieben. Mit Hilfe beobachteter Zustandsübergänge lassen sich die Transitionswahrscheinlichkeiten schätzen. 
+
+\subsubsection*{Maximum-Likelihood-Schätzung für Markov-Ketten zweiter Ordnung}
+
+Seien $A_{ijk} \in \mathbf{A}$ die Übergangswahrscheinlichkeiten $p(x_{t+1} = k|x_{t} = j, x_{t-1} = i)$ von den Zuständen $i$ und $j$ nach $k$. Sei $N_{ijk}$ die Anzahl der in den Daten beobachteten Zustandsübergänge von $i$ und $j$ nach $k$. Dann ist die Likelihood beobachteter Zustandsübergänge gegeben als [CITATION NEEDED]
+\begin{align}
+p(x_2,\ldots,x_n | \mathbf{A}) &= \prod\limits_{i = 1}^{m} \prod\limits_{j = 1}^{m} \prod\limits_{k = 1}^{m} \prod\limits_{h = 2}^{n} A_{ijk}^{\mathbb{I}[x_h = k]}\\
+&= \prod\limits_{i = 1}^{m}\prod\limits_{j = 1}^{m}\prod\limits_{k = 1}^{m} A_{ijk}^{N_{ij\,k}}\\
+&= p(N_{ijk}|\mathbf{A})
+\end{align}
+Logarithmieren der Likelihood ergibt:
+\begin{align}
+\log p(N_{ijk}|\mathbf{A}) &= \sum\limits_{i=1}^{m} \sum\limits_{j=1}^{m} \sum\limits_{k=1}^{m} \log A_{ijk}^{N_{ij\,k}}\\
+&= \sum\limits_{i=1}^{m} \sum\limits_{j=1}^{m} \sum\limits_{k=1}^{m} N_{ij\,k} \cdot \log A_{ijk}
+\end{align}
+Nun muss die Log-Likelihood unter den Nebenbedingungen $\forall i,j\in S : \sum\limits_{k=1}^{m} A_{ijk} = 1$ mit Hilfe der Lagrange-Methode maximiert werden, um den Maximum-Likelihood-Schätzer $\mathbf{\hat A}$ des Transitionstensors zu erhalten. Zunächst wird die Langrangefunktion $L(\mathbf{A}, \mathbf{\lambda})$ aufgestellt und anschließend durch Null-Setzen der partiellen Ableitungen maximiert.
+\begin{align}
+L(\mathbf{A}, \mathbf{\lambda}) &= \sum\limits_{i=1}^{m} \sum\limits_{j=1}^{m} \sum\limits_{k=1}^{m} N_{ij\,k} \cdot \log A_{ijk} - \sum\limits_{i=1}^{m} \sum\limits_{j=1}^{m} \lambda_{ij} \left(\left(\sum\limits_{k=1}^{m}A_{ijk}\right)-1\right)
+\end{align}
+\begin{align}
+\frac{\partial L(\mathbf{A}, \mathbf{\lambda})}{\partial A_{ijk}} &= \frac{N_{ijk}}{A_{ijk}} - \lambda_{ij}\\
+\text{FOC:\quad} \frac{N_{ijk}}{A_{ijk}} - \lambda_{ij} &= 0\\
+A_{ijk} &= \frac{N_{ijk}}{\lambda_{ij}}
+\end{align}
+\begin{align}
+\frac{\partial L(\mathbf{A}, \mathbf{\lambda})}{\partial \lambda_{ij}} &= 1- \sum\limits_{k=1}^{m} A_{ijk}\\
+\text{FOC:\quad} 1- \sum\limits_{k=1}^{m} A_{ijk} &= 0\\
+s
+\end{align}
 
 \section*{Anhang}
 
