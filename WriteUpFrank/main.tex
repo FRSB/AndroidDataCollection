@@ -349,13 +349,16 @@ Kritik/Erweiterungsmöglichkeiten:
 
 \printbibliography
 
+\newpage
+
 \section*{Anhang A\quad Schätzer für Markov-Ketten}
 
 Gegeben sei eine zeitdiskrete, homogene Markov-Kette $d$-ter Ordnung mit $m$ Zuständen aus dem Zustandsraum $S$. Die Transitionswahrscheinlichkeiten sind im $(d+1)$-dimensionalen Transitionstensor $\mathbf{A} \in \mathbb{R}^{d+1}$ beschrieben. Mit Hilfe beobachteter Zustandsübergänge lassen sich die Transitionswahrscheinlichkeiten schätzen. 
 
 \subsubsection*{Maximum-Likelihood-Schätzung für Markov-Ketten zweiter Ordnung}
 
-Seien $A_{ijk} \in \mathbf{A}$ die Übergangswahrscheinlichkeiten $p(x_{t+1} = k|x_{t} = j, x_{t-1} = i)$ von den Zuständen $i$ und $j$ nach $k$. Sei $N_{ijk}$ die Anzahl der in den Daten beobachteten Zustandsübergänge von $i$ und $j$ nach $k$. Dann ist die Likelihood beobachteter Zustandsübergänge gegeben als [CITATION NEEDED]
+\vspace*{-1em}
+Seien $A_{ijk} \in \mathbf{A}$ die Übergangswahrscheinlichkeiten $p(x_{t+1} = k|x_{t} = j, x_{t-1} = i)$ von den Zuständen $i$ und $j$ nach $k$. Sei $N_{ijk}$ die Anzahl der in den Daten beobachteten Zustandsübergänge von $i$ und $j$ nach $k$. Dann ist die Likelihood beobachteter Zustandsübergänge gegeben als
 \begin{align}
 p(x_2,\ldots,x_n | \mathbf{A}) &= \prod\limits_{i = 1}^{m} \prod\limits_{j = 1}^{m} \prod\limits_{k = 1}^{m} \prod\limits_{h = 2}^{n} A_{ijk}^{\mathbb{I}[x_h = k]}\\
 &= \prod\limits_{i = 1}^{m}\prod\limits_{j = 1}^{m}\prod\limits_{k = 1}^{m} A_{ijk}^{N_{ij\,k}}\\
@@ -371,14 +374,16 @@ Nun muss die Log-Likelihood unter den Nebenbedingungen $\forall i,j\in S : \sum\
 L(\mathbf{A}, \mathbf{\lambda}) &= \sum\limits_{i=1}^{m} \sum\limits_{j=1}^{m} \sum\limits_{k=1}^{m} N_{ij\,k} \cdot \log A_{ijk} - \sum\limits_{i=1}^{m} \sum\limits_{j=1}^{m} \lambda_{ij} \left(\left(\sum\limits_{k=1}^{m}A_{ijk}\right)-1\right)
 \end{align}
 \begin{align}
-\frac{\partial L(\mathbf{A}, \mathbf{\lambda})}{\partial A_{ijk}} &= \frac{N_{ijk}}{A_{ijk}} - \lambda_{ij}\\
-\text{FOC:\quad} \frac{N_{ijk}}{A_{ijk}} - \lambda_{ij} &= 0\\
+\frac{\partial L(\mathbf{A}, \mathbf{\lambda})}{\partial A_{ijk}} &= \frac{N_{ijk}}{A_{ijk}} - \lambda_{ij}\notag \\
+\text{FOC:\quad} \frac{N_{ijk}}{A_{ijk}} - \lambda_{ij} &= 0 \notag \\
 A_{ijk} &= \frac{N_{ijk}}{\lambda_{ij}}\label{eq:a_ijk}
 \end{align}
+
+\vspace*{-3em}
 \begin{align}
-\frac{\partial L(\mathbf{A}, \mathbf{\lambda})}{\partial \lambda_{ij}} &= 1- \sum\limits_{k=1}^{m} A_{ijk}\\
-\text{FOC:\quad} 1- \sum\limits_{k=1}^{m} A_{ijk} &= 0\\
-1- \sum\limits_{k=1}^{m} \frac{N_{ijk}}{\lambda_{ij}} &= 0\\
+\frac{\partial L(\mathbf{A}, \mathbf{\lambda})}{\partial \lambda_{ij}} &= 1- \sum\limits_{k=1}^{m} A_{ijk} \notag \\
+\text{FOC:\quad} 1- \sum\limits_{k=1}^{m} A_{ijk} &= 0 \notag \\
+1- \sum\limits_{k=1}^{m} \frac{N_{ijk}}{\lambda_{ij}} &= 0 \notag \\
 \lambda_{ij} &= \sum\limits_{k=1}^{m} N_{ijk}\label{eq:lambda_ij}
 \end{align}
 Durch Einsetzen von (\ref{eq:lambda_ij}) in (\ref{eq:a_ijk}) ergibt sich der Schätzer für die Transitionswahrscheinlichkeiten einer Markov-Kette zweiter Ordnung: 
@@ -386,39 +391,43 @@ Durch Einsetzen von (\ref{eq:lambda_ij}) in (\ref{eq:a_ijk}) ergibt sich der Sch
 \hat{A}_{ijk} = \frac{N_{ijk}}{\sum\limits_{k=1}^{m} N_{ijk}}
 \end{align}
 
-\section*{Anhang}
+\subsubsection*{Maximum-Likelihood-Schätzung für Markov-Ketten dritter Ordnung}
 
-\begin{itemize}
-\item im folgenden am Beispiel Markov-Ketten erster Ordnung
-\item Zeitdiskrete Markov-Kette
-\item Zustandsraum $S \in \{1, 2, 3, \ldots\}$
-\item homogene Markov-Kette: $p_{ij}(t)=p_{ij}$ (stationäre Übergangswahrscheinlichkeiten)
-\item $P = p_{ij}$ ist Übergangsmatrix ($p_{ij} \geq 0$, $\sum_{j_\in S} p_{ij} = 1$)
-\item Stochastischer Prozess $X=\{X_t, t\in N_0\}$, $S$ diskret heißt Markov-Kette $p$-ter Ordnung, gdw. $\forall i_0, i_1, \ldots, i_{t+1} \in S, t \geq p+1$ gilt\\
-$P(X_{t+1} = i_{t+1} | X_t=i_t, \ldots, X_{t-p+1} = i_{t-p+1}, \ldots, X_0 = i_0)$\\
-$= P(X_{t+1} = i_{t+1} | X_t=i_t, \ldots, X_{t-p+1} = i_{t-p+1})$ (Markov-Eigenschaft)
-\item Inferenz bei homogenen Markov-Ketten erster Ordnung $\hat p_{ij} = \frac{n_{ij}}{n_{i}}$, mit $n_{ij}$ als Anzahl beobachteter Übergänge von $i$ nach $j$.
-\item \textbf{Maximum Likelihood erster Ordnung}
-\begin{enumerate}
-%\item $ \displaystyle L(p_0,P|X) = \prod_{t=1}^T L(x_t|x_{t-1}, P) \cdot L(x_0|p_0)$
-%\item $ \displaystyle L(p_0,P) = P(X_0 = i_0, \ldots, X_T = i_T)$
-%\item $ \displaystyle L(P) =p_{i_0}\cdot p_{i_0i_1}\cdot \ldots \cdot p_{i_{T-1}i_T}$
-\item Likelihood:\\
-$ \displaystyle L(P) = \prod_{i=1}^m\prod_{j=1}^m p_{ij}^{n_{ij}},\quad i,j \in \text{Zustandsraum}$
-% Problem ist noch erster und letzter Zustand!
-\item Log-Likelihood:\\
-$ \displaystyle l(P) = \sum_{i=1}^m\sum_{j=1}^m n_{ij} \cdot \ln p_{ij},\quad s.t.\ \forall i: \sum_{j=1}^m p_{ij}=1$
-\item $ \displaystyle \mathcal L(P, \lambda_1, \ldots, \lambda_m) = \sum_{i=1}^m \sum_{j=1}^m n_{ij} \ln(p_{ij}) - \sum_{i=1}^m \lambda_i \left(\left(\sum_{j=1}^m p_{ij}\right) - 1 \right)$
-\item $ \displaystyle \frac{\partial \mathcal L}{\partial p_{ij}} = \frac{n_{ij}}{p_{ij}} - \lambda_i$
-\item FOC: $ \displaystyle \frac{n_{ij}}{p_{ij}} - \lambda_i = 0\quad \Leftrightarrow \quad p_{ij} = \frac{n_{ij}}{\lambda_i}$
-\item $ \displaystyle \frac{\partial \mathcal L}{\partial \lambda_{i}} = 1 - \sum_{j=1}^m p_{ij}$
-\item FOC: $ \displaystyle 1 - \sum_{j=1}^m p_{ij} = 0$
-\item $ \displaystyle 1 - \sum_{j=1}^m \frac{n_{ij}}{\lambda_i} = 0$
-\item $ \displaystyle \sum_{j=1}^m n_{ij} = \lambda_i$
-\item $ \displaystyle \hat p_{ij} = \frac{n_{ij}}{\sum_{j=1}^m n_{ij}}$
-\end{enumerate}
-\end{itemize}
+\vspace*{-1em}
+Seien $A_{ijkl} \in \mathbf{A}$ die Übergangswahrscheinlichkeiten $p(x_{t+1} = l|x_{t} = k, x_{t-1} = j, x_{t-2} = i)$ von den Zuständen $i$, $j$ und $k$ nach $l$. Sei $N_{ijkl}$ die Anzahl der in den Daten beobachteten Zustandsübergänge von $i$, $j$ und $k$ nach $l$. Dann ist die Likelihood beobachteter Zustandsübergänge gegeben als
+\begin{align}
+p(x_3,\ldots,x_n | \mathbf{A}) &= \prod\limits_{i = 1}^{m} \prod\limits_{j = 1}^{m} \prod\limits_{k = 1}^{m} \prod\limits_{l = 1}^{m} \prod\limits_{h = 3}^{n} A_{ijkl}^{\mathbb{I}[x_h = l]}\\
+&= \prod\limits_{i = 1}^{m}\prod\limits_{j = 1}^{m}\prod\limits_{k = 1}^{m} \prod\limits_{l = 1}^{m} A_{ijkl}^{N_{ij\,kl}}\\
+&= p(N_{ijkl}|\mathbf{A})
+\end{align}
+Logarithmieren der Likelihood ergibt:
+\begin{align}
+\log p(N_{ijkl}|\mathbf{A}) &= \sum\limits_{i=1}^{m} \sum\limits_{j=1}^{m} \sum\limits_{k=1}^{m} \sum\limits_{l=1}^{m} \log A_{ijkl}^{N_{ij\,kl}}\\
+&= \sum\limits_{i=1}^{m} \sum\limits_{j=1}^{m} \sum\limits_{k=1}^{m} \sum\limits_{l=1}^{m} N_{ij\,kl} \cdot \log A_{ijkl}
+\end{align}
+Nun muss die Log-Likelihood unter den Nebenbedingungen $\forall i,j,k\in S : \sum\limits_{l=1}^{m} A_{ijkl} = 1$ mit Hilfe der Lagrange-Methode maximiert werden, um den Maximum-Likelihood-Schätzer $\mathbf{\hat A}$ des Transitionstensors zu erhalten. Zunächst wird die Langrangefunktion $L(\mathbf{A}, \mathbf{\lambda})$ aufgestellt und anschließend durch Null-Setzen der partiellen Ableitungen maximiert.
+\begin{align}
+L(\mathbf{A}, \mathbf{\lambda}) &= \sum\limits_{i=1}^{m} \sum\limits_{j=1}^{m} \sum\limits_{k=1}^{m} \sum\limits_{l=1}^{m} N_{ij\,kl} \cdot \log A_{ijkl} - \sum\limits_{i=1}^{m} \sum\limits_{j=1}^{m} \sum\limits_{k=1}^{m} \lambda_{ijk} \left(\left(\sum\limits_{l=1}^{m}A_{ijkl}\right)-1\right)
+\end{align}
 
+\vspace*{-3em}
+\begin{align}
+\frac{\partial L(\mathbf{A}, \mathbf{\lambda})}{\partial A_{ijkl}} &= \frac{N_{ijkl}}{A_{ijkl}} - \lambda_{ijk} \notag \\
+\text{FOC:\quad} \frac{N_{ijkl}}{A_{ijkl}} - \lambda_{ijk} &= 0 \notag \\
+A_{ijkl} &= \frac{N_{ijkl}}{\lambda_{ijk}}\label{eq:a_ijkl}
+\end{align}
+
+\vspace*{-3em}
+\begin{align}
+\frac{\partial L(\mathbf{A}, \mathbf{\lambda})}{\partial \lambda_{ijk}} &= 1- \sum\limits_{l=1}^{m} A_{ijkl} \notag \\
+\text{FOC:\quad} 1- \sum\limits_{l=1}^{m} A_{ijkl} &= 0 \notag \\
+1- \sum\limits_{l=1}^{m} \frac{N_{ijkl}}{\lambda_{ijk}} &= 0 \notag \\
+\lambda_{ijk} &= \sum\limits_{l=1}^{m} N_{ijkl}\label{eq:lambda_ijk}
+\end{align}
+Durch Einsetzen von (\ref{eq:lambda_ijk}) in (\ref{eq:a_ijkl}) ergibt sich der Schätzer für die Transitionswahrscheinlichkeiten einer Markov-Kette dritter Ordnung: 
+\begin{align}
+\hat{A}_{ijkl} = \frac{N_{ijkl}}{\sum\limits_{l=1}^{m} N_{ijkl}}
+\end{align}
 
 \end{document}
 
