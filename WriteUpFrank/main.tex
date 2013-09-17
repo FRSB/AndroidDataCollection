@@ -373,12 +373,17 @@ L(\mathbf{A}, \mathbf{\lambda}) &= \sum\limits_{i=1}^{m} \sum\limits_{j=1}^{m} \
 \begin{align}
 \frac{\partial L(\mathbf{A}, \mathbf{\lambda})}{\partial A_{ijk}} &= \frac{N_{ijk}}{A_{ijk}} - \lambda_{ij}\\
 \text{FOC:\quad} \frac{N_{ijk}}{A_{ijk}} - \lambda_{ij} &= 0\\
-A_{ijk} &= \frac{N_{ijk}}{\lambda_{ij}}
+A_{ijk} &= \frac{N_{ijk}}{\lambda_{ij}}\label{eq:a_ijk}
 \end{align}
 \begin{align}
 \frac{\partial L(\mathbf{A}, \mathbf{\lambda})}{\partial \lambda_{ij}} &= 1- \sum\limits_{k=1}^{m} A_{ijk}\\
 \text{FOC:\quad} 1- \sum\limits_{k=1}^{m} A_{ijk} &= 0\\
-s
+1- \sum\limits_{k=1}^{m} \frac{N_{ijk}}{\lambda_{ij}} &= 0\\
+\lambda_{ij} &= \sum\limits_{k=1}^{m} N_{ijk}\label{eq:lambda_ij}
+\end{align}
+Durch Einsetzen von (\ref{eq:lambda_ij}) in (\ref{eq:a_ijk}) ergibt sich der Schätzer für die Transitionswahrscheinlichkeiten einer Markov-Kette zweiter Ordnung: 
+\begin{align}
+\hat{A}_{ijk} = \frac{N_{ijk}}{\sum\limits_{k=1}^{m} N_{ijk}}
 \end{align}
 
 \section*{Anhang}
