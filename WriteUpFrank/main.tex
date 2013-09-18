@@ -178,7 +178,7 @@ Nach einer gewissen Zeit wird das Mobiltelefon über USB mit dem Computer verbund
 
 Die Bewegungen eines Mobiltelefonnutzers werden als zeitdiskreter stochastischer Prozess modelliert. Sei der Beobachtungszeitraum $T = \{0,\ldots,n\}$ und der Zustandsraum $S = \{1, \ldots, m\}$. Ein Nutzer $u$ befindet sich zum Zeitpunkt $t \in T$ im Zustand $x_t \in S$. Ein Zustand entspricht der Mobilfunkzelle, an welcher der Nutzer angemeldet ist. Eine Bewegung von einer Mobilfunkzelle zur nächsten entspricht somit einer diskreten Zustandsänderung von $x_t$ zu $x_{t+1}$. Jeder Zustandsänderung wird eine Wahrscheinlichkeit in Abhängigkeit der vergangenen Zustände zugeordnet. Solche Modelle werden Markov-Modelle genannt.\footcite[Vgl.][S.~607~ff.]{bishop2006pattern} In den folgenden Absätzen sollen die zur Vorhersage verwendeten Modelle vorgestellt werden.
 
-Will man die nächste Position eines Nutzers vorhersagen, erscheint es nützlich, dies in Abhängigkeit der aktuellen Position zu tun. Das entstehende Markov-Modell ist eine Markov-Kette erster Ordnung. Unter der Annahme stationärer Übergangswahrscheinlichkeiten\footnote{Hängt die Wahrscheinlichkeit $p(x_{t+1}|x_{t})$ für den Übergang von $x_t$ nach $x_{t+1}$ nicht von $t$ ab, spricht man von sogenannten stationären Übergangswahrscheinlichkeiten. Es spielt für den Übergang also keine Rolle an welchem Zeitpunkt er stattfindet. Markov-Ketten mit stationären Übergangswahrscheinlichkeiten nennt man homogen. Vgl.~hierzu \textcite{ouvrard2009probabilites}, S.~411.} lässt sich das Modell mit Hilfe eines Transitionsdiagramms und der zugehörigen Transitionsmatrix beschreiben. Exemplarisch soll für die folgenden Erklärungen ein Modell mit drei Zuständen betrachtet werden. Das Transitionsdiagramm ist in Abbildung~\ref{img:transitions} dargestellt. Die zugehörigen Übergangswahrscheinlichkeiten werden in einer Transitionsmatrix der Form
+Will man die nächste Position eines Nutzers vorhersagen, erscheint es nützlich, dies in Abhängigkeit der aktuellen Position zu tun. Das entstehende Markov-Modell ist eine Markov-Kette erster Ordnung. Unter der Annahme stationärer Übergangswahrscheinlichkeiten\footnote{Hängt die Wahrscheinlichkeit $p(x_{t+1}|x_{t})$ für den Übergang von $x_t$ nach $x_{t+1}$ nicht von $t$ ab, spricht man von sogenannten stationären Übergangswahrscheinlichkeiten. Es spielt für den Übergang also keine Rolle an welchem Zeitpunkt er stattfindet. Markov-Ketten mit stationären Übergangswahrscheinlichkeiten nennt man homogen. Vgl.~hierzu \textcite{ouvrard2009probabilites}, S.~411.} lässt sich das Modell mit Hilfe eines Transitionsdiagramms und der zugehörigen Transitionsmatrix beschreiben. Exemplarisch ist ist in Abbildung~\ref{img:transitions} ein Transitionsdiagramm für eine Markov-Kette erster Ordnung mit drei unterschiedlichen Zuständen dargestellt. Die zugehörigen Übergangswahrscheinlichkeiten werden in einer Transitionsmatrix der Form
 \begin{equation}
 \mathbf{A}=\begin{bmatrix}
 A_{11} & A_{12} & A_{13} \\
@@ -225,7 +225,7 @@ Die Parameter des Modells sind zum einen die Transitionsmatrix $\mathbf{A}$, wel
 	\label{img:graphical_model}
 \end{figure}
 
-Markov-Ketten erster Ordnung treffen starke Unabhängigkeitsannahmen. Möchte man bei der Vorhersage nicht nur die direkte Vergangenheit betrachten, sondern weiter zurückblicken, müssen diese Annahmen abgeschwächt werden. Es ergeben sich Markov-Ketten höherer Ordnung. Entsprechend erhöht sich die Anzahl der Parameter des Modells. So berücksichtigt eine Markov-Kette zweiter Ordnung beim Vorhersagen von $x_{t+1}$ die Zustände $x_{t}$ und $x_{t-1}$. Die stationären Übergangswahrscheinlichkeiten einer Markov-Kette $d$-ter Ordnung können in einem $d+1$-dimensionalen Tensor repräsentiert werden.
+Markov-Ketten erster Ordnung treffen starke Unabhängigkeitsannahmen. Soll bei der Vorhersage nicht nur die direkte Vergangenheit betrachtet werden, sondern weiter zurückblicken, müssen diese Annahmen abgeschwächt werden. Es ergeben sich Markov-Ketten höherer Ordnung. Entsprechend erhöht sich die Anzahl der Parameter des Modells. So berücksichtigt eine Markov-Kette zweiter Ordnung beim Vorhersagen von $x_{t+1}$ die Zustände $x_{t}$ und $x_{t-1}$. Die stationären Übergangswahrscheinlichkeiten einer Markov-Kette $d$-ter Ordnung können in einem $d+1$-dimensionalen Tensor repräsentiert werden.
 
 \subsubsection*{Parameterschätzung und Vorhersage}
 
@@ -233,13 +233,13 @@ Zur Schätzung der Transitionsmatrix homogener Markov-Ketten erster Ordnung kann 
 \begin{equation}
 \hat A_{ij} = \frac{N_{ij}}{\sum_{j}N_{ij}}.
 \end{equation}
-Bei gegebenem Zustand $x_{t} = i$ kann zur Vorhersage des nächsten Zustandes $\hat x_{t+1}$ der mit der größten Transitionswahrscheinlichkeit von $j$ ausgehend gewählt werden:
+Bei gegebenem Zustand $x_{t} = i$ kann zur Vorhersage des nächsten Zustandes $\hat x_{t+1}$ der mit der größten Transitionswahrscheinlichkeit von $i$ ausgehend gewählt werden:
 \begin{equation}
 \hat x_{t+1} = \argmax_j\ \hat A_{ij},\quad x_{t} = i
 \end{equation}
 Der Parameter $\vec \pi = p(x_0)$ ist bei der Vorhersage unerheblich, sofern bereits eine Position bekannt ist. Er wird deshalb nicht geschätzt.
 
-Die Schätzer für die Transitionswahrscheinlichkeiten der Markov-Ketten höherer Ordnung sowie die zugehörige Vorhersagegleichung sind in Tabelle~\ref{tab:markov} dargestellt. Die Anzahl der Parameter (Elemente der Transitionsmatrix bzw. des Transitionstensors) wächst mit steigender Ordnung exponentiell.\footnote{Je weiter in die Vergangenheit geschaut wird, desto mehr Kombinationen von Zustandsübergängen gibt es. Da für jede Kombination die Summe der Übergangswahrscheinlichkeiten zu 1 summieren muss, werden nur $m^k \cdot (m-1)$ und nicht $m^{k+1}$ Parameter benötigt. Die letzte Wahrscheinlichkeit kann jeweils errechnet werden.} Die Herleitung der Schätzer findet sich in Anhang A.
+Die Schätzer für die Transitionswahrscheinlichkeiten der Markov-Ketten höherer Ordnung sowie die zugehörige Vorhersagegleichung sind in Tabelle~\ref{tab:markov} dargestellt. Die Anzahl der Parameter (Elemente der Transitionsmatrix bzw. des Transitionstensors) wächst mit steigender Ordnung exponentiell.\footnote{Je weiter in die Vergangenheit geschaut wird, desto mehr Kombinationen von Zustandsübergängen gibt es. Da für jede Kombination der Ausgangszustände die Summe der Übergangswahrscheinlichkeiten zu 1 summieren muss, werden nur $m^k \cdot (m-1)$ und nicht $m^{k+1}$ Parameter benötigt.} Die Herleitung der Schätzer findet sich in Anhang A.
 
 \renewcommand{\arraystretch}{1.2}
 \begin{table}[t]
@@ -255,6 +255,8 @@ Markov-Kette dritter Ordnung & $m^3 \cdot (m - 1)$ & $\hat A_{ijkl} = \frac{N_{i
 \label{tab:markov}
 \end{table}
 
+\newpage
+
 \section{Experimente}
 
 \subsection{Datensätze}
@@ -262,12 +264,13 @@ Markov-Kette dritter Ordnung & $m^3 \cdot (m - 1)$ & $\hat A_{ijkl} = \frac{N_{i
 \newcommand{\SB}{SB}
 \newcommand{\MB}{MB}
 
-Während des Projekts wurden mit Hilfe der in Abschnitt~\ref{subsec:data_collection} vorgestellten Software von zwei freiwilligen Mobilfunknutzern innerhalb eines Monats Daten gesammelt. Tabelle~\ref{tab:datasets} zeigt die Anzahl der besuchten Mobilfunkzellen (Zustände), die Anzahl der beobachteten Zustandsübergänge und die Häufigkeitsverteilung der beobachteten Zustände der zwei gewonnenen Datensätze nach der Vorverarbeitung. Datensatz \SB\ beinhaltet weniger Zustände und Beobachtungen als Datensatz \MB, ist jedoch auch weniger steil ($\omega_{\text{\SB}} = 22{,}4$ und  $\omega_{\text{\MB}} = 69{,}13$).\footnote{Die relative Kurtosis $\omega$ einer Verteilung ist ein Maß für die Steilheit. Eine sehr steile Verteilung weist die Wahrscheinlichkeitsmasse hauptsächlich einigen wenigen, extremen Ereignissen zu. Die relative Kurtosis der Standardnormalverteilung beträgt $\omega_{\mathcal N(0,1)} = 3$. Näheres hierzu findet sich in \textcite{assenmacher2003deskriptive},~S.~114~ff.}
+Während des Projekts wurden mit Hilfe der in Abschnitt~\ref{subsec:data_collection} vorgestellten Software von zwei freiwillig teilnehmenden Mobilfunknutzern innerhalb eines Monats Daten gesammelt. Tabelle~\ref{tab:datasets} zeigt die Anzahl der besuchten Mobilfunkzellen (Zustände), die Anzahl der beobachteten Zustandsübergänge und die Häufigkeitsverteilung der beobachteten Zustände der zwei gewonnenen Datensätze nach der Vorverarbeitung. Datensatz \SB\ beinhaltet weniger Zustände und Beobachtungen als Datensatz \MB, ist jedoch auch weniger steil ($\omega_{\text{\SB}} = 22{,}4$ und  $\omega_{\text{\MB}} = 69{,}13$).\footnote{Die relative Kurtosis $\omega$ einer Verteilung ist ein Maß für die Steilheit. Eine sehr steile Verteilung weist die Wahrscheinlichkeitsmasse hauptsächlich einigen wenigen, extremen Ereignissen zu. Die relative Kurtosis der Standardnormalverteilung beträgt $\omega_{\mathcal N(0,1)} = 3$. Näheres hierzu findet sich in \textcite{assenmacher2003deskriptive},~S.~114~ff.}
 
+\vspace*{0.5em}
 \renewcommand{\arraystretch}{1.4}
 \newcolumntype{R}[1]{>{\raggedright\arraybackslash}m{#1}}
 \newcolumntype{C}[1]{>{\centering\arraybackslash}m{#1}}
-\begin{table}[t]
+\begin{table}[h]
 \centering
 \begin{tabular}{m{2cm}C{2.5cm}C{3cm}C{5cm}@{}}
 \textbf{Datensatz} & \textbf{Anzahl Zustände} & \textbf{Anzahl Beobachtunge\-n} & \textbf{Häufigkeitsverteilung\newline der Zustände}\\
@@ -280,12 +283,14 @@ Während des Projekts wurden mit Hilfe der in Abschnitt~\ref{subsec:data_collecti
 \label{tab:datasets}
 \end{table}
 
-Visualisierung der Zellen ...
+Um einen besseren Eindruck der aufgezeichneten Bewegungsmuster zu erhalten, wurden die gesammelten Mobilfunkzellenkoordinaten grafisch aufbereitet. Abbildung~\ref{img:locations} zeigt die geschätzten Koordinaten der Mobilfunkzellen an denen der Benutzer in Datensatz \SB\ angemeldet war. In Abbildung~\ref{img:map} wurden die Koordinaten auf eine Landkarte übertragen.
+
+Auffällig ist die Häufung der Zellen zwischen Halle (Saale) und Bitterfeld-Wolfen. Hier ist offenbar das gewohnte Bewegungsumfeld des Nutzers. Die Vorhersage sollte in diesen Gebieten sinnvoll und möglich sein. Es ist zu erwarten, dass einmalig besuchte Zellen (zum Beispiel alle westlich von 11.9° östliche Breite befindliche) nicht gut vorhersagbar sind.
 
 \begin{figure}[p]
 \begin{center}
 \includegraphics*[width=1\linewidth]{cell_locations}
-\caption{Locations}
+\caption{Längen- und Breitengradkoordinaten der im \SB-Datensatz beobachteten Mobilfunkzellen. Dargestellt sind jeweils die geschätzten Positionen der Mobilfunkzellen, an welcher der Benutzer angemeldet war.}
 \label{img:locations}
 \end{center}
 \end{figure} 
@@ -293,7 +298,7 @@ Visualisierung der Zellen ...
 \begin{figure}[p]
 \begin{center}
 \includegraphics*[width=.9\linewidth]{map.png}
-\caption{Karte}
+\caption{Übertragung der im \SB-Datensatz beobachteten Mobilfunkzellenkoordinaten aus Abbildung~\ref{img:locations} auf eine Landkarte.}
 \label{img:map}
 \end{center}
 \end{figure} 
@@ -378,6 +383,7 @@ L(\mathbf{A}, \mathbf{\lambda}) &= \sum\limits_{i=1}^{m} \sum\limits_{j=1}^{m} \
 \text{FOC:\quad} \frac{N_{ijk}}{A_{ijk}} - \lambda_{ij} &= 0 \notag \\
 A_{ijk} &= \frac{N_{ijk}}{\lambda_{ij}}\label{eq:a_ijk}
 \end{align}
+
 
 \vspace*{-3em}
 \begin{align}
