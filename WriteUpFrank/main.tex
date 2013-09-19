@@ -146,7 +146,7 @@ Computer sind heutzutage allgegenwärtig. Viele Menschen besitzen mobile Geräte, 
 
 Ziel des Projekts ist es, eine Handyanwendung zu programmieren, welche die nötigen Daten für eine verlässliche Positionsvorhersage sammelt, und diese auszuwerten. Somit soll untersucht werden, mit welcher Genauigkeit Bewegungen von Menschen vorhergesagt werden können. Im Rahmen dieser Arbeit liegt der Fokus auf der Positionsvorhersage. Die entwickelte Handyanwendung wird in \textcite{bar2013android} näher beschrieben.
 
-Zur Entwicklung der Handyanwendung wurde das \emph{Android-Software-Development-Kit}\footnote{\emph{http://developer.android.com/sdk/index.html}}, zur Datenaufbereitung und statistischen Analyse die Programmiersprachen \emph{Java} und \emph{R}. Die Visualisierung fand mit Hilfe von \emph{R} und \emph{Google Maps}\footnote{\emph{http://maps.google.de}} statt.
+Zur Entwicklung der Handyanwendung wurde das \emph{Android-Software-Development-Kit}\footnote{\emph{http://developer.android.com/sdk/index.html}}, zur Datenaufbereitung und statistischen Analyse die Programmiersprachen \emph{Java} und \emph{R} verwendet. Die Visualisierung fand mit Hilfe von \emph{R} und \emph{Google Maps}\footnote{\emph{http://maps.google.de}} statt.
 
 [Related Work...]
 
@@ -301,9 +301,25 @@ Auffällig ist die Häufung der Zellen zwischen Halle (Saale) und Bitterfeld-Wolfe
 
 \subsection{Untersuchung der Vorhersagegenauigkeit}
 
-Markov Ketten angewendet
+Um die nächste Position eines Nutzers mit Hilfe eines Markov-Modells vorherzusagen, wird die entsprechende in Tabelle~\ref{tab:markov} beschriebene Entscheidungsregel wie angewendet. Hierfür ist jedoch ein hinreichend genauer Schätzer der Transitionswahrscheinlichkeiten notwendig. Dieser könnte beispielsweise mittels Online-Learning direkt auf dem Mobiltelefon errechnet werden. So werden Vorhersagen mit der Zeit immer genauer und das Vorhersagemodell lernt mit der Zeit.
 
-Evaluation erklären
+Um festzustellen, wie gut diese Methode in der Praxis funktionieren kann, wurden auf den zwei gesammelten Datensätzen jeweils Markov-Ketten unterschiedlicher Ordnung trainiert und die Vorhersagegenauigkeit gemessen. Die Vorhersagegenauigkeit $\text{PA}(\hat x_{t+1})$ für eine konkrete Vorhersage $\hat x_{t+1}$, gegeben der wahren Position $x_{t+1}$ wird definiert als
+\begin{align}
+\text{PA}(\hat x_{t+1}) = \mathbb{I}(\hat x_{t+1} = x_{t+1}),
+\end{align}
+wobei $\mathbb{I}(X)$ den Wahrheitswert einer aussagenlogischen Formel $X$ in $1$ bzw. $0$ kodiert:
+\begin{align}
+\mathbb{I}(X) = \begin{cases}
+  1,  & \text{wenn }X\text{ wahr,}\\
+  0, & \text{sonst.}
+\end{cases}
+\end{align}
+
+Damit die Ergebnisse möglichst nah an das Szenario des Online-Learning herankommen, wurden die Modelle mit den ersten beobachteten Daten beginnend, sukzessiv evaluiert und der Schätzer anschließend verbessert. Dabei wurde die Vorhersagegenauigkeit kumuliert und gemittelt. Seien die sukzessiven Vorhersagegenauigkeiten $\text{PA}_1,\ldots,\text{PA}_n$ der beobachteten Zustände $x_1,\ldots,x_n$ ermittelt worden, dann ergibt sich die mittlere Vorhersagegenauigkeit bis zum Zeitpunkt $t$ als
+\begin{align}
+\overline{\text{PA}}_t = \frac{1}{t} \cdot \sum\limits_{i=1}^{t} \text{PA}(\hat x_{i}).
+\end{align}
+Das Vorgehen ist in
 
 \begin{figure}[p]
 \begin{center}
