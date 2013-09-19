@@ -305,7 +305,7 @@ Um die nächste Position eines Nutzers mit Hilfe eines Markov-Modells vorherzusag
 
 Um festzustellen, wie gut diese Methode in der Praxis funktionieren kann, wurden auf den zwei gesammelten Datensätzen jeweils Markov-Ketten unterschiedlicher Ordnung trainiert und die Vorhersagegenauigkeit gemessen. Die Vorhersagegenauigkeit $\text{PA}(\hat x_{t+1})$ für eine konkrete Vorhersage $\hat x_{t+1}$, gegeben der wahren Position $x_{t+1}$ wird definiert als
 \begin{align}
-\text{PA}(\hat x_{t+1}) = \mathbb{I}(\hat x_{t+1} = x_{t+1}),
+\text{PA}(\hat x_{t+1}) = \text{PA}_{t+1} = \mathbb{I}(\hat x_{t+1} = x_{t+1}),
 \end{align}
 wobei $\mathbb{I}(X)$ den Wahrheitswert einer aussagenlogischen Formel $X$ in $1$ bzw. $0$ kodiert:
 \begin{align}
@@ -315,11 +315,24 @@ wobei $\mathbb{I}(X)$ den Wahrheitswert einer aussagenlogischen Formel $X$ in $1
 \end{cases}
 \end{align}
 
-Damit die Ergebnisse möglichst nah an das Szenario des Online-Learning herankommen, wurden die Modelle mit den ersten beobachteten Daten beginnend, sukzessiv evaluiert und der Schätzer anschließend verbessert. Dabei wurde die Vorhersagegenauigkeit kumuliert und gemittelt. Seien die sukzessiven Vorhersagegenauigkeiten $\text{PA}_1,\ldots,\text{PA}_n$ der beobachteten Zustände $x_1,\ldots,x_n$ ermittelt worden, dann ergibt sich die mittlere Vorhersagegenauigkeit bis zum Zeitpunkt $t$ als
+Für die Vorhersage des Zustandes zum Zeitpunkt $t+1$ wurden also alle Beobachtungen $x_i,\ i \leq t$ zur Schätzung der Parameter verwendet.
+
+Damit die Ergebnisse möglichst nah an das Szenario des Online-Learning herankommen, wurden die Modelle mit den ersten beobachteten Daten beginnend, sukzessiv evaluiert und der Schätzer anschließend verbessert. Dabei wurde die Vorhersagegenauigkeit kumuliert und gemittelt. Seien die sukzessiven Vorhersagegenauigkeiten $\text{PA}_1,\ldots,\text{PA}_n$ der beobachteten Zustände $x_1,\ldots,x_n$ ermittelt worden, dann ergibt sich die mittlere Vorhersagegenauigkeit bis zum Zeitpunkt $T$ als
 \begin{align}
-\overline{\text{PA}}_t = \frac{1}{t} \cdot \sum\limits_{i=1}^{t} \text{PA}(\hat x_{i}).
+\overline{\text{PA}}_T = \frac{1}{T} \cdot \sum\limits_{i=1}^{T} \text{PA}_i.
 \end{align}
 Das Vorgehen ist in
+
+\begin{figure}[t]
+\begin{center}
+	\scalebox{1}{%
+		\scalefont{1}
+		\input{img/evaluation.tex}
+	}
+	\caption{Online-Evaluation der Vorhersagegenauigkeit.}
+	\label{img:eval_approach}
+\end{center}
+\end{figure}
 
 \begin{figure}[p]
 \begin{center}
