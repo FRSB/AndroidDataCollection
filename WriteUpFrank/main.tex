@@ -115,11 +115,6 @@
 
 \newpage
 
-\addcontentsline{toc}{section}{Abbildungsverzeichnis}
-\listoffigures
-
-\newpage
-
 \section*{Abkürzungsverzeichnis}
 \addcontentsline{toc}{section}{Abkürzungsverzeichnis}
 
@@ -133,6 +128,11 @@ UMTS & Universal Mobile Telecommunications System
 
 \newpage
 
+\addcontentsline{toc}{section}{Abbildungsverzeichnis}
+\listoffigures
+
+\newpage
+
 \listoftables
 \addcontentsline{toc}{section}{Tabellenverzeichnis}
 
@@ -142,13 +142,15 @@ UMTS & Universal Mobile Telecommunications System
 
 \section{Einleitung}
 
-Computer sind heutzutage allgegenwärtig. Viele Menschen besitzen mobile Geräte, die stationären Computern in Sachen Rechenleistung nur noch in wenig nachstehen. Der wirtschaftliche Nutzen des sogenannten "`ubiquitous computing"' ist vielseitig. So könnten beispielsweise Restaurantbesitzer besondere Mittagsangebote auf das Smartphone der potenziellen Kunden senden, die noch unentschlossen vor ihrem Lokal stehen. Könnte man vorhersehen, wo sich die Anwender zukünftig hinbewegen, so könnten Angebote schon im Vorfeld unterbreitet oder Informationen verschickt werden.
+Computer sind heutzutage allgegenwärtig. Viele Menschen besitzen mobile Geräte, die stationären Computern in Sachen Rechenleistung nur noch in wenig nachstehen. Der wirtschaftliche Nutzen des sogenannten "`ubiquitous computing"' ist vielseitig. Durch eine zeitaktuelle und genaue Positionsbestimmung könnten beispielsweise Restaurantbesitzer besondere Mittagsangebote auf das Smartphone der potenziellen Kunden senden, die noch unentschlossen vor ihrem Lokal stehen.
 
-Ziel des Projekts ist es, eine Handyanwendung zu programmieren, welche die nötigen Daten für eine verlässliche Positionsvorhersage sammelt, und diese auszuwerten. Somit soll untersucht werden, mit welcher Genauigkeit Bewegungen von Menschen vorhergesagt werden können. Im Rahmen dieser Arbeit liegt der Fokus auf der Positionsvorhersage. Die entwickelte Handyanwendung wird in \textcite{bar2013android} näher beschrieben.
+Könnte man vorhersehen, wo sich die Anwender zukünftig hinbewegen, so könnten Angebote schon im Vorfeld unterbreitet oder Informationen verschickt werden. Man nennt dieses Forschungsfeld \emph{Trajectory-Mining} (dt. Finden von Bewegungsmustern). In der Literatur finden sich unterschiedliche Ansätze zum Finden und Vorhersagen von Bewegungsmustern.
+
+Unterschiede in den Methoden ergeben sich beispielsweise in der Repräsentation der Ortskoordinaten. Viele Ansätze rastern die Koordinaten nach festen Kriterien.\footnote{Vgl.~\textcite{peng2003developing}; Vgl.~\textcite{ishikawa2004extracting}; Vgl.~\textcite{verhein2006mining}} Offen ist dabei die Frage nach der Rastergenauigkeit. Zu große Raster sind ungenau, zu kleine Raster enthalten eventuell zu wenige Beobachtungen. Abhilfe kann das Clustering der Koordinaten schaffen.\footnote{Vgl.~\textcite{jeung2007mining}} Ein anderer Ansatz speichert die Bewegungsmuster in sogenannten Trajectory-Pattern-Trees und wählt zur Bewegungsvorhersage das Muster des Baumes mit der höchsten Punktzahl.\footnote{Vgl.~\textcite{monreale2009wherenext}}  Weiterhin wurde der Nutzen der Kombination von geographischen und semantischen Merkmalen zur Vorhersage untersucht.\footnote{Vgl.~\textcite{ying2011semantic}}
+
+Ziel des Projekts ist es, eine Handyanwendung zu programmieren, welche die nötigen Daten für eine verlässliche Positionsvorhersage sammelt, und diese auszuwerten. Somit soll untersucht werden, mit welcher Genauigkeit Bewegungen von Menschen vorhergesagt werden können. Im Rahmen dieser Arbeit liegt der Fokus auf der Positionsvorhersage. Die entwickelte Handyanwendung wird in einer anderen Arbeit näher beschrieben.\footnote{Vgl.~\textcite{bar2013android}}
 
 Zur Entwicklung der Handyanwendung wurde das \emph{Android-Software-Development-Kit}\footnote{\emph{http://developer.android.com/sdk/index.html}}, zur Datenaufbereitung und statistischen Analyse die Programmiersprachen \emph{Java} und \emph{R} verwendet. Die Visualisierung fand mit Hilfe von \emph{R} und \emph{Google Maps}\footnote{\emph{http://maps.google.de}} statt.
-
-[Related Work...]
 
 Im ersten Abschnitt der Arbeit findet sich eine Beschreibung der eingesetzten Methoden zur Datensammlung und Datenanalyse. Hierbei wird vor allem auf die zur Positionsvorhersage verwendeten Modelle eingegangen. Der zweite Teil stellt die gesammelten Daten vor und die Ergebnisse der Analyse und Vorhersage. Abschließend folgt eine Zusammenfassung, eine kritische Würdigung und ein Ausblick auf zukünftige Forschungsarbeit.
 
@@ -160,10 +162,10 @@ Im ersten Abschnitt der Arbeit findet sich eine Beschreibung der eingesetzten Me
 
 Um Daten zur anschließenden Auswertung zu sammeln, wurde die Android-Anwendung \emph{AndroidDataCollection}\footnote{Quellcode und Dokumentation finden sich auf \emph{https://github.com/FRSB/AndroidDataCollection}.} entwickelt. Auf dem Mobiltelefon installiert, zeichnet sie minütlich Daten verschiedener Sensoren und Schnittstellen auf und speichert diese lokal in einer Datei. Für die in Abschnitt~\ref{subsec:analysis} beschriebenen Analysen sind folgende Informationen relevant: (1) Mobilfunkzellen-ID der aktuell verwendeten Zelle (GSM oder UMTS) und (2) Position des Mobiltelefons\footnote{Die Positionsbestimmung findet hierarchisch statt. Zunächst wird versucht, die ungefähre Position über die aktuell verwendete Mobilfunkzelle zu ermitteln. Falls ein Drahtlosnetzwerk zur Verfügung steht über das hinreichend genaue Positionsdaten verfügbar sind, wird die Position aktualisiert. Sollte das GPS-Signal anliegen und stark genug sein, überschreibt es die ungefähren Positionsdaten. So wird der API die bestmögliche Position übergeben. Nähere Informationen finden sich im Android Developers API Guide unter \emph{http://developer.android.com/guide/topics/location/strategies.html}.}.
 
-Nach einer gewissen Zeit wird das Mobiltelefon über USB mit dem Computer verbunden und die gesammelten Daten in Form einer CSV-Datei übertragen. Damit aus den minütlich aufgezeichneten Positionsdaten eine Bewegungsvorhersage möglich ist, müssen ein paar Datenaufbereitungen und -transformationen stattfinden. So werden zunächst fehlerhaft aufgezeichnete Datensätze und Aufzeichnungen ohne bestimmbare Mobilfunkzellen-ID entfernt. Anschließend folgen zwei Vorverarbeitungsschritte unabhängig voneinander: Extrahieren der Bewegungen und Schätzung der Mobilfunkzellenpositionen.
+Nach einer gewissen Zeit wird das Mobiltelefon über USB mit dem Computer verbunden und die gesammelten Daten in Form einer CSV-Datei übertragen. Damit aus den minütlich aufgezeichneten Positionsdaten eine Bewegungsvorhersage möglich ist, muss zunächst eine Datenaufbereitungen und -transformationen stattfinden. So werden fehlerhaft aufgezeichnete Datensätze und Aufzeichnungen ohne bestimmbare Mobilfunkzellen-ID entfernt. Anschließend folgen zwei Vorverarbeitungsschritte unabhängig voneinander: Extrahieren der Bewegungen und Schätzung der Mobilfunkzellenpositionen.
 
 \begin{description}
-\item[Extrahieren der Bewegungen.] Hierfür werden die aufgezeichneten Zellen in zeitlich korrekter Reihenfolge hintereinander gereiht. Aufeinanderfolgende Aufzeichnungen, bei denen sich die Mobilfunkzellen-ID nicht ändert, werden entfernt. So bleibt eine Folge von Zellenübergängen übrig, die später zur Vorhersage verwendet werden kann.
+\item[Extrahieren der Bewegungen.] Hierfür werden die zeitlich aufeinanderfolgende Aufzeichnungen, bei denen sich die Mobilfunkzellen-ID nicht ändert, entfernt. So bleibt eine Folge von Zellenübergängen übrig, die später zur Vorhersage verwendet werden kann.
 \item[Schätzung der Mobilfunkzellenpositionen.] Um die aufgezeichneten Bewegungen visualisieren zu können, wird zu jeder gesehenen Mobilfunkzelle eine ungefähre Position bestimmt. Dies geschieht, indem die Daten nach Mobilfunkzelle gruppiert und anschließend die jeweils gemessenen Positionen des Mobiltelefons gemittelt werden. So entsteht eine Zuordnung von Mobilfunkzellen zu Positionen.
 \end{description}
 
@@ -172,7 +174,7 @@ Nach einer gewissen Zeit wird das Mobiltelefon über USB mit dem Computer verbund
 
 \subsubsection*{Modellbildung}
 
-Die Bewegungen eines Mobiltelefonnutzers werden als zeitdiskreter stochastischer Prozess modelliert. Sei der Beobachtungszeitraum $T = \{0,\ldots,n\}$ und der Zustandsraum $S = \{1, \ldots, m\}$. Ein Nutzer $u$ befindet sich zum Zeitpunkt $t \in T$ im Zustand $x_t \in S$. Ein Zustand entspricht der Mobilfunkzelle, an welcher der Nutzer angemeldet ist. Eine Bewegung von einer Mobilfunkzelle zur nächsten entspricht somit einer diskreten Zustandsänderung von $x_t$ zu $x_{t+1}$. Jeder Zustandsänderung wird eine Wahrscheinlichkeit in Abhängigkeit der vergangenen Zustände zugeordnet. Solche Modelle werden Markov-Modelle genannt.\footcite[Vgl.][S.~607~ff.]{bishop2006pattern} In den folgenden Absätzen sollen die zur Vorhersage verwendeten Modelle vorgestellt werden.
+Die Bewegungen eines Mobiltelefonnutzers werden als zeitdiskreter stochastischer Prozess modelliert. Sei der Beobachtungszeitraum $T = \{0,\ldots,n\}$ und der Zustandsraum $S = \{1, \ldots, m\}$. Ein Nutzer $u$ befindet sich zum Zeitpunkt $t \in T$ im Zustand $x_t \in S$. Ein Zustand entspricht der Mobilfunkzelle, an welcher der Nutzer angemeldet ist. Eine Bewegung von einer Mobilfunkzelle zur nächsten entspricht somit einer diskreten Zustandsänderung von $x_t$ zu $x_{t+1}$. Jeder Zustandsänderung wird eine Wahrscheinlichkeit in Abhängigkeit der vergangenen Zustände zugeordnet. Solche Modelle werden Markov-Modelle genannt.\footnote{Vgl.~\textcite{bishop2006pattern},~S.~607~ff.} In den folgenden Absätzen sollen die zur Vorhersage verwendeten Modelle vorgestellt werden.
 
 Will man die nächste Position eines Nutzers vorhersagen, erscheint es nützlich, dies in Abhängigkeit der aktuellen Position zu tun. Das entstehende Markov-Modell ist eine Markov-Kette erster Ordnung. Unter der Annahme stationärer Übergangswahrscheinlichkeiten\footnote{Hängt die Wahrscheinlichkeit $p(x_{t+1}|x_{t})$ für den Übergang von $x_t$ nach $x_{t+1}$ nicht von $t$ ab, spricht man von sogenannten stationären Übergangswahrscheinlichkeiten. Es spielt für den Übergang also keine Rolle an welchem Zeitpunkt er stattfindet. Markov-Ketten mit stationären Übergangswahrscheinlichkeiten nennt man homogen. Vgl.~hierzu \textcite{ouvrard2009probabilites}, S.~411.} lässt sich das Modell mit Hilfe eines Transitionsdiagramms und der zugehörigen Transitionsmatrix beschreiben. Exemplarisch ist ist in Abbildung~\ref{img:transitions} ein Transitionsdiagramm für eine Markov-Kette erster Ordnung mit drei unterschiedlichen Zuständen dargestellt. Die zugehörigen Übergangswahrscheinlichkeiten werden in einer Transitionsmatrix der Form
 \begin{equation}
@@ -225,7 +227,7 @@ Markov-Ketten erster Ordnung treffen starke Unabhängigkeitsannahmen. Soll bei de
 
 \subsubsection*{Parameterschätzung und Vorhersage}
 
-Zur Schätzung der Transitionsmatrix homogener Markov-Ketten erster Ordnung kann ein Maximum-Likelihood-Schätzer (ML) verwendet werden. Sei $N_{ij}$ die Anzahl der beobachteten Zustandsübergänge von Zustand $i$ nach Zustand $j$, dann ist der ML-Schätzer $\mathbf{\hat A}$ für die Transitionsmatrix gegeben als\footnote{Vgl.~\cite{murphy2012machine},~S.~593}
+Zur Schätzung der Transitionsmatrix homogener Markov-Ketten erster Ordnung kann ein Maximum-Likelihood-Schätzer (ML) verwendet werden. Sei $N_{ij}$ die Anzahl der beobachteten Zustandsübergänge von Zustand $i$ nach Zustand $j$, dann ist der ML-Schätzer $\mathbf{\hat A}$ für die Transitionsmatrix gegeben als\footnote{Vgl.~\textcite{murphy2012machine},~S.~593.}
 \begin{equation}
 \hat A_{ij} = \frac{N_{ij}}{\sum_{j}N_{ij}}.
 \end{equation}
@@ -315,13 +317,13 @@ wobei $\mathbb{I}(X)$ den Wahrheitswert einer aussagenlogischen Formel $X$ in $1
 \end{cases}
 \end{align}
 
-Für die Vorhersage des Zustandes zum Zeitpunkt $t+1$ wurden also alle Beobachtungen $x_i,\ i \leq t$ zur Schätzung der Parameter verwendet.
+Für die Vorhersage des Zustandes zum Zeitpunkt $t+1$ werden alle Beobachtungen $x_i,\ i \leq t$ zur Schätzung der Parameter verwendet, und anschließend überprüft, ob die Vorhersage korrekt war. Bei korrekter Vorhersage ist die Genauigkeit 1, sonst 0.
 
-Damit die Ergebnisse möglichst nah an das Szenario des Online-Learning herankommen, wurden die Modelle mit den ersten beobachteten Daten beginnend, sukzessiv evaluiert und der Schätzer anschließend verbessert. Dabei wurde die Vorhersagegenauigkeit kumuliert und gemittelt. Seien die sukzessiven Vorhersagegenauigkeiten $\text{PA}_1,\ldots,\text{PA}_n$ der beobachteten Zustände $x_1,\ldots,x_n$ ermittelt worden, dann ergibt sich die mittlere Vorhersagegenauigkeit bis zum Zeitpunkt $T$ als
+Damit die Ergebnisse möglichst nah an das Szenario des Online-Learning herankommen, wurden die Modelle mit den ersten beobachteten Daten beginnend, sukzessiv evaluiert und der Schätzer verbessert. Dabei wurde die Vorhersagegenauigkeit kumuliert und gemittelt. Mit Hilfe der sukzessiv berechneten Vorhersagegenauigkeiten $\text{PA}_1,\ldots,\text{PA}_n$ der beobachteten Zustände $x_1,\ldots,x_n$, lässt sich die mittlere Vorhersagegenauigkeit bis zum Zeitpunkt $T$ berechnen:
 \begin{align}
 \overline{\text{PA}}_T = \frac{1}{T} \cdot \sum\limits_{i=1}^{T} \text{PA}_i.
 \end{align}
-Das Vorgehen ist in
+Das Vorgehen ist in Abbildung~\ref{img:eval_approach} dargestellt. Zu Beginn ist die Vorhersagegenauigkeit relativ schlecht. Das Modell hat noch nicht viele Zustandsübergänge beobachtet und macht entsprechend viele Fehler. Nach einer Einschwingphase stabilisiert sich die durchschnittliche Vorhersagegenauigkeit.
 
 \begin{figure}[t]
 \begin{center}
@@ -356,6 +358,8 @@ Diskussion der Ergebnisse
 \item Anzahl parameter zu hoch -> Laufzeitschwierigkeiten bei 3. Ordnung
 \end{itemize}
 
+\newpage
+
 \section{Schlussbetrachtung}
 
 \begin{description}
@@ -375,11 +379,13 @@ Kritik/Erweiterungsmöglichkeiten:
 \newpage
 
 \parskip 12pt %Absatzabstand
-\renewcommand{\baselinestretch}{1.50}\normalsize
+\renewcommand{\baselinestretch}{1.00}\normalsize
 
 \printbibliography
 
 \newpage
+
+\renewcommand{\baselinestretch}{1.50}\normalsize
 
 \section*{Anhang A\quad Schätzer für Markov-Ketten}
 
