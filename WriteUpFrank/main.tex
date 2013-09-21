@@ -202,7 +202,7 @@ dargestellt, wobei $A_{ij} = p(x_{t+1} = j | x_t=i)$ der Wahrscheinlichkeit für 
 		\footnotesize Quelle: In Anlehnung an \textcite{bishop2006pattern}, S.~611
 	\end{tabular}
 
-	\caption{Transitionsdiagramm für eine Markov-Kette erster Ordnung. Die Wahrscheinlichkeiten für einen Zustandsübergang von $x=i$ nach $x=j$ werden durch das Element $A_{ij}$ der zugehörigen Transitionsmatrix ausgedrückt.}
+	\caption[Transitionsdiagramm einer Markov-Kette erster Ordnung]{Transitionsdiagramm einer Markov-Kette erster Ordnung. Die Wahrscheinlichkeiten für einen Zustandsübergang von $x=i$ nach $x=j$ werden durch das Element $A_{ij}$ der zugehörigen Transitionsmatrix ausgedrückt.}
 	\label{img:transitions}
 \end{figure}
 
@@ -219,7 +219,7 @@ Die Parameter des Modells sind zum einen die Transitionsmatrix $\mathbf{A}$, wel
 	\scalefont{2}
 	\input{img/graphical_model.tex}
 	}
-	\caption{Graphisches Modell einer Markov-Kette erster Ordnung. Der Zustand zum nachfolgenden Zeitpunkt hängt nur vom aktuellen Zustand ab.}
+	\caption[Graphisches Modell einer Markov-Kette erster Ordnung]{Graphisches Modell einer Markov-Kette erster Ordnung. Der Zustand zum nachfolgenden Zeitpunkt hängt nur vom aktuellen Zustand ab.}
 	\label{img:graphical_model}
 \end{figure}
 
@@ -288,7 +288,7 @@ Auffällig ist die Häufung der Zellen zwischen Halle (Saale) und Bitterfeld-Wolfe
 \begin{figure}[p]
 \begin{center}
 \includegraphics*[width=1\linewidth]{cell_locations}
-\caption{Längen- und Breitengradkoordinaten der im \SB-Datensatz beobachteten Mobilfunkzellen. Dargestellt sind jeweils die geschätzten Positionen der Mobilfunkzellen, an welcher der Benutzer angemeldet war.}
+\caption[Koordinaten der \SB-Mobilfunkzellen]{Längen- und Breitengradkoordinaten der im Datensatz \SB\ beobachteten Mobilfunkzellen. Dargestellt sind jeweils die geschätzten Positionen der Mobilfunkzellen, an welcher der Benutzer angemeldet war.}
 \label{img:locations}
 \end{center}
 \end{figure} 
@@ -296,7 +296,7 @@ Auffällig ist die Häufung der Zellen zwischen Halle (Saale) und Bitterfeld-Wolfe
 \begin{figure}[p]
 \begin{center}
 \includegraphics*[width=.9\linewidth]{map.png}
-\caption{Übertragung der im \SB-Datensatz beobachteten Mobilfunkzellenkoordinaten aus Abbildung~\ref{img:locations} auf eine Landkarte.}
+\caption[Karte der \SB-Mobilfunkzellen]{Übertragung der im Datensatz \SB\ beobachteten Mobilfunkzellenkoordinaten aus Abbildung~\ref{img:locations} auf eine Landkarte.}
 \label{img:map}
 \end{center}
 \end{figure} 
@@ -323,7 +323,7 @@ Damit die Ergebnisse möglichst nah an das Szenario des Online-Learning herankomm
 \begin{align}
 \overline{\text{PA}}_T = \frac{1}{T} \cdot \sum\limits_{i=1}^{T} \text{PA}_i.
 \end{align}
-Das Vorgehen ist in Abbildung~\ref{img:eval_approach} dargestellt. Zu Beginn ist die Vorhersagegenauigkeit relativ schlecht. Das Modell hat noch nicht viele Zustandsübergänge beobachtet und macht entsprechend viele Fehler. Nach einer Einschwingphase stabilisiert sich die durchschnittliche Vorhersagegenauigkeit.
+Das Vorgehen ist in Abbildung~\ref{img:eval_approach} dargestellt. Zu Beginn wird die Vorhersagegenauigkeit relativ schlecht sein. Das Modell hat noch nicht viele Zustandsübergänge beobachtet und macht entsprechend viele Fehler. Nach einer Einschwingphase stabilisiert sich die durchschnittliche Vorhersagegenauigkeit.
 
 \begin{figure}[t]
 \begin{center}
@@ -336,21 +336,33 @@ Das Vorgehen ist in Abbildung~\ref{img:eval_approach} dargestellt. Zu Beginn ist
 \end{center}
 \end{figure}
 
+Im Rahmen der Experimente wurde die beschriebene Evaluation auf den gesammelten Daten \SB\ und \MB\ durchgeführt. Die mittlere Vorhersagegenauigkeit in Abhängigkeit der beobachteten Zustandsübergänge ist in Abbildung~\ref{img:accuracy_sb} für \SB, beziehungsweise Abbildung~\ref{img:accuracy_mb} für \MB\ dargestellt. Es wurden Markov-Ketten erster, zweiter und dritter Ordnung verwendet.
+
 \begin{figure}[p]
 \begin{center}
 \includegraphics*[width=.9\linewidth]{prediction_accuracy_sb}
-\caption{Genauigkeit}
+\caption[Durchschnittliche Vorhersagegenauigkeit des Datensatzes \SB]{Durchschnittliche Vorhersagegenauigkeit Markov-Ketten erster, zweiter und dritter Ordnung auf den Daten des Datensatzes \SB.}
 \label{img:accuracy_sb}
 \end{center}
 \end{figure}
 
 \begin{figure}[p]
 \begin{center}
-\includegraphics*[width=.9\linewidth]{prediction_accuracy_mb}
-\caption{Genauigkeit}
+\includegraphics*[width=.8975\linewidth]{prediction_accuracy_mb}
+\caption[Durchschnittliche Vorhersagegenauigkeit des Datensatzes \MB]{Durchschnittliche Vorhersagegenauigkeit Markov-Ketten erster und zweiter Ordnung auf den Daten des Datensatzes \MB. Die Markov-Ketten dritter Ordnung wurden aus Laufzeitgründen nicht evaluiert.}
 \label{img:accuracy_mb}
 \end{center}
 \end{figure}
+
+Folgende Beobachtungen wurden gemacht:
+\begin{description}
+\item[Einschwingphase] Die zu erwartende Einschwingphase ist in \SB\ deutlich erkennbar. Das Modell verbessert sich bis zur zweihundertsten Beobachtung kontinuierlich. Dann beginnt eine Stabilisierung. Die Ergebnisse in \MB\ sind kontraintuitiv. Dort ist die Vorhersagegenauigkeit bis auf die ersten wenigen Beobachtungen höher als zum Ende des Beobachtungszeitraumes. Bei der zweihundersten bis dreihundertsten Beobachtung nähert sie sich sogar 100\,\%. Beide Modelle stabilisieren sich jedoch nach einer gewissen Zeit.
+
+Vermutlich ist das Verhalten der beobachteten Nutzer nicht stationär. Zu Beginn des Beobachtungszeitraumes von \MB\ wurden nur einige wenige Zustände relativ vorhersehbar besucht. Nach einiger Zeit folgte ein anderes, schwerer vorhersagbares Bewegungsmuster, welches zum Abfall und Stabilisierung der Genauigkeit führte.
+\item[Vorhersagegenauigkeit]  \SB\ erreicht eine durchschnittliche Vorhersagegenauigkeit von ca.~45\,\%, bei \MB\ beträgt sie ungefähr 62\,\%.
+\item[Laufzeit]
+\end{description}
+
 
 Diskussion der Ergebnisse
 \begin{itemize}
