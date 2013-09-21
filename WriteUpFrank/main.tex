@@ -356,11 +356,17 @@ Im Rahmen der Experimente wurde die beschriebene Evaluation auf den gesammelten 
 
 Folgende Beobachtungen wurden gemacht:
 \begin{description}
-\item[Einschwingphase] Die zu erwartende Einschwingphase ist in \SB\ deutlich erkennbar. Das Modell verbessert sich bis zur zweihundertsten Beobachtung kontinuierlich. Dann beginnt eine Stabilisierung. Die Ergebnisse in \MB\ sind kontraintuitiv. Dort ist die Vorhersagegenauigkeit bis auf die ersten wenigen Beobachtungen höher als zum Ende des Beobachtungszeitraumes. Bei der zweihundersten bis dreihundertsten Beobachtung nähert sie sich sogar 100\,\%. Beide Modelle stabilisieren sich jedoch nach einer gewissen Zeit.
+\item[Einschwingphase.] Die zu erwartende Einschwingphase ist in \SB\ deutlich erkennbar. Das Modell verbessert sich bis zur zweihundertsten Beobachtung kontinuierlich. Dann beginnt eine Stabilisierung. Die Ergebnisse in \MB\ sind kontraintuitiv. Dort ist die Vorhersagegenauigkeit bis auf die ersten wenigen Beobachtungen höher als zum Ende des Beobachtungszeitraumes. Bei der zweihundersten bis dreihundertsten Beobachtung nähert sie sich sogar 100\,\%. Beide Modelle stabilisieren sich jedoch nach einer gewissen Zeit.
 
 Vermutlich ist das Verhalten der beobachteten Nutzer nicht stationär. Zu Beginn des Beobachtungszeitraumes von \MB\ wurden nur einige wenige Zustände relativ vorhersehbar besucht. Nach einiger Zeit folgte ein anderes, schwerer vorhersagbares Bewegungsmuster, welches zum Abfall und Stabilisierung der Genauigkeit führte.
-\item[Vorhersagegenauigkeit]  \SB\ erreicht eine durchschnittliche Vorhersagegenauigkeit von ca.~45\,\%, bei \MB\ beträgt sie ungefähr 62\,\%.
-\item[Laufzeit]
+
+\item[Vorhersagegenauigkeit.] Markov-Ketten erster Ordnung erreichen auf \SB\ eine durchschnittliche Vorhersagegenauigkeit von ca.~45\,\%, bei \MB\ beträgt sie ungefähr 62\,\%. Wie in Tabelle~\ref{tab:datasets} dargestellt, ist die Zustandsverteilung von \MB\ wesentlich steiler. Es gibt also ein paar Zustände die sehr häufig auftreten. Dieser Umstand kommt der Vorhersage zugute, da sie mit einer geringeren Diversität der Übergänge umgehen muss.
+
+Unterschiede ergeben sich auch innerhalb der Datensätze durch die Modellkomplexität. Es wäre zu erwarten gewesen, dass komplexere Modelle mit weniger Unabhängigkeitsannahmen eine bessere Vorhersage treffen. Dies ist jedoch nicht der Fall. Stattdessen sind die Ergebnisse der Markov-Ketten mit steigender Ordnung schlechter.
+
+Die Ursache hierfür könnte in der Unterbestimmtheit der Modelle liegen. Die Anzahl der zu schätzenden Wahrscheinlichkeiten beträgt bei \SB\ für Markov-Ketten erster Ordnung $78^2 = 6.084$. Es fallen etliche Wahrscheinlichkeiten weg, die praktisch nie auftreten können, weil die Mobilfunkzellen nicht benachbart sind. Dennoch gilt bereits bei dem einfachsten Modell, dass es mit $603 \ll 6.084$ viel weniger Beobachtungen als Parameter gibt. Für die Markov-Ketten zweiter (und dritter) Ordnung ist dieser Umstand mit $78^3 = 474.552$ ($78^4 = 37.015.056$) Parametern noch deutlicher. Diese Problematik wird häufig auch als $p \gg N$-Problem benannt und bringt Overfitting mit sich, welches die Vorhersagegenauigkeit auf Testdaten verringert.\footnote{Vgl.~\textcite{trevor2001elements},~S.~649} Abhilfe kann hier das Sammeln von mehr Daten oder das Verzichten auf komplexe Modelle schaffen.
+
+\item[Laufzeit.] Die Laufzeiten $L$ des gesamten Evaluationsalgorithmus betragen für \SB: $L_\text{MK1} = 4{,}69\,\text{s}$, $L_\text{MK2} = 17{,}72\,\text{s}$ und für \MB: $L_\text{MK1} = 26{,}21\,\text{s}$, $L_\text{MK2} = 125{,}20\,\text{s}$. Die Rechenzeit für die Markov-Ketten dritter Ordnung betrug mehrere Tage und wurde deswegen nicht auf beiden Datensätzen ausgeführt. Gründe hierfür sind einerseits die hohe Anzahl an Parametern und andererseits die schlechte Repräsentation 4-dimensionaler Tensoren in dem verwendeten R-Programm, sodass elementare Operationen ineffizient ausgeführt worden.
 \end{description}
 
 
