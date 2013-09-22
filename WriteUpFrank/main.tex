@@ -259,8 +259,8 @@ Markov-Kette dritter Ordnung & $m^3 \cdot (m - 1)$ & $\hat A_{ijkl} = \frac{N_{i
 
 \subsection{Datensätze}
 
-\newcommand{\SB}{SB}
-\newcommand{\MB}{MB}
+\newcommand{\SB}{A}
+\newcommand{\MB}{B}
 
 Während des Projekts wurden mit Hilfe der in Abschnitt~\ref{subsec:data_collection} vorgestellten Software von zwei freiwillig teilnehmenden Mobilfunknutzern innerhalb eines Monats Daten gesammelt. Tabelle~\ref{tab:datasets} zeigt die Anzahl der besuchten Mobilfunkzellen (Zustände), die Anzahl der beobachteten Zustandsübergänge und die Häufigkeitsverteilung der beobachteten Zustände der zwei gewonnenen Datensätze nach der Vorverarbeitung. Datensatz \SB\ beinhaltet weniger Zustände und Beobachtungen als Datensatz \MB, ist jedoch auch weniger steil ($\omega_{\text{\SB}} = 22{,}4$ und  $\omega_{\text{\MB}} = 69{,}13$).\footnote{Die relative Kurtosis $\omega$ einer Verteilung ist ein Maß für die Steilheit. Eine sehr steile Verteilung weist die Wahrscheinlichkeitsmasse hauptsächlich einigen wenigen, extremen Ereignissen zu. Die relative Kurtosis der Standardnormalverteilung beträgt $\omega_{\mathcal N(0,1)} = 3$. Näheres hierzu findet sich in \textcite{assenmacher2003deskriptive},~S.~114~ff.}
 
@@ -323,7 +323,7 @@ Damit die Ergebnisse möglichst nah an das Szenario des Online-Learning herankomm
 \begin{align}
 \overline{\text{PA}}_T = \frac{1}{T} \cdot \sum\limits_{i=1}^{T} \text{PA}_i.
 \end{align}
-Das Vorgehen ist in Abbildung~\ref{img:eval_approach} dargestellt. Zu Beginn wird die Vorhersagegenauigkeit relativ schlecht sein. Das Modell hat noch nicht viele Zustandsübergänge beobachtet und macht entsprechend viele Fehler. Nach einer Einschwingphase stabilisiert sich die durchschnittliche Vorhersagegenauigkeit.
+Das Vorgehen ist in Abbildung~\ref{img:eval_approach} dargestellt. Zu Beginn wird die Vorhersagegenauigkeit relativ schlecht sein. Das Modell hat noch nicht viele Zustandsübergänge beobachtet und macht entsprechend viele Fehler. Nach einer Einschwingphase sollte sich die durchschnittliche Vorhersagegenauigkeit stabilisieren.
 
 \begin{figure}[t]
 \begin{center}
@@ -354,45 +354,40 @@ Im Rahmen der Experimente wurde die beschriebene Evaluation auf den gesammelten 
 \end{center}
 \end{figure}
 
-Folgende Beobachtungen wurden gemacht:
+Folgende Beobachtungen konnten in Bezug auf die Einschwingphase, die Vorhersagegenauigkeit und die Laufzeit der Algorithmen gemacht werden.
 \begin{description}
 \item[Einschwingphase.] Die zu erwartende Einschwingphase ist in \SB\ deutlich erkennbar. Das Modell verbessert sich bis zur zweihundertsten Beobachtung kontinuierlich. Dann beginnt eine Stabilisierung. Die Ergebnisse in \MB\ sind kontraintuitiv. Dort ist die Vorhersagegenauigkeit bis auf die ersten wenigen Beobachtungen höher als zum Ende des Beobachtungszeitraumes. Bei der zweihundersten bis dreihundertsten Beobachtung nähert sie sich sogar 100\,\%. Beide Modelle stabilisieren sich jedoch nach einer gewissen Zeit.
 
-Vermutlich ist das Verhalten der beobachteten Nutzer nicht stationär. Zu Beginn des Beobachtungszeitraumes von \MB\ wurden nur einige wenige Zustände relativ vorhersehbar besucht. Nach einiger Zeit folgte ein anderes, schwerer vorhersagbares Bewegungsmuster, welches zum Abfall und Stabilisierung der Genauigkeit führte.
+Vermutlich ist das Verhalten der beobachteten Nutzer nur bedingt stationär. Zu Beginn des Beobachtungszeitraumes von \MB\ wurden nur einige wenige Zustände relativ vorhersehbar besucht. Nach einiger Zeit folgte ein anderes, schwerer vorhersagbares Bewegungsmuster, welches zum Abfall und Stabilisierung der Genauigkeit führte.
 
-\item[Vorhersagegenauigkeit.] Markov-Ketten erster Ordnung erreichen auf \SB\ eine durchschnittliche Vorhersagegenauigkeit von ca.~45\,\%, bei \MB\ beträgt sie ungefähr 62\,\%. Wie in Tabelle~\ref{tab:datasets} dargestellt, ist die Zustandsverteilung von \MB\ wesentlich steiler. Es gibt also ein paar Zustände die sehr häufig auftreten. Dieser Umstand kommt der Vorhersage zugute, da sie mit einer geringeren Diversität der Übergänge umgehen muss.
+\item[Vorhersagegenauigkeit.] Markov-Ketten erster Ordnung erreichen mit den Daten aus \SB\ eine durchschnittliche Vorhersagegenauigkeit von ca.~45\,\%, bei \MB\ beträgt sie ungefähr 62\,\%. Wie in Tabelle~\ref{tab:datasets} dargestellt, ist die Zustandsverteilung von \MB\ wesentlich steiler. Es gibt also ein paar Zustände, die sehr häufig auftreten. Dieser Umstand kommt der Vorhersage zugute, da sie mit einer geringeren Diversität der Übergänge umgehen muss.
 
 Unterschiede ergeben sich auch innerhalb der Datensätze durch die Modellkomplexität. Es wäre zu erwarten gewesen, dass komplexere Modelle mit weniger Unabhängigkeitsannahmen eine bessere Vorhersage treffen. Dies ist jedoch nicht der Fall. Stattdessen sind die Ergebnisse der Markov-Ketten mit steigender Ordnung schlechter.
 
-Die Ursache hierfür könnte in der Unterbestimmtheit der Modelle liegen. Die Anzahl der zu schätzenden Wahrscheinlichkeiten beträgt bei \SB\ für Markov-Ketten erster Ordnung $78^2 = 6.084$. Es fallen etliche Wahrscheinlichkeiten weg, die praktisch nie auftreten können, weil die Mobilfunkzellen nicht benachbart sind. Dennoch gilt bereits bei dem einfachsten Modell, dass es mit $603 \ll 6.084$ viel weniger Beobachtungen als Parameter gibt. Für die Markov-Ketten zweiter (und dritter) Ordnung ist dieser Umstand mit $78^3 = 474.552$ ($78^4 = 37.015.056$) Parametern noch deutlicher. Diese Problematik wird häufig auch als $p \gg N$-Problem benannt und bringt Overfitting mit sich, welches die Vorhersagegenauigkeit auf Testdaten verringert.\footnote{Vgl.~\textcite{trevor2001elements},~S.~649} Abhilfe kann hier das Sammeln von mehr Daten oder das Verzichten auf komplexe Modelle schaffen.
+Die Ursache hierfür könnte in der Unterbestimmtheit der Modelle liegen. Die Anzahl der zu schätzenden Wahrscheinlichkeiten beträgt bei \SB\ für Markov-Ketten erster Ordnung $78^2 = 6.084$. Es fallen etliche Wahrscheinlichkeiten weg, die praktisch nie auftreten können, weil die Mobilfunkzellen nicht benachbart sind. Dennoch gilt bereits bei dem einfachsten Modell, dass es mit $603 \ll 6.084$ viel weniger Beobachtungen als Parameter gibt. Für die Markov-Ketten zweiter beziehungsweise dritter Ordnung ist dieser Umstand mit $78^3 = 474.552$ beziehungsweise $78^4 = 37.015.056$ Parametern noch deutlicher. Diese Problematik wird häufig auch als $p \gg N$-Problem benannt und bringt Overfitting mit sich, welches die Vorhersagegenauigkeit auf Testdaten verringert.\footnote{Vgl.~\textcite{trevor2001elements},~S.~649} Abhilfe kann hier das Sammeln von mehr Daten oder das Verzichten auf komplexe Modelle schaffen.
 
-\item[Laufzeit.] Die Laufzeiten $L$ des gesamten Evaluationsalgorithmus betragen für \SB: $L_\text{MK1} = 4{,}69\,\text{s}$, $L_\text{MK2} = 17{,}72\,\text{s}$ und für \MB: $L_\text{MK1} = 26{,}21\,\text{s}$, $L_\text{MK2} = 125{,}20\,\text{s}$. Die Rechenzeit für die Markov-Ketten dritter Ordnung betrug mehrere Tage und wurde deswegen nicht auf beiden Datensätzen ausgeführt. Gründe hierfür sind einerseits die hohe Anzahl an Parametern und andererseits die schlechte Repräsentation 4-dimensionaler Tensoren in dem verwendeten R-Programm, sodass elementare Operationen ineffizient ausgeführt worden.
+\item[Laufzeit.] Die Laufzeiten des gesamten Evaluationsalgorithmus betragen für
+\begin{enumerate}
+\item[\SB:] $4{,}69\,\text{s}$ für Markov-Ketten erster Ordnung,\\ $17{,}72\,\text{s}$ für Markov-Ketten zweiter Ordnung
+\item[\MB:] $26{,}21\,\text{s}$ für Markov-Ketten erster Ordnung,\\ $125{,}20\,\text{s}$ für Markov-Ketten zweiter Ordnung
+\end{enumerate} Die Rechenzeit für die Evaluation der Markov-Ketten dritter Ordnung betrug mehrere Tage und wurde deswegen nicht auf beiden Datensätzen ausgeführt. Gründe hierfür sind einerseits die hohe Anzahl an Parametern und andererseits die schlechte Repräsentation 4-dimensionaler Tensoren in dem verwendeten R-Programm, sodass elementare Operationen ineffizient ausgeführt worden.
 \end{description}
-
-
-Diskussion der Ergebnisse
-\begin{itemize}
-\item Modellkomplexität zu hoch -> unterbestimmt
-\item Anzahl parameter zu hoch -> Laufzeitschwierigkeiten bei 3. Ordnung
-\end{itemize}
 
 \newpage
 
 \section{Schlussbetrachtung}
 
-\begin{description}
-\item[Zusammenfassung] die wichtigsten Ergebnisse der Arbeit werden zusammengefasst
-\item[Kritische Würdigung und Ausblick] Erläuterung der Schwächen und Grenzen der (Methodik der) Arbeit. Durch welche Verbesserungen und weiteren Schritte kann diesen Schwächen entgegengewirkt werden? Ggf. Ausblick auf weitere offene Forschungsfragen bezüglich der Arbeit.
-\end{description} 
+Im Rahmen der vorliegenden Arbeit wurde untersucht, mit welcher Genauigkeit die Bewegungen von Mobilfunknutzern vorhergesagt werden können. Hierfür wurde eine Handyanwendung programmiert, die über einen längeren Zeitraum die angemeldeten Mobilfunkzellen der Nutzer minütlich aufzeichnet. Zusätzlich wurden die auf Basis ungefährer Positionsdaten geschätzten Zellenkoordinaten ermittelt und visualisiert.
 
-Kritik/Erweiterungsmöglichkeiten:
-\begin{itemize}
-\item mehr Daten -> Modelle unterbestimmt
-\item Einbezug weiterer Features (Uhrzeit)
-\item GPS und Rastern / Clustering -> HMM
-\item Ensemble Learning
-\end{itemize}
+Zur Analyse und Vorhersage der Positionsdaten wurden Markov-Ketten erster, zweiter und dritter Ordnung, sowie eine Evaluation in R implementiert. Mit zwei gesammelten Datensätzen wurde die Vorhersagegenauigkeit der implementierten Modelle geschätzt. Mit zunehmender Modellkomplexität nahm die Vorhersagegenauigkeit ab. Der Grund hierfür ist vermutlich in einer Overfitting-Problematik zu suchen. Markov-Ketten erster Ordnung konnten die Position mit mittlerer Genauigkeit (45\,\% bzw. 62\,\%) vorhersagen.
 
+Da die Vorhersage nur auf Basis von Mobilfunkzellen stattfand, lässt sich der praktische Nutzen diskutieren. Mobiltelefone melden sich an einer in der Nähe befindlichen Zelle an, wobei die Position der Zelle im Allgemeinen nicht der exakten Position des Nutzers entspricht. Je nach Besiedelungsdichte kann die Reichweite einer Zelle von einigen Metern bis hin zu mehreren Kilometern reichen. Eine genauere Positionsbestimmung (beispielsweise GPS) könnte den praktischen Nutzen erhöhen. Allerdings ist die Positionsbestimmung mittels GPS gegenüber der hier angewendeten Methode wesentlich energieintensiver.
+
+Zur Untersuchung der Vorhersagegenauigkeit wurden in dieser Arbeit lediglich homogene Markov-Ketten verwendet. Erweiterte Modelle, welche andere beobachtete Eigenschaften wie die Uhrzeit, den Batteriestatus oder Ähnliches einbeziehen, könnten die Genauigkeit erhöhen. Eine Kombination verschiedener Modelle (Ensemble-Learning) kann sich ebenfalls positiv auswirken.
+
+Zur praktischen Anwendung eignet sich eine Online-Vorhersage auf dem Mobiltelefon. Einfache Modelle wie Markov-Ketten erster Ordnung ließen sich leicht direkt auf dem Mobiltelefon implementieren und würden eine sukzessive Parameterschätzung und Positionsvorhersage während der täglichen Verwendung ermöglichen.
+
+Um die Allgemeingültigkeit der Ergebnisse zu erhöhen, wäre es sinnvoll die Positionsdatensammlung auf weitere Orte und Anwendungsfälle auszuweiten. Hierfür ist weitere Forschungsarbeit nötig.
 
 \newpage
 
