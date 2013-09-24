@@ -123,7 +123,8 @@ CSV & Comma-Separated Value\\
 GSM & Global System for Mobile Communications\\
 GPS & Global Positioning System\\
 ML & Maximum Likelihood\\
-UMTS & Universal Mobile Telecommunications System
+UMTS & Universal Mobile Telecommunications System\\
+USB & Universal Serial Bus
 \end{tabular}
 
 \newpage
@@ -142,7 +143,7 @@ UMTS & Universal Mobile Telecommunications System
 
 \section{Einleitung}
 
-Computer sind heutzutage allgegenwärtig. Viele Menschen besitzen mobile Geräte, die stationären Computern in Sachen Rechenleistung nur noch in wenig nachstehen. Der wirtschaftliche Nutzen des sogenannten "`ubiquitous computing"' ist vielseitig. Durch eine zeitaktuelle und genaue Positionsbestimmung könnten beispielsweise Restaurantbesitzer besondere Mittagsangebote auf das Smartphone der potenziellen Kunden senden, die noch unentschlossen vor ihrem Lokal stehen.
+Computer sind heutzutage allgegenwärtig. Viele Menschen besitzen mobile Geräte, die stationären Computern in Sachen Rechenleistung nur noch in wenig nachstehen. Der wirtschaftliche Nutzen des sogenannten "`ubiquitous computing"' ist vielseitig. Durch eine zeitaktuelle und genaue Positionsbestimmung können Dienste mit geographischem Bezug bereitgestellt werden. So könnten beispielsweise Restaurantbesitzer besondere Mittagsangebote auf das Smartphone der potenziellen Kunden senden, die noch unentschlossen vor ihrem Lokal stehen.
 
 Könnte man vorhersehen, wo sich die Anwender zukünftig hinbewegen, so könnten Angebote schon im Vorfeld unterbreitet oder Informationen verschickt werden. Man nennt dieses Forschungsfeld \emph{Trajectory-Mining} (dt. Finden von Bewegungsmustern). In der Literatur finden sich unterschiedliche Ansätze zum Finden und Vorhersagen von Bewegungsmustern.
 
@@ -152,7 +153,7 @@ Ziel des Projekts ist es, eine Handyanwendung zu programmieren, welche die nötig
 
 Zur Entwicklung der Handyanwendung wurde das \emph{Android-Software-Development-Kit}\footnote{\emph{http://developer.android.com/sdk/index.html}}, zur Datenaufbereitung und statistischen Analyse die Programmiersprachen \emph{Java} und \emph{R} verwendet. Die Visualisierung fand mit Hilfe von \emph{R} und \emph{Google Maps}\footnote{\emph{http://maps.google.de}} statt.
 
-Im ersten Abschnitt der Arbeit findet sich eine Beschreibung der eingesetzten Methoden zur Datensammlung und Datenanalyse. Hierbei wird vor allem auf die zur Positionsvorhersage verwendeten Modelle eingegangen. Der zweite Teil stellt die gesammelten Daten vor und die Ergebnisse der Analyse und Vorhersage. Abschließend folgt eine Zusammenfassung, eine kritische Würdigung und ein Ausblick auf zukünftige Forschungsarbeit.
+Im ersten Abschnitt der Arbeit findet sich eine Beschreibung der eingesetzten Methoden zur Datensammlung und Datenanalyse. Hierbei wird vor allem auf die zur Positionsvorhersage verwendeten Modelle eingegangen. Der zweite Teil stellt die gesammelten Daten, sowie die Ergebnisse der Analyse und Vorhersage vor. Abschließend folgt eine Zusammenfassung, eine kritische Würdigung und ein Ausblick auf zukünftige Forschungsarbeit.
 
 \newpage
 
@@ -160,9 +161,9 @@ Im ersten Abschnitt der Arbeit findet sich eine Beschreibung der eingesetzten Me
 \subsection{Datenerhebung und -vorerarbeitung}
 \label{subsec:data_collection}
 
-Um Daten zur anschließenden Auswertung zu sammeln, wurde die Android-Anwendung \emph{AndroidDataCollection}\footnote{Quellcode und Dokumentation finden sich auf \emph{https://github.com/FRSB/AndroidDataCollection}.} entwickelt. Auf dem Mobiltelefon installiert, zeichnet sie minütlich Daten verschiedener Sensoren und Schnittstellen auf und speichert diese lokal in einer Datei. Für die in Abschnitt~\ref{subsec:analysis} beschriebenen Analysen sind folgende Informationen relevant: (1) Mobilfunkzellen-ID der aktuell verwendeten Zelle (GSM oder UMTS) und (2) Position des Mobiltelefons\footnote{Die Positionsbestimmung findet hierarchisch statt. Zunächst wird versucht, die ungefähre Position über die aktuell verwendete Mobilfunkzelle zu ermitteln. Falls ein Drahtlosnetzwerk zur Verfügung steht über das hinreichend genaue Positionsdaten verfügbar sind, wird die Position aktualisiert. Sollte das GPS-Signal anliegen und stark genug sein, überschreibt es die ungefähren Positionsdaten. So wird der API die bestmögliche Position übergeben. Nähere Informationen finden sich im Android Developers API Guide unter \emph{http://developer.android.com/guide/topics/location/strategies.html}.}.
+Um Daten zur anschließenden Auswertung zu sammeln, wurde die Android-Anwendung \emph{AndroidDataCollection}\footnote{Quellcode und Dokumentation finden sich auf \emph{https://github.com/FRSB/AndroidDataCollection}.} entwickelt. Auf dem Mobiltelefon installiert, zeichnet sie minütlich Daten verschiedener Sensoren und Schnittstellen auf und speichert diese lokal in einer Datei. Für die in Abschnitt~\ref{subsec:analysis} beschriebenen Analysen ist die Mobilfunkzellen-ID der aktuell verwendeten Zelle (GSM oder UMTS) relevant. Zur Visualisierung des Zustandsraumes wurde zusätzlich die Position des Mobiltelefons ermittelt.\footnote{Die Positionsbestimmung findet hierarchisch statt. Zunächst wird versucht, die ungefähre Position über die aktuell verwendete Mobilfunkzelle zu ermitteln. Falls ein Drahtlosnetzwerk zur Verfügung steht über das hinreichend genaue Positionsdaten verfügbar sind, wird die Position aktualisiert. Sollte das GPS-Signal anliegen und stark genug sein, überschreibt es die ungefähren Positionsdaten. So wird der API die bestmögliche Position übergeben. Nähere Informationen finden sich im Android Developers API Guide unter \emph{http://developer.android.com/guide/topics/location/strategies.html}.}
 
-Nach einer gewissen Zeit wird das Mobiltelefon über USB mit dem Computer verbunden und die gesammelten Daten in Form einer CSV-Datei übertragen. Damit aus den minütlich aufgezeichneten Positionsdaten eine Bewegungsvorhersage möglich ist, muss zunächst eine Datenaufbereitungen und -transformationen stattfinden. So werden fehlerhaft aufgezeichnete Datensätze und Aufzeichnungen ohne bestimmbare Mobilfunkzellen-ID entfernt. Anschließend folgen zwei Vorverarbeitungsschritte unabhängig voneinander: Extrahieren der Bewegungen und Schätzung der Mobilfunkzellenpositionen.
+Nach einer gewissen Zeit wird das Mobiltelefon über USB mit dem Computer verbunden und die gesammelten Daten in Form einer CSV-Datei übertragen. Damit aus den minütlich aufgezeichneten Positionsdaten eine Bewegungsvorhersage möglich ist, findet zunächst eine Datenaufbereitungen und -transformationen statt. Hierdurch werden fehlerhaft aufgezeichnete Datensätze und Aufzeichnungen ohne bestimmbare Mobilfunkzellen-ID entfernt. Anschließend folgen zwei Vorverarbeitungsschritte unabhängig voneinander: Extrahieren der Bewegungen und Schätzung der Mobilfunkzellenpositionen.
 
 \begin{description}
 \item[Extrahieren der Bewegungen.] Hierfür werden die zeitlich aufeinanderfolgende Aufzeichnungen, bei denen sich die Mobilfunkzellen-ID nicht ändert, entfernt. So bleibt eine Folge von Zellenübergängen übrig, die später zur Vorhersage verwendet werden kann.
@@ -176,7 +177,7 @@ Nach einer gewissen Zeit wird das Mobiltelefon über USB mit dem Computer verbund
 
 Die Bewegungen eines Mobiltelefonnutzers werden als zeitdiskreter stochastischer Prozess modelliert. Sei der Beobachtungszeitraum $T = \{0,\ldots,n\}$ und der Zustandsraum $S = \{1, \ldots, m\}$. Ein Nutzer $u$ befindet sich zum Zeitpunkt $t \in T$ im Zustand $x_t \in S$. Ein Zustand entspricht der Mobilfunkzelle, an welcher der Nutzer angemeldet ist. Eine Bewegung von einer Mobilfunkzelle zur nächsten entspricht somit einer diskreten Zustandsänderung von $x_t$ zu $x_{t+1}$. Jeder Zustandsänderung wird eine Wahrscheinlichkeit in Abhängigkeit der vergangenen Zustände zugeordnet. Solche Modelle werden Markov-Modelle genannt.\footnote{Vgl.~\textcite{bishop2006pattern},~S.~607~ff.} In den folgenden Absätzen sollen die zur Vorhersage verwendeten Modelle vorgestellt werden.
 
-Will man die nächste Position eines Nutzers vorhersagen, erscheint es nützlich, dies in Abhängigkeit der aktuellen Position zu tun. Das entstehende Markov-Modell ist eine Markov-Kette erster Ordnung. Unter der Annahme stationärer Übergangswahrscheinlichkeiten\footnote{Hängt die Wahrscheinlichkeit $p(x_{t+1}|x_{t})$ für den Übergang von $x_t$ nach $x_{t+1}$ nicht von $t$ ab, spricht man von sogenannten stationären Übergangswahrscheinlichkeiten. Es spielt für den Übergang also keine Rolle an welchem Zeitpunkt er stattfindet. Markov-Ketten mit stationären Übergangswahrscheinlichkeiten nennt man homogen. Vgl.~hierzu \textcite{ouvrard2009probabilites}, S.~411.} lässt sich das Modell mit Hilfe eines Transitionsdiagramms und der zugehörigen Transitionsmatrix beschreiben. Exemplarisch ist ist in Abbildung~\ref{img:transitions} ein Transitionsdiagramm für eine Markov-Kette erster Ordnung mit drei unterschiedlichen Zuständen dargestellt. Die zugehörigen Übergangswahrscheinlichkeiten werden in einer Transitionsmatrix der Form
+Will man die nächste Position eines Nutzers vorhersagen, erscheint es nützlich, dies in Abhängigkeit der aktuellen Position zu tun. Das entstehende Markov-Modell ist eine Markov-Kette erster Ordnung. Unter der Annahme stationärer Übergangswahrscheinlichkeiten\footnote{Hängt die Wahrscheinlichkeit $p(x_{t+1}|x_{t})$ für den Übergang von $x_t$ nach $x_{t+1}$ nicht von $t$ ab, spricht man von sogenannten stationären Übergangswahrscheinlichkeiten. Es spielt für die Übergangswahrscheinlichkeit also keine Rolle an welchem Zeitpunkt der Übergang stattfindet. Markov-Ketten mit stationären Übergangswahrscheinlichkeiten nennt man homogen. Vgl.~hierzu \textcite{ouvrard2009probabilites}, S.~411.} lässt sich das Modell mit Hilfe eines Transitionsdiagramms und der zugehörigen Transitionsmatrix beschreiben. Exemplarisch ist ist in Abbildung~\ref{img:transitions} ein Transitionsdiagramm für eine Markov-Kette erster Ordnung mit drei unterschiedlichen Zuständen dargestellt. Die zugehörigen Übergangswahrscheinlichkeiten werden in einer Transitionsmatrix der Form
 \begin{equation}
 \mathbf{A}=\begin{bmatrix}
 A_{11} & A_{12} & A_{13} \\
@@ -184,7 +185,8 @@ A_{21} & A_{22} & A_{23} \\
 A_{31} & A_{32} & A_{33}
 \end{bmatrix}
 \end{equation}
-dargestellt, wobei $A_{ij} = p(x_{t+1} = j | x_t=i)$ der Wahrscheinlichkeit für den Zustandsübergang von $x=i$ nach $x=j$ entspricht. Zusätzlich müssen die Übergangswahrscheinlichkeiten in $\mathbf{A}$ zeilenweise die Bedingungen an eine Wahrscheinlichkeitsverteilung erfüllen:
+dargestellt, wobei $A_{ij} = p(x_{t+1} = j | x_t=i)$ der Wahrscheinlichkeit für den Zustandsübergang von $x_t=i$ nach $x_{t+1}=j$ entspricht. Zusätzlich müssen die Übergangswahrscheinlichkeiten in $\mathbf{A}$ zeilenweise die Bedingungen an eine Wahrscheinlichkeitsverteilung erfüllen:
+
 \begin{equation}
 \forall i,j \in S: A_{ij} \geq 0,
 \end{equation}
@@ -206,7 +208,7 @@ dargestellt, wobei $A_{ij} = p(x_{t+1} = j | x_t=i)$ der Wahrscheinlichkeit für 
 	\label{img:transitions}
 \end{figure}
 
-Das gerichtete graphische Modell einer Markov-Kette ist in Abbildung~\ref{img:graphical_model} dargestellt. Die Verbundverteilung der beobachteten Zustände $p(x_0, \ldots x_n)$ faktorisiert entsprechend der Unabhängigkeitsannahmen in
+Das gerichtete graphische Modell einer Markov-Kette erster Ordnung ist in Abbildung~\ref{img:graphical_model} dargestellt. Die Verbundverteilung der beobachteten Zustände $p(x_0, \ldots x_n)$ faktorisiert entsprechend der im Modell getroffenen Unabhängigkeitsannahmen in
 \begin{equation}
 p(x_0, \ldots, x_n) = p(x_0) \prod\limits_{t=1}^{n}p(x_t | x_{t-1}).
 \end{equation}
@@ -223,7 +225,7 @@ Die Parameter des Modells sind zum einen die Transitionsmatrix $\mathbf{A}$, wel
 	\label{img:graphical_model}
 \end{figure}
 
-Markov-Ketten erster Ordnung treffen starke Unabhängigkeitsannahmen. Soll bei der Vorhersage nicht nur die direkte Vergangenheit betrachtet werden, sondern weiter zurückblicken, müssen diese Annahmen abgeschwächt werden. Es ergeben sich Markov-Ketten höherer Ordnung. Entsprechend erhöht sich die Anzahl der Parameter des Modells. So berücksichtigt eine Markov-Kette zweiter Ordnung beim Vorhersagen von $x_{t+1}$ die Zustände $x_{t}$ und $x_{t-1}$. Die stationären Übergangswahrscheinlichkeiten einer Markov-Kette $d$-ter Ordnung können in einem $d+1$-dimensionalen Tensor repräsentiert werden.
+Markov-Ketten erster Ordnung treffen starke Unabhängigkeitsannahmen. Soll bei der Vorhersage nicht nur die direkte Vergangenheit betrachtet werden, sondern weiter zurückgeblickt, müssen diese Annahmen abgeschwächt werden. Es ergeben sich Markov-Ketten höherer Ordnung. Entsprechend erhöht sich die Anzahl der Parameter des Modells. So berücksichtigt beispielsweise eine Markov-Kette zweiter Ordnung beim Vorhersagen von $x_{t+1}$ die Zustände $x_{t}$ und $x_{t-1}$. Die stationären Übergangswahrscheinlichkeiten einer Markov-Kette $d$-ter Ordnung können in einem $d+1$-dimensionalen Tensor repräsentiert werden.
 
 \subsubsection*{Parameterschätzung und Vorhersage}
 
@@ -233,11 +235,13 @@ Zur Schätzung der Transitionsmatrix homogener Markov-Ketten erster Ordnung kann 
 \end{equation}
 Bei gegebenem Zustand $x_{t} = i$ kann zur Vorhersage des nächsten Zustandes $\hat x_{t+1}$ der mit der größten Transitionswahrscheinlichkeit von $i$ ausgehend gewählt werden:
 \begin{equation}
-\hat x_{t+1} = \argmax_j\ \hat A_{ij},\quad x_{t} = i
+\quad\quad\quad\quad\quad\quad\hat x_{t+1} = \argmax_j\ \hat A_{ij},\quad \text{mit }x_{t} = i.
 \end{equation}
 Der Parameter $\vec \pi = p(x_0)$ ist bei der Vorhersage unerheblich, sofern bereits eine Position bekannt ist. Er wird deshalb nicht geschätzt.
 
-Die Schätzer für die Transitionswahrscheinlichkeiten der Markov-Ketten höherer Ordnung sowie die zugehörige Vorhersagegleichung sind in Tabelle~\ref{tab:markov} dargestellt. Die Anzahl der Parameter (Elemente der Transitionsmatrix bzw. des Transitionstensors) wächst mit steigender Ordnung exponentiell.\footnote{Je weiter in die Vergangenheit geschaut wird, desto mehr Kombinationen von Zustandsübergängen gibt es. Da für jede Kombination der Ausgangszustände die Summe der Übergangswahrscheinlichkeiten zu 1 summieren muss, werden nur $m^k \cdot (m-1)$ und nicht $m^{k+1}$ Parameter benötigt.} Die Herleitung der Schätzer findet sich in Anhang A.
+Die Schätzer für die Transitionswahrscheinlichkeiten der Markov-Ketten höherer Ordnung sowie die zugehörige Vorhersagegleichung sind in Tabelle~\ref{tab:markov} dargestellt. Die Herleitung der Schätzer findet sich in Anhang A.
+
+Die Anzahl der Parameter (Elemente der Transitionsmatrix bzw. des Transitionstensors) wächst mit steigender Ordnung exponentiell.  Je weiter in die Vergangenheit geschaut wird, desto mehr Kombinationen von Zustandsübergängen gibt es. Da für jede Kombination der Ausgangszustände die Summe der Übergangswahrscheinlichkeiten zu 1 summieren muss, werden für eine Markov-Kette $k$-ter Ordnung nur $m^k \cdot (m-1)$ und nicht $m^{k+1}$ Parameter benötigt.
 
 \renewcommand{\arraystretch}{1.2}
 \begin{table}[t]
@@ -379,7 +383,7 @@ Die Ursache hierfür könnte in der Unterbestimmtheit der Modelle liegen. Die Anza
 
 Im Rahmen der vorliegenden Arbeit wurde untersucht, mit welcher Genauigkeit die Bewegungen von Mobilfunknutzern vorhergesagt werden können. Hierfür wurde eine Handyanwendung programmiert, die über einen längeren Zeitraum die angemeldeten Mobilfunkzellen der Nutzer minütlich aufzeichnet. Zusätzlich wurden die auf Basis ungefährer Positionsdaten geschätzten Zellenkoordinaten ermittelt und visualisiert.
 
-Zur Analyse und Vorhersage der Positionsdaten wurden Markov-Ketten erster, zweiter und dritter Ordnung, sowie eine Evaluation in R implementiert. Mit zwei gesammelten Datensätzen wurde die Vorhersagegenauigkeit der implementierten Modelle geschätzt. Mit zunehmender Modellkomplexität nahm die Vorhersagegenauigkeit ab. Der Grund hierfür ist vermutlich in einer Overfitting-Problematik zu suchen. Markov-Ketten erster Ordnung konnten die Position mit mittlerer Genauigkeit (45\,\% bzw. 62\,\%) vorhersagen.
+Zur Analyse und Vorhersage der Positionsdaten wurden Markov-Ketten erster, zweiter und dritter Ordnung, sowie eine Evaluation in \emph{R} implementiert. Mit zwei gesammelten Datensätzen wurde die Vorhersagegenauigkeit der implementierten Modelle geschätzt. Mit zunehmender Modellkomplexität nahm die Vorhersagegenauigkeit ab. Der Grund hierfür ist vermutlich in einer Overfitting-Problematik zu suchen. Markov-Ketten erster Ordnung konnten die Position mit mittlerer Genauigkeit (45\,\% bzw. 62\,\%) vorhersagen.
 
 Da die Vorhersage nur auf Basis von Mobilfunkzellen stattfand, lässt sich der praktische Nutzen diskutieren. Mobiltelefone melden sich an einer in der Nähe befindlichen Zelle an, wobei die Position der Zelle im Allgemeinen nicht der exakten Position des Nutzers entspricht. Je nach Besiedelungsdichte kann die Reichweite einer Zelle von einigen Metern bis hin zu mehreren Kilometern reichen. Eine genauere Positionsbestimmung (beispielsweise GPS) könnte den praktischen Nutzen erhöhen. Allerdings ist die Positionsbestimmung mittels GPS gegenüber der hier angewendeten Methode wesentlich energieintensiver.
 
