@@ -266,7 +266,7 @@ Markov-Kette dritter Ordnung & $m^3 \cdot (m - 1)$ & $\hat A_{ijkl} = \frac{N_{i
 \newcommand{\SB}{A}
 \newcommand{\MB}{B}
 
-Während des Projekts wurden mit Hilfe der in Abschnitt~\ref{subsec:data_collection} vorgestellten Software von zwei freiwillig teilnehmenden Mobilfunknutzern innerhalb eines Monats Daten gesammelt. Tabelle~\ref{tab:datasets} zeigt die Anzahl der besuchten Mobilfunkzellen (Zustände), die Anzahl der beobachteten Zustandsübergänge und die Häufigkeitsverteilung der beobachteten Zustände der zwei gewonnenen Datensätze nach der Vorverarbeitung. Datensatz \SB\ beinhaltet weniger Zustände und Beobachtungen als Datensatz \MB, ist jedoch auch weniger steil ($\omega_{\text{\SB}} = 22{,}4$ und  $\omega_{\text{\MB}} = 69{,}13$).\footnote{Die relative Kurtosis $\omega$ einer Verteilung ist ein Maß für die Steilheit. Eine sehr steile Verteilung weist die Wahrscheinlichkeitsmasse hauptsächlich einigen wenigen, extremen Ereignissen zu. Die relative Kurtosis der Standardnormalverteilung beträgt $\omega_{\mathcal N(0,1)} = 3$. Näheres hierzu findet sich in \textcite{assenmacher2003deskriptive},~S.~114~ff.}
+Während des Projekts wurden mit Hilfe der in Abschnitt~\ref{subsec:data_collection} vorgestellten Software von zwei Mobilfunknutzern innerhalb eines Monats Daten gesammelt. Tabelle~\ref{tab:datasets} zeigt die Anzahl der besuchten Mobilfunkzellen (Zustände), die Anzahl der beobachteten Zustandsübergänge und die Häufigkeitsverteilung der beobachteten Zustände der zwei gewonnenen Datensätze nach der Vorverarbeitung. Datensatz \SB\ beinhaltet weniger Zustände und Beobachtungen als Datensatz \MB, ist jedoch auch weniger steil ($\omega_{\text{\SB}} = 22{,}4$ und  $\omega_{\text{\MB}} = 69{,}13$).\footnote{Die relative Kurtosis $\omega$ einer Verteilung ist ein Maß für die Steilheit. Eine sehr steile Verteilung weist die Wahrscheinlichkeitsmasse hauptsächlich einigen wenigen, extremen Ereignissen zu. Die relative Kurtosis der Standardnormalverteilung beträgt $\omega_{\mathcal N(0,1)} = 3$. Näheres hierzu findet sich in \textcite{assenmacher2003deskriptive},~S.~114~ff.}
 
 \vspace*{0.5em}
 \renewcommand{\arraystretch}{1.4}
@@ -287,19 +287,19 @@ Während des Projekts wurden mit Hilfe der in Abschnitt~\ref{subsec:data_collecti
 
 Um einen besseren Eindruck der aufgezeichneten Bewegungsmuster zu erhalten, wurden die gesammelten Mobilfunkzellenkoordinaten grafisch aufbereitet. Abbildung~\ref{img:locations} zeigt die geschätzten Koordinaten der Mobilfunkzellen an denen der Benutzer in Datensatz \SB\ angemeldet war. In Abbildung~\ref{img:map} wurden die Koordinaten auf eine Landkarte übertragen.
 
-Auffällig ist die Häufung der Zellen zwischen Halle (Saale) und Bitterfeld-Wolfen. Hier ist offenbar das gewohnte Bewegungsumfeld des Nutzers. Die Vorhersage sollte in diesen Gebieten sinnvoll und möglich sein. Es ist zu erwarten, dass einmalig besuchte Zellen (zum Beispiel alle westlich von 11.9° östliche Breite befindliche) nicht gut vorhersagbar sind.
+Auffällig ist die Häufung der Zellen zwischen Halle (Saale) und Bitterfeld-Wolfen. Hier ist offenbar das gewohnte Bewegungsumfeld des Nutzers. Die Vorhersage sollte in diesen Gebieten sinnvoll und möglich sein. Es ist zu erwarten, dass einmalig oder sehr selten besuchte Zellen (zum Beispiel alle westlich von 11.9° östliche Breite befindliche) nicht gut vorhersagbar sind.
 
 \begin{figure}[p]
 \begin{center}
 \includegraphics*[width=1\linewidth]{cell_locations}
-\caption[Koordinaten der \SB-Mobilfunkzellen]{Längen- und Breitengradkoordinaten der im Datensatz \SB\ beobachteten Mobilfunkzellen. Dargestellt sind jeweils die geschätzten Positionen der Mobilfunkzellen, an welcher der Benutzer angemeldet war.}
+\caption[Koordinaten der \SB-Mobilfunkzellen]{Längen- und Breitengradkoordinaten der im Datensatz \SB\ beobachteten Mobilfunkzellen. Dargestellt sind jeweils die geschätzten Positionen der Zellen an denen der Benutzer angemeldet war.}
 \label{img:locations}
 \end{center}
 \end{figure} 
 
 \begin{figure}[p]
 \begin{center}
-\includegraphics*[width=.9\linewidth]{map.png}
+\quad\ \includegraphics*[width=.9\linewidth]{map.png}
 \caption[Karte der \SB-Mobilfunkzellen]{Übertragung der im Datensatz \SB\ beobachteten Mobilfunkzellenkoordinaten aus Abbildung~\ref{img:locations} auf eine Landkarte.}
 \label{img:map}
 \end{center}
@@ -307,7 +307,7 @@ Auffällig ist die Häufung der Zellen zwischen Halle (Saale) und Bitterfeld-Wolfe
 
 \subsection{Untersuchung der Vorhersagegenauigkeit}
 
-Um die nächste Position eines Nutzers mit Hilfe eines Markov-Modells vorherzusagen, wird die entsprechende in Tabelle~\ref{tab:markov} beschriebene Entscheidungsregel wie angewendet. Hierfür ist jedoch ein hinreichend genauer Schätzer der Transitionswahrscheinlichkeiten notwendig. Dieser könnte beispielsweise mittels Online-Learning direkt auf dem Mobiltelefon errechnet werden. So werden Vorhersagen mit der Zeit immer genauer und das Vorhersagemodell lernt mit der Zeit.
+Um die nächste Position eines Nutzers mit Hilfe eines Markov-Modells vorherzusagen, wird die je nach Modell passende Entscheidungsregel aus Tabelle~\ref{tab:markov} angewendet. Hierfür ist jedoch ein hinreichend genauer Schätzer der Transitionswahrscheinlichkeiten notwendig. Dieser könnte beispielsweise mittels Online-Learning direkt auf dem Mobiltelefon errechnet werden. So werden Vorhersagen mit der Zeit immer genauer und das Vorhersagemodell lernt mit der Zeit.
 
 Um festzustellen, wie gut diese Methode in der Praxis funktionieren kann, wurden auf den zwei gesammelten Datensätzen jeweils Markov-Ketten unterschiedlicher Ordnung trainiert und die Vorhersagegenauigkeit gemessen. Die Vorhersagegenauigkeit $\text{PA}(\hat x_{t+1})$ für eine konkrete Vorhersage $\hat x_{t+1}$, gegeben der wahren Position $x_{t+1}$ wird definiert als
 \begin{align}
@@ -324,10 +324,11 @@ wobei $\mathbb{I}(X)$ den Wahrheitswert einer aussagenlogischen Formel $X$ in $1
 Für die Vorhersage des Zustandes zum Zeitpunkt $t+1$ werden alle Beobachtungen $x_i,\ i \leq t$ zur Schätzung der Parameter verwendet, und anschließend überprüft, ob die Vorhersage korrekt war. Bei korrekter Vorhersage ist die Genauigkeit 1, sonst 0.
 
 Damit die Ergebnisse möglichst nah an das Szenario des Online-Learning herankommen, wurden die Modelle mit den ersten beobachteten Daten beginnend, sukzessiv evaluiert und der Schätzer verbessert. Dabei wurde die Vorhersagegenauigkeit kumuliert und gemittelt. Mit Hilfe der sukzessiv berechneten Vorhersagegenauigkeiten $\text{PA}_1,\ldots,\text{PA}_n$ der beobachteten Zustände $x_1,\ldots,x_n$, lässt sich die mittlere Vorhersagegenauigkeit bis zum Zeitpunkt $T$ berechnen:
+
 \begin{align}
 \overline{\text{PA}}_T = \frac{1}{T} \cdot \sum\limits_{i=1}^{T} \text{PA}_i.
 \end{align}
-Das Vorgehen ist in Abbildung~\ref{img:eval_approach} dargestellt. Zu Beginn wird die Vorhersagegenauigkeit relativ schlecht sein. Das Modell hat noch nicht viele Zustandsübergänge beobachtet und macht entsprechend viele Fehler. Nach einer Einschwingphase sollte sich die durchschnittliche Vorhersagegenauigkeit stabilisieren.
+Das Vorgehen ist in Abbildung~\ref{img:eval_approach} dargestellt. Zu Beginn ist eine relativ schlechte Vorhersagegenauigkeit zu vermuten. Das Modell hat noch nicht viele Zustandsübergänge beobachtet und macht entsprechend viele Fehler. Nach einer Einschwingphase sollte sich die durchschnittliche Vorhersagegenauigkeit stabilisieren.
 
 \begin{figure}[t]
 \begin{center}
@@ -335,12 +336,12 @@ Das Vorgehen ist in Abbildung~\ref{img:eval_approach} dargestellt. Zu Beginn wir
 		\scalefont{1}
 		\input{img/evaluation.tex}
 	}
-	\caption{Online-Evaluation der Vorhersagegenauigkeit.}
+	\caption{Evaluation der Vorhersagegenauigkeit. Mit der ersten Beobachtung beginnend, wird sukzessive die Vorhersagegenauigkeit bestimmt. Hierbei wird eine Vorhersage getroffen, die Genauigkeit ausgerechnet und anschließend die nächste Beobachtung angesehen, wobei der Schätzer mit Hilfe der korrekten Position aktualisiert wird.}
 	\label{img:eval_approach}
 \end{center}
 \end{figure}
 
-Im Rahmen der Experimente wurde die beschriebene Evaluation auf den gesammelten Daten \SB\ und \MB\ durchgeführt. Die mittlere Vorhersagegenauigkeit in Abhängigkeit der beobachteten Zustandsübergänge ist in Abbildung~\ref{img:accuracy_sb} für \SB, beziehungsweise Abbildung~\ref{img:accuracy_mb} für \MB\ dargestellt. Es wurden Markov-Ketten erster, zweiter und dritter Ordnung verwendet.
+Im Rahmen der Experimente wurde die beschriebene Evaluation auf den gesammelten Daten aus \SB\ und \MB\ durchgeführt. Die mittlere Vorhersagegenauigkeit in Abhängigkeit der beobachteten Zustandsübergänge ist in Abbildung~\ref{img:accuracy_sb} für \SB, beziehungsweise Abbildung~\ref{img:accuracy_mb} für \MB\ dargestellt. Es wurden Markov-Ketten erster, zweiter und dritter Ordnung verwendet.
 
 \begin{figure}[p]
 \begin{center}
@@ -364,26 +365,28 @@ Folgende Beobachtungen konnten in Bezug auf die Einschwingphase, die Vorhersageg
 
 Vermutlich ist das Verhalten der beobachteten Nutzer nur bedingt stationär. Zu Beginn des Beobachtungszeitraumes von \MB\ wurden nur einige wenige Zustände relativ vorhersehbar besucht. Nach einiger Zeit folgte ein anderes, schwerer vorhersagbares Bewegungsmuster, welches zum Abfall und Stabilisierung der Genauigkeit führte.
 
-\item[Vorhersagegenauigkeit.] Markov-Ketten erster Ordnung erreichen mit den Daten aus \SB\ eine durchschnittliche Vorhersagegenauigkeit von ca.~45\,\%, bei \MB\ beträgt sie ungefähr 62\,\%. Wie in Tabelle~\ref{tab:datasets} dargestellt, ist die Zustandsverteilung von \MB\ wesentlich steiler. Es gibt also ein paar Zustände, die sehr häufig auftreten. Dieser Umstand kommt der Vorhersage zugute, da sie mit einer geringeren Diversität der Übergänge umgehen muss.
+\item[Vorhersagegenauigkeit.] Markov-Ketten erster Ordnung erreichen mit den Daten aus \SB\ eine durchschnittliche Vorhersagegenauigkeit von ca.~45\,\%, bei \MB\ beträgt sie ungefähr 62\,\%. Wie in Tabelle~\ref{tab:datasets} dargestellt, ist die Zustandsverteilung von \MB\ wesentlich steiler. Es gibt also Zustände, die sehr häufig auftreten, wohingegen die restlichen Zustände sehr selten sind. Dieser Umstand kommt der Vorhersage zugute, da sie mit einer geringeren Diversität der Übergänge umgehen muss.
 
 Unterschiede ergeben sich auch innerhalb der Datensätze durch die Modellkomplexität. Es wäre zu erwarten gewesen, dass komplexere Modelle mit weniger Unabhängigkeitsannahmen eine bessere Vorhersage treffen. Dies ist jedoch nicht der Fall. Stattdessen sind die Ergebnisse der Markov-Ketten mit steigender Ordnung schlechter.
 
-Die Ursache hierfür könnte in der Unterbestimmtheit der Modelle liegen. Die Anzahl der zu schätzenden Wahrscheinlichkeiten beträgt bei \SB\ für Markov-Ketten erster Ordnung $78^2 = 6.084$. Es fallen etliche Wahrscheinlichkeiten weg, die praktisch nie auftreten können, weil die Mobilfunkzellen nicht benachbart sind. Dennoch gilt bereits bei dem einfachsten Modell, dass es mit $603 \ll 6.084$ viel weniger Beobachtungen als Parameter gibt. Für die Markov-Ketten zweiter beziehungsweise dritter Ordnung ist dieser Umstand mit $78^3 = 474.552$ beziehungsweise $78^4 = 37.015.056$ Parametern noch deutlicher. Diese Problematik wird häufig auch als $p \gg N$-Problem benannt und bringt Overfitting mit sich, welches die Vorhersagegenauigkeit auf Testdaten verringert.\footnote{Vgl.~\textcite{trevor2001elements},~S.~649} Abhilfe kann hier das Sammeln von mehr Daten oder das Verzichten auf komplexe Modelle schaffen.
+Die Ursache hierfür könnte in der Unterbestimmtheit der Modelle liegen. Die Anzahl der zu schätzenden Parameter beträgt in Datensatz \SB\ für Markov-Ketten erster Ordnung $78\cdot(78-1) = 6.006$. Es fallen etliche Wahrscheinlichkeiten weg, die praktisch nie auftreten können, weil die Mobilfunkzellen nicht benachbart sind. Dennoch gilt bereits bei diesem einfachen Modell, dass es mit $603 \ll 6.006$ viel weniger Beobachtungen als Parameter gibt. Für die Markov-Ketten zweiter beziehungsweise dritter Ordnung ist dieser Umstand mit $78^2 \cdot (78-1) = 468.468$ beziehungsweise $78^3 \cdot (78-1) = 36.540.504$ Parametern noch deutlicher.
+
+Diese Problematik wird häufig auch als $p \gg N$-Problem bezeichnet und bringt Overfitting mit sich, welches die Vorhersagegenauigkeit auf Testdaten verringert.\footnote{Vgl.~\textcite{trevor2001elements},~S.~649} Abhilfe kann hier das Sammeln von mehr Daten oder das Verzichten auf komplexe Modelle schaffen.
 
 \item[Laufzeit.] Die Laufzeiten des gesamten Evaluationsalgorithmus betragen für
 \begin{enumerate}
-\item[\SB:] $4{,}69\,\text{s}$ für Markov-Ketten erster Ordnung,\\ $17{,}72\,\text{s}$ für Markov-Ketten zweiter Ordnung
-\item[\MB:] $26{,}21\,\text{s}$ für Markov-Ketten erster Ordnung,\\ $125{,}20\,\text{s}$ für Markov-Ketten zweiter Ordnung
-\end{enumerate} Die Rechenzeit für die Evaluation der Markov-Ketten dritter Ordnung betrug mehrere Tage und wurde deswegen nicht auf beiden Datensätzen ausgeführt. Gründe hierfür sind einerseits die hohe Anzahl an Parametern und andererseits die schlechte Repräsentation 4-dimensionaler Tensoren in dem verwendeten R-Programm, sodass elementare Operationen ineffizient ausgeführt worden.
+\item[\SB:] $4{,}69\,\text{s}$ für Markov-Ketten erster Ordnung,\\ $17{,}72\,\text{s}$ für Markov-Ketten zweiter Ordnung,
+\item[\MB:] $26{,}21\,\text{s}$ für Markov-Ketten erster Ordnung,\\ $125{,}20\,\text{s}$ für Markov-Ketten zweiter Ordnung.
+\end{enumerate} Die Rechenzeit für die Evaluation der Markov-Ketten dritter Ordnung betrug mehrere Tage und wurde deswegen nicht auf beiden Datensätzen ausgeführt. Gründe hierfür sind einerseits die hohe Anzahl an Parametern und andererseits die schlechte Repräsentation 4-dimensionaler Tensoren in dem verwendeten R-Programm, sodass selbst elementare Operationen wie das Bestimmen der maximalen Übergangswahrscheinlichkeit ineffizient ausgeführt wurden.
 \end{description}
 
 \newpage
 
 \section{Schlussbetrachtung}
 
-Im Rahmen der vorliegenden Arbeit wurde untersucht, mit welcher Genauigkeit die Bewegungen von Mobilfunknutzern vorhergesagt werden können. Hierfür wurde eine Handyanwendung programmiert, die über einen längeren Zeitraum die angemeldeten Mobilfunkzellen der Nutzer minütlich aufzeichnet. Zusätzlich wurden die auf Basis ungefährer Positionsdaten geschätzten Zellenkoordinaten ermittelt und visualisiert.
+Im Rahmen der vorliegenden Arbeit wurde untersucht, mit welcher Genauigkeit die Bewegungen von Mobilfunknutzern vorhergesagt werden können. Hierfür wurde eine Android-Anwendung programmiert, die über einen längeren Zeitraum die angemeldeten Mobilfunkzellen der Nutzer minütlich aufzeichnet. Zusätzlich wurden die auf Basis ungefährer Positionsdaten geschätzten Zellenkoordinaten ermittelt und visualisiert.
 
-Zur Analyse und Vorhersage der Positionsdaten wurden Markov-Ketten erster, zweiter und dritter Ordnung, sowie eine Evaluation in \emph{R} implementiert. Mit zwei gesammelten Datensätzen wurde die Vorhersagegenauigkeit der implementierten Modelle geschätzt. Mit zunehmender Modellkomplexität nahm die Vorhersagegenauigkeit ab. Der Grund hierfür ist vermutlich in einer Overfitting-Problematik zu suchen. Markov-Ketten erster Ordnung konnten die Position mit mittlerer Genauigkeit (45\,\% bzw. 62\,\%) vorhersagen.
+Zur Analyse und Vorhersage der Positionsdaten wurden Markov-Ketten erster, zweiter und dritter Ordnung, sowie eine Evaluation in \emph{R} implementiert. Mit zwei gesammelten Datensätzen wurde die Vorhersagegenauigkeit der implementierten Modelle geschätzt. Mit zunehmender Modellkomplexität nahm die Vorhersagegenauigkeit ab. Der Grund hierfür ist vermutlich in der zu hohen Anzahl an Modellparametern gegenüber einer geringen Anzahl an Beobachtungen zu suchen. Markov-Ketten erster Ordnung konnten die Position mit mittlerer Genauigkeit (45\,\% bzw. 62\,\%) vorhersagen.
 
 Da die Vorhersage nur auf Basis von Mobilfunkzellen stattfand, lässt sich der praktische Nutzen diskutieren. Mobiltelefone melden sich an einer in der Nähe befindlichen Zelle an, wobei die Position der Zelle im Allgemeinen nicht der exakten Position des Nutzers entspricht. Je nach Besiedelungsdichte kann die Reichweite einer Zelle von einigen Metern bis hin zu mehreren Kilometern reichen. Eine genauere Positionsbestimmung (beispielsweise GPS) könnte den praktischen Nutzen erhöhen. Allerdings ist die Positionsbestimmung mittels GPS gegenüber der hier angewendeten Methode wesentlich energieintensiver.
 
