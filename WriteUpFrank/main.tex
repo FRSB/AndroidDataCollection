@@ -1,5 +1,7 @@
 \documentclass[a4paper, 12pt, titlepage, bibtotoc]{scrartcl} %scrartcl für kurze Artikel
 
+\pdfpageattr {/Group << /S /Transparency /I true /CS /DeviceRGB>>} 
+
 \renewcommand*\sectfont{\normalcolor\rmfamily\bfseries}
 \renewcommand*\descfont{\rmfamily\bfseries}
 \setkomafont{dictum}{\normalfont\normalcolor\rmfamily\small}
@@ -24,7 +26,7 @@
 	\normalem %stellt emph{} wieder auf kursiv, sonst unterstrichen
 \usepackage{graphicx}
 \graphicspath{{img/}}
-\usepackage[hmargin={3cm,3cm}, vmargin={2.5cm, 3.5cm}]{geometry}
+\usepackage[hmargin={3.5cm,2.5cm}, vmargin={2.5cm, 3.5cm}]{geometry}
 % \usepackage{times}
 \usepackage{mathptmx}
 \usepackage{nicefrac} 	
@@ -119,6 +121,7 @@
 \addcontentsline{toc}{section}{Abkürzungsverzeichnis}
 
 \begin{tabular}{ll}
+CPU & Central Processing Unit\\
 CSV & Comma-Separated Value\\
 GSM & Global System for Mobile Communications\\
 GPS & Global Positioning System\\
@@ -145,15 +148,15 @@ USB & Universal Serial Bus
 
 Computer sind heutzutage allgegenwärtig. Viele Menschen besitzen mobile Geräte, die stationären Computern in Sachen Rechenleistung nur noch in wenig nachstehen. Der wirtschaftliche Nutzen des sogenannten "`ubiquitous computing"' ist vielseitig. Durch eine zeitaktuelle und genaue Positionsbestimmung können Dienste mit geographischem Bezug bereitgestellt werden. So könnten beispielsweise Restaurantbesitzer besondere Mittagsangebote auf das Smartphone der potenziellen Kunden senden, die noch unentschlossen vor ihrem Lokal stehen.
 
-Könnte man vorhersehen, wo sich die Anwender zukünftig hinbewegen, so könnten Angebote schon im Vorfeld unterbreitet oder Informationen verschickt werden. Man nennt dieses Forschungsfeld \emph{Trajectory-Mining} (dt. Finden von Bewegungsmustern). In der Literatur finden sich unterschiedliche Ansätze zum Finden und Vorhersagen von Bewegungsmustern.
+Könnte man vorhersehen, wohin sich die Anwender zukünftig bewegen, so könnten Angebote schon im Vorfeld unterbreitet oder Informationen verschickt werden. Man nennt dieses Forschungsfeld \emph{Trajectory-Mining} (dt. Finden von Bewegungsmustern). 
 
-Unterschiede in den Methoden ergeben sich beispielsweise in der Repräsentation der Ortskoordinaten. Viele Ansätze rastern die Koordinaten nach festen Kriterien.\footnote{Vgl.~\textcite{peng2003developing}; Vgl.~\textcite{ishikawa2004extracting}; Vgl.~\textcite{verhein2006mining}} Offen ist dabei die Frage nach der Rastergenauigkeit. Zu große Raster sind ungenau, zu kleine Raster enthalten eventuell zu wenige Beobachtungen. Abhilfe kann das Clustering der Koordinaten schaffen.\footnote{Vgl.~\textcite{jeung2007mining}} Ein anderer Ansatz speichert die Bewegungsmuster in sogenannten Trajectory-Pattern-Trees und wählt zur Bewegungsvorhersage das Muster des Baumes mit der höchsten Punktzahl.\footnote{Vgl.~\textcite{monreale2009wherenext}}  Weiterhin wurde der Nutzen der Kombination von geographischen und semantischen Merkmalen zur Vorhersage untersucht.\footnote{Vgl.~\textcite{ying2011semantic}}
+In der Literatur finden sich verschiedene Ansätze des Trajectory-Minings. Unterschiede in den Methoden ergeben sich beispielsweise in der Repräsentation der Ortskoordinaten. Viele Ansätze rastern die Koordinaten nach festen Kriterien.\footnote{Vgl.~\textcite{peng2003developing}; \textcite{ishikawa2004extracting}; \textcite{verhein2006mining}} Offen ist dabei die Frage nach der Rastergenauigkeit. Zu große Raster sind ungenau, zu kleine Raster enthalten eventuell zu wenige Beobachtungen. Abhilfe kann das Clustering der Koordinaten schaffen.\footnote{Vgl.~\textcite{jeung2007mining}} Ein anderer Ansatz speichert die Bewegungsmuster in sogenannten Trajectory-Pattern-Trees und wählt zur Bewegungsvorhersage das Muster des Baumes mit der höchsten Punktzahl.\footnote{Vgl.~\textcite{monreale2009wherenext}}  Weiterhin wurde der Nutzen der Kombination von geographischen und semantischen Merkmalen zur Vorhersage untersucht.\footnote{Vgl.~\textcite{ying2011semantic}}
 
-Ziel des Projekts ist es, eine Handyanwendung zu programmieren, welche die nötigen Daten für eine verlässliche Positionsvorhersage sammelt, und diese auszuwerten. Somit soll untersucht werden, mit welcher Genauigkeit Bewegungen von Menschen vorhergesagt werden können. Im Rahmen dieser Arbeit liegt der Fokus auf der Positionsvorhersage. Die entwickelte Handyanwendung wird in einer anderen Arbeit näher beschrieben.\footnote{Vgl.~\textcite{bar2013android}}
+Ziel des in dieser Arbeit beschriebenen Projektes ist, eine Handyanwendung zu programmieren, welche die nötigen Daten für eine verlässliche Positionsvorhersage sammelt, und diese auszuwerten. Somit soll untersucht werden, mit welcher Genauigkeit Bewegungen von Menschen vorhergesagt werden können. Im Rahmen dieser Arbeit liegt der Fokus auf der Positionsvorhersage. Die entwickelte Handyanwendung wird in einer anderen Arbeit näher beschrieben.\footnote{Vgl.~\textcite{bar2013android}}
 
-Zur Entwicklung der Handyanwendung wurde das \emph{Android-Software-Development-Kit}\footnote{\emph{http://developer.android.com/sdk/index.html}}, zur Datenaufbereitung und statistischen Analyse die Programmiersprachen \emph{Java} und \emph{R} verwendet. Die Visualisierung fand mit Hilfe von \emph{R} und \emph{Google Maps}\footnote{\emph{http://maps.google.de}} statt.
+Zur Entwicklung der Handyanwendung wurde das \emph{Android-Software-Development-Kit}\footnote{\emph{http://developer.android.com/sdk/index.html}} verwendet. Zur Datenaufbereitung und statistischen Analyse kamen eigens in \emph{Java} und \emph{R} entwickelte Programme zum Einsatz. Die Visualisierung fand mit Hilfe von \emph{R} und \emph{Google Maps}\footnote{\emph{http://maps.google.de}} statt.
 
-Im ersten Abschnitt der Arbeit findet sich eine Beschreibung der eingesetzten Methoden zur Datensammlung und Datenanalyse. Hierbei wird vor allem auf die zur Positionsvorhersage verwendeten Modelle eingegangen. Der zweite Teil stellt die gesammelten Daten, sowie die Ergebnisse der Analyse und Vorhersage vor. Abschließend folgt eine Zusammenfassung, eine kritische Würdigung und ein Ausblick auf zukünftige Forschungsarbeit.
+Im ersten Abschnitt der Arbeit findet sich eine Beschreibung der eingesetzten Methoden zur Datensammlung und Datenanalyse. Hierbei wird auf die zur Positionsvorhersage verwendeten Modelle eingegangen. Der zweite Teil stellt die gesammelten Daten, sowie die Ergebnisse der Analyse und Vorhersage vor. Abschließend folgt eine Zusammenfassung, eine kritische Würdigung und ein Ausblick auf zukünftige Forschungsarbeit.
 
 \newpage
 
@@ -163,7 +166,7 @@ Im ersten Abschnitt der Arbeit findet sich eine Beschreibung der eingesetzten Me
 
 Um Daten zur anschließenden Auswertung zu sammeln, wurde die Android-Anwendung \emph{AndroidDataCollection}\footnote{Quellcode und Dokumentation finden sich auf \emph{https://github.com/FRSB/AndroidDataCollection}.} entwickelt. Auf dem Mobiltelefon installiert, zeichnet sie minütlich Daten verschiedener Sensoren und Schnittstellen auf und speichert diese lokal in einer Datei. Für die in Abschnitt~\ref{subsec:analysis} beschriebenen Analysen ist die Mobilfunkzellen-ID der aktuell verwendeten Zelle (GSM oder UMTS) relevant. Zur Visualisierung des Zustandsraumes wurde zusätzlich die Position des Mobiltelefons ermittelt.\footnote{Die Positionsbestimmung findet hierarchisch statt. Zunächst wird versucht, die ungefähre Position über die aktuell verwendete Mobilfunkzelle zu ermitteln. Falls ein Drahtlosnetzwerk zur Verfügung steht über das hinreichend genaue Positionsdaten verfügbar sind, wird die Position aktualisiert. Sollte das GPS-Signal anliegen und stark genug sein, überschreibt es die ungefähren Positionsdaten. So wird der API die bestmögliche Position übergeben. Nähere Informationen finden sich im Android Developers API Guide unter \emph{http://developer.android.com/guide/topics/location/strategies.html}.}
 
-Nach einer gewissen Zeit wird das Mobiltelefon über USB mit dem Computer verbunden und die gesammelten Daten in Form einer CSV-Datei übertragen. Damit aus den minütlich aufgezeichneten Positionsdaten eine Bewegungsvorhersage möglich ist, findet zunächst eine Datenaufbereitungen und -transformationen statt. Hierdurch werden fehlerhaft aufgezeichnete Datensätze und Aufzeichnungen ohne bestimmbare Mobilfunkzellen-ID entfernt. Anschließend folgen zwei Vorverarbeitungsschritte unabhängig voneinander: Extrahieren der Bewegungen und Schätzung der Mobilfunkzellenpositionen.
+Nach einer gewissen Zeit wird das Mobiltelefon über USB mit dem Computer verbunden und die gesammelten Daten in Form einer CSV-Datei übertragen. Damit aus den minütlich aufgezeichneten Positionsdaten eine Bewegungsvorhersage möglich ist, finden Datenaufbereitungen und -transformationen statt. Zunächst werden fehlerhaft aufgezeichnete Datensätze und Aufzeichnungen ohne bestimmbare Mobilfunkzellen-ID entfernt. Anschließend folgen zwei Vorverarbeitungsschritte unabhängig voneinander: Extrahieren der Bewegungen und Schätzung der Mobilfunkzellenpositionen.
 
 \begin{description}
 \item[Extrahieren der Bewegungen.] Hierfür werden die zeitlich aufeinanderfolgende Aufzeichnungen, bei denen sich die Mobilfunkzellen-ID nicht ändert, entfernt. So bleibt eine Folge von Zellenübergängen übrig, die später zur Vorhersage verwendet werden kann.
@@ -175,9 +178,9 @@ Nach einer gewissen Zeit wird das Mobiltelefon über USB mit dem Computer verbund
 
 \subsubsection*{Modellbildung}
 
-Die Bewegungen eines Mobiltelefonnutzers werden als zeitdiskreter stochastischer Prozess modelliert. Sei der Beobachtungszeitraum $T = \{0,\ldots,n\}$ und der Zustandsraum $S = \{1, \ldots, m\}$. Ein Nutzer $u$ befindet sich zum Zeitpunkt $t \in T$ im Zustand $x_t \in S$. Ein Zustand entspricht der Mobilfunkzelle, an welcher der Nutzer angemeldet ist. Eine Bewegung von einer Mobilfunkzelle zur nächsten entspricht somit einer diskreten Zustandsänderung von $x_t$ zu $x_{t+1}$. Jeder Zustandsänderung wird eine Wahrscheinlichkeit in Abhängigkeit der vergangenen Zustände zugeordnet. Solche Modelle werden Markov-Modelle genannt.\footnote{Vgl.~\textcite{bishop2006pattern},~S.~607~ff.} In den folgenden Absätzen sollen die zur Vorhersage verwendeten Modelle vorgestellt werden.
+Die Bewegungen eines Mobiltelefonnutzers werden als zeitdiskreter stochastischer Prozess modelliert: Ein Nutzer befindet sich zum Zeitpunkt $t \in T$ im Zustand $x_t \in S$, wobei $T = \{0,\ldots,n\}$ den Beobachtungszeitraum und $S = \{1, \ldots, m\}$ den Zustandsraum darstellt. Ein Zustand entspricht der Mobilfunkzelle, an welcher der Nutzer angemeldet ist. Eine Bewegung von einer Mobilfunkzelle zur Nächsten entspricht somit einer diskreten Zustandsänderung von $x_t$ zu $x_{t+1}$. Wird jeder Zustandsänderung eine Wahrscheinlichkeit zugeordnet, die nur von in der Vergangenheit liegenden Zuständen abhängt, handelt es sich um sogenannte \emph{Markov-Modelle}.\footnote{Vgl.~\textcite{bishop2006pattern},~S.~607~ff.} In den folgenden Absätzen sollen die zur Vorhersage verwendeten Markov-Modelle vorgestellt werden.
 
-Will man die nächste Position eines Nutzers vorhersagen, erscheint es nützlich, dies in Abhängigkeit der aktuellen Position zu tun. Das entstehende Markov-Modell ist eine Markov-Kette erster Ordnung. Unter der Annahme stationärer Übergangswahrscheinlichkeiten\footnote{Hängt die Wahrscheinlichkeit $p(x_{t+1}|x_{t})$ für den Übergang von $x_t$ nach $x_{t+1}$ nicht von $t$ ab, spricht man von sogenannten stationären Übergangswahrscheinlichkeiten. Es spielt für die Übergangswahrscheinlichkeit also keine Rolle an welchem Zeitpunkt der Übergang stattfindet. Markov-Ketten mit stationären Übergangswahrscheinlichkeiten nennt man homogen. Vgl.~hierzu \textcite{ouvrard2009probabilites}, S.~411.} lässt sich das Modell mit Hilfe eines Transitionsdiagramms und der zugehörigen Transitionsmatrix beschreiben. Exemplarisch ist ist in Abbildung~\ref{img:transitions} ein Transitionsdiagramm für eine Markov-Kette erster Ordnung mit drei unterschiedlichen Zuständen dargestellt. Die zugehörigen Übergangswahrscheinlichkeiten werden in einer Transitionsmatrix der Form
+Will man die nächste Position eines Nutzers vorhersagen, erscheint es nützlich, dies in Abhängigkeit der aktuellen Position zu tun. Das entstehende Markov-Modell ist eine Markov-Kette erster Ordnung. Unter der Annahme stationärer Übergangswahrscheinlichkeiten\footnote{Hängt die Wahrscheinlichkeit $p(x_{t+1}|x_{t})$ für den Übergang von $x_t$ nach $x_{t+1}$ nicht von $t$ ab, spricht man von sogenannten stationären Übergangswahrscheinlichkeiten. Es spielt für die Übergangswahrscheinlichkeit also keine Rolle zu welchem Zeitpunkt der Übergang stattfindet. Markov-Ketten mit stationären Übergangswahrscheinlichkeiten nennt man homogen. Vgl.~hierzu \textcite{ouvrard2009probabilites}, S.~411.} lässt sich das Modell mit Hilfe eines Transitionsdiagramms und der zugehörigen Transitionsmatrix beschreiben. Exemplarisch ist in Abbildung~\ref{img:transitions} ein Transitionsdiagramm für eine Markov-Kette erster Ordnung mit drei unterschiedlichen Zuständen dargestellt. Die zugehörigen Übergangswahrscheinlichkeiten werden in einer Transitionsmatrix der Form
 \begin{equation}
 \mathbf{A}=\begin{bmatrix}
 A_{11} & A_{12} & A_{13} \\
@@ -225,7 +228,7 @@ Die Parameter des Modells sind zum einen die Transitionsmatrix $\mathbf{A}$, wel
 	\label{img:graphical_model}
 \end{figure}
 
-Markov-Ketten erster Ordnung treffen starke Unabhängigkeitsannahmen. Soll bei der Vorhersage nicht nur die direkte Vergangenheit betrachtet werden, sondern weiter zurückgeblickt, müssen diese Annahmen abgeschwächt werden. Es ergeben sich Markov-Ketten höherer Ordnung. Entsprechend erhöht sich die Anzahl der Parameter des Modells. So berücksichtigt beispielsweise eine Markov-Kette zweiter Ordnung beim Vorhersagen von $x_{t+1}$ die Zustände $x_{t}$ und $x_{t-1}$. Die stationären Übergangswahrscheinlichkeiten einer Markov-Kette $d$-ter Ordnung können in einem $d+1$-dimensionalen Tensor repräsentiert werden.
+Markov-Ketten erster Ordnung treffen starke Unabhängigkeitsannahmen. Soll bei der Vorhersage nicht nur die direkte Vergangenheit betrachtet werden, müssen diese Annahmen abgeschwächt werden. Es ergeben sich Markov-Ketten höherer Ordnung. Entsprechend erhöht sich die Anzahl der Parameter des Modells. So berücksichtigt beispielsweise eine Markov-Kette zweiter Ordnung beim Vorhersagen von $x_{t+1}$ die Zustände $x_{t}$ und $x_{t-1}$. Die stationären Übergangswahrscheinlichkeiten einer Markov-Kette $d$-ter Ordnung können in einem $d+1$-dimensionalen Tensor repräsentiert werden.
 
 \subsubsection*{Parameterschätzung und Vorhersage}
 
@@ -237,11 +240,13 @@ Bei gegebenem Zustand $x_{t} = i$ kann zur Vorhersage des nächsten Zustandes $\h
 \begin{equation}
 \quad\quad\quad\quad\quad\quad\hat x_{t+1} = \argmax_j\ \hat A_{ij},\quad \text{mit }x_{t} = i.
 \end{equation}
-Der Parameter $\vec \pi = p(x_0)$ ist bei der Vorhersage unerheblich, sofern bereits eine Position bekannt ist. Er wird deshalb nicht geschätzt.
+Der Parameter $\vec \pi = p(x_0)$ der Startzustandsverteilung ist bei der Vorhersage unerheblich, sofern bereits eine Position bekannt ist. Er wird deshalb nicht geschätzt.
 
 Die Schätzer für die Transitionswahrscheinlichkeiten der Markov-Ketten höherer Ordnung sowie die zugehörige Vorhersagegleichung sind in Tabelle~\ref{tab:markov} dargestellt. Die Herleitung der Schätzer findet sich in Anhang A.
 
-Die Anzahl der Parameter (Elemente der Transitionsmatrix bzw. des Transitionstensors) wächst mit steigender Ordnung exponentiell.  Je weiter in die Vergangenheit geschaut wird, desto mehr Kombinationen von Zustandsübergängen gibt es. Da für jede Kombination der Ausgangszustände die Summe der Übergangswahrscheinlichkeiten zu 1 summieren muss, werden für eine Markov-Kette $k$-ter Ordnung nur $m^k \cdot (m-1)$ und nicht $m^{k+1}$ Parameter benötigt.
+\newpage
+
+Die Anzahl der Parameter (Elemente der Transitionsmatrix bzw. des Transitionstensors) wächst mit steigender Ordnung exponentiell.  Je weiter in die Vergangenheit geschaut wird, desto mehr Kombinationen von Zustandsübergängen gibt es. Da für jede Kombination der Ausgangszustände die Summe der Übergangswahrscheinlichkeiten zu 1 summieren muss, werden für eine Markov-Kette $k$-ter Ordnung $m^k \cdot (m-1)$ und nicht $m^{k+1}$ Parameter benötigt.
 
 \renewcommand{\arraystretch}{1.2}
 \begin{table}[t]
@@ -266,7 +271,7 @@ Markov-Kette dritter Ordnung & $m^3 \cdot (m - 1)$ & $\hat A_{ijkl} = \frac{N_{i
 \newcommand{\SB}{A}
 \newcommand{\MB}{B}
 
-Während des Projekts wurden mit Hilfe der in Abschnitt~\ref{subsec:data_collection} vorgestellten Software von zwei Mobilfunknutzern innerhalb eines Monats Daten gesammelt. Tabelle~\ref{tab:datasets} zeigt die Anzahl der besuchten Mobilfunkzellen (Zustände), die Anzahl der beobachteten Zustandsübergänge und die Häufigkeitsverteilung der beobachteten Zustände der zwei gewonnenen Datensätze nach der Vorverarbeitung. Datensatz \SB\ beinhaltet weniger Zustände und Beobachtungen als Datensatz \MB, ist jedoch auch weniger steil ($\omega_{\text{\SB}} = 22{,}4$ und  $\omega_{\text{\MB}} = 69{,}13$).\footnote{Die relative Kurtosis $\omega$ einer Verteilung ist ein Maß für die Steilheit. Eine sehr steile Verteilung weist die Wahrscheinlichkeitsmasse hauptsächlich einigen wenigen, extremen Ereignissen zu. Die relative Kurtosis der Standardnormalverteilung beträgt $\omega_{\mathcal N(0,1)} = 3$. Näheres hierzu findet sich in \textcite{assenmacher2003deskriptive},~S.~114~ff.}
+Während des Projekts wurden mit Hilfe der in Abschnitt~\ref{subsec:data_collection} vorgestellten Software innerhalb mehrerer Wochen Daten von zwei Mobilfunknutzern  gesammelt. Tabelle~\ref{tab:datasets} zeigt die Anzahl der besuchten Mobilfunkzellen (Zustände), die Anzahl der beobachteten Zustandsübergänge und die Häufigkeitsverteilung der beobachteten Zustände der zwei gewonnenen Datensätze nach der Vorverarbeitung. Datensatz \SB\ beinhaltet weniger Zustände und Beobachtungen als Datensatz \MB, ist jedoch auch weniger steil ($\omega_{\text{\SB}} = 22{,}4$ und  $\omega_{\text{\MB}} = 69{,}13$).\footnote{Die relative Kurtosis $\omega$ einer Verteilung ist ein Maß für die Steilheit. Eine sehr steile Verteilung weist die Wahrscheinlichkeitsmasse hauptsächlich einigen wenigen, extremen Ereignissen zu. Die relative Kurtosis der Standardnormalverteilung beträgt $\omega_{\mathcal N(0,1)} = 3$. Näheres hierzu findet sich in \textcite{assenmacher2003deskriptive},~S.~114~ff.}
 
 \vspace*{0.5em}
 \renewcommand{\arraystretch}{1.4}
@@ -285,14 +290,14 @@ Während des Projekts wurden mit Hilfe der in Abschnitt~\ref{subsec:data_collecti
 \label{tab:datasets}
 \end{table}
 
-Um einen besseren Eindruck der aufgezeichneten Bewegungsmuster zu erhalten, wurden die gesammelten Mobilfunkzellenkoordinaten grafisch aufbereitet. Abbildung~\ref{img:locations} zeigt die geschätzten Koordinaten der Mobilfunkzellen an denen der Benutzer in Datensatz \SB\ angemeldet war. In Abbildung~\ref{img:map} wurden die Koordinaten auf eine Landkarte übertragen.
+Um einen besseren Eindruck der aufgezeichneten Bewegungsmuster zu erhalten, wurden die gesammelten Mobilfunkzellenkoordinaten grafisch aufbereitet. Abbildung~\ref{img:locations} zeigt die geschätzten Koordinaten der Mobilfunkzellen, an denen der Benutzer in Datensatz \SB\ angemeldet war. In Abbildung~\ref{img:map} wurden die Koordinaten auf eine Landkarte übertragen.
 
-Auffällig ist die Häufung der Zellen zwischen Halle (Saale) und Bitterfeld-Wolfen. Hier ist offenbar das gewohnte Bewegungsumfeld des Nutzers. Die Vorhersage sollte in diesen Gebieten sinnvoll und möglich sein. Es ist zu erwarten, dass einmalig oder sehr selten besuchte Zellen (zum Beispiel alle westlich von 11.9° östliche Breite befindliche) nicht gut vorhersagbar sind.
+Auffällig ist die Häufung der Zellen zwischen Halle (Saale) und Bitterfeld-Wolfen. Hier ist offenbar das gewohnte Bewegungsumfeld des Nutzers. Die Vorhersage sollte in diesen Gebieten sinnvoll und möglich sein. Es ist zu erwarten, dass Bewegungen in einmalig oder sehr selten besuchten Gebieten (zum Beispiel westlich von 11{,}9° östliche Breite) nicht gut vorhersagbar sind.
 
 \begin{figure}[p]
 \begin{center}
 \includegraphics*[width=1\linewidth]{cell_locations}
-\caption[Koordinaten der \SB-Mobilfunkzellen]{Längen- und Breitengradkoordinaten der im Datensatz \SB\ beobachteten Mobilfunkzellen. Dargestellt sind jeweils die geschätzten Positionen der Zellen an denen der Benutzer angemeldet war.}
+\caption[Koordinaten der \SB-Mobilfunkzellen]{Längen- und Breitengradkoordinaten der im Datensatz \SB\ beobachteten Mobilfunkzellen. Dargestellt sind jeweils die geschätzten Positionen der Zellen, an denen der Benutzer angemeldet war.}
 \label{img:locations}
 \end{center}
 \end{figure} 
@@ -307,7 +312,7 @@ Auffällig ist die Häufung der Zellen zwischen Halle (Saale) und Bitterfeld-Wolfe
 
 \subsection{Untersuchung der Vorhersagegenauigkeit}
 
-Um die nächste Position eines Nutzers mit Hilfe eines Markov-Modells vorherzusagen, wird die je nach Modell passende Entscheidungsregel aus Tabelle~\ref{tab:markov} angewendet. Hierfür ist jedoch ein hinreichend genauer Schätzer der Transitionswahrscheinlichkeiten notwendig. Dieser könnte beispielsweise mittels Online-Learning direkt auf dem Mobiltelefon errechnet werden. So werden Vorhersagen mit der Zeit immer genauer und das Vorhersagemodell lernt mit der Zeit.
+Um die nächste Position eines Nutzers mit Hilfe eines Markov-Modells vorherzusagen, wird die je nach Modell passende Entscheidungsregel aus Tabelle~\ref{tab:markov} angewendet. Hierfür ist jedoch ein hinreichend genauer Schätzer der Transitionswahrscheinlichkeiten notwendig. Dieser könnte beispielsweise mittels Online-Learning direkt auf dem Mobiltelefon errechnet werden. So werden Vorhersagen immer genauer und das Vorhersagemodell lernt mit der Zeit.
 
 Um festzustellen, wie gut diese Methode in der Praxis funktionieren kann, wurden auf den zwei gesammelten Datensätzen jeweils Markov-Ketten unterschiedlicher Ordnung trainiert und die Vorhersagegenauigkeit gemessen. Die Vorhersagegenauigkeit $\text{PA}(\hat x_{t+1})$ für eine konkrete Vorhersage $\hat x_{t+1}$, gegeben der wahren Position $x_{t+1}$ wird definiert als
 \begin{align}
@@ -336,7 +341,7 @@ Das Vorgehen ist in Abbildung~\ref{img:eval_approach} dargestellt. Zu Beginn ist
 		\scalefont{1}
 		\input{img/evaluation.tex}
 	}
-	\caption{Evaluation der Vorhersagegenauigkeit. Mit der ersten Beobachtung beginnend, wird sukzessive die Vorhersagegenauigkeit bestimmt. Hierbei wird eine Vorhersage getroffen, die Genauigkeit ausgerechnet und anschließend die nächste Beobachtung angesehen, wobei der Schätzer mit Hilfe der korrekten Position aktualisiert wird.}
+	\caption[Evaluation der Vorhersagegenauigkeit]{Evaluation der Vorhersagegenauigkeit. Mit der ersten Beobachtung beginnend, wird sukzessive die Vorhersagegenauigkeit bestimmt. Hierbei wird eine Vorhersage getroffen, die Genauigkeit ausgerechnet und anschließend die nächste Beobachtung angesehen, wobei der Schätzer mit Hilfe der korrekten Position aktualisiert wird.}
 	\label{img:eval_approach}
 \end{center}
 \end{figure}
@@ -359,11 +364,11 @@ Im Rahmen der Experimente wurde die beschriebene Evaluation auf den gesammelten 
 \end{center}
 \end{figure}
 
-Folgende Beobachtungen konnten in Bezug auf die Einschwingphase, die Vorhersagegenauigkeit und die Laufzeit der Algorithmen gemacht werden.
+Folgende Ergebnisse konnten in Bezug auf die Einschwingphase, die Vorhersagegenauigkeit und die Laufzeit der Algorithmen festgestellt werden.
 \begin{description}
 \item[Einschwingphase.] Die zu erwartende Einschwingphase ist in \SB\ deutlich erkennbar. Das Modell verbessert sich bis zur zweihundertsten Beobachtung kontinuierlich. Dann beginnt eine Stabilisierung. Die Ergebnisse in \MB\ sind kontraintuitiv. Dort ist die Vorhersagegenauigkeit bis auf die ersten wenigen Beobachtungen höher als zum Ende des Beobachtungszeitraumes. Bei der zweihundersten bis dreihundertsten Beobachtung nähert sie sich sogar 100\,\%. Beide Modelle stabilisieren sich jedoch nach einer gewissen Zeit.
 
-Vermutlich ist das Verhalten der beobachteten Nutzer nur bedingt stationär. Zu Beginn des Beobachtungszeitraumes von \MB\ wurden nur einige wenige Zustände relativ vorhersehbar besucht. Nach einiger Zeit folgte ein anderes, schwerer vorhersagbares Bewegungsmuster, welches zum Abfall und Stabilisierung der Genauigkeit führte.
+Vermutlich ist das Verhalten der beobachteten Nutzer nur bedingt stationär. Zu Beginn des Beobachtungszeitraumes von \MB\ wurden nur einige wenige Zustände relativ vorhersehbar besucht. Nach einiger Zeit folgte ein anderes, schwerer vorhersagbares Bewegungsmuster, welches zum Abfall und zur Stabilisierung der Genauigkeit führte.
 
 \item[Vorhersagegenauigkeit.] Markov-Ketten erster Ordnung erreichen mit den Daten aus \SB\ eine durchschnittliche Vorhersagegenauigkeit von ca.~45\,\%, bei \MB\ beträgt sie ungefähr 62\,\%. Wie in Tabelle~\ref{tab:datasets} dargestellt, ist die Zustandsverteilung von \MB\ wesentlich steiler. Es gibt also Zustände, die sehr häufig auftreten, wohingegen die restlichen Zustände sehr selten sind. Dieser Umstand kommt der Vorhersage zugute, da sie mit einer geringeren Diversität der Übergänge umgehen muss.
 
@@ -371,9 +376,11 @@ Unterschiede ergeben sich auch innerhalb der Datensätze durch die Modellkomplexi
 
 Die Ursache hierfür könnte in der Unterbestimmtheit der Modelle liegen. Die Anzahl der zu schätzenden Parameter beträgt in Datensatz \SB\ für Markov-Ketten erster Ordnung $78\cdot(78-1) = 6.006$. Es fallen etliche Wahrscheinlichkeiten weg, die praktisch nie auftreten können, weil die Mobilfunkzellen nicht benachbart sind. Dennoch gilt bereits bei diesem einfachen Modell, dass es mit $603 \ll 6.006$ viel weniger Beobachtungen als Parameter gibt. Für die Markov-Ketten zweiter beziehungsweise dritter Ordnung ist dieser Umstand mit $78^2 \cdot (78-1) = 468.468$ beziehungsweise $78^3 \cdot (78-1) = 36.540.504$ Parametern noch deutlicher.
 
-Diese Problematik wird häufig auch als $p \gg N$-Problem bezeichnet und bringt Overfitting mit sich, welches die Vorhersagegenauigkeit auf Testdaten verringert.\footnote{Vgl.~\textcite{trevor2001elements},~S.~649} Abhilfe kann hier das Sammeln von mehr Daten oder das Verzichten auf komplexe Modelle schaffen.
+\newpage
 
-\item[Laufzeit.] Die Laufzeiten des gesamten Evaluationsalgorithmus betragen für
+Diese Problematik wird häufig auch als $p \gg N$-Problem bezeichnet und bringt Overfitting mit sich, welches die Vorhersagegenauigkeit auf Testdaten verringert.\footnote{Vgl.~\textcite{trevor2001elements},~S.~649}
+
+\item[Laufzeit.] Die Ausführung der Evaluation fand auf einer 2{,}83\,GHz Quad-Core-CPU mit 4\,GB Arbeitsspeicher statt. Es wurde nur ein CPU-Kern verwendet und es war genügend Arbeitsspeicher verfügbar. Die Laufzeiten des gesamten Evaluationsalgorithmus betragen auf den Datensätzen
 \begin{enumerate}
 \item[\SB:] $4{,}69\,\text{s}$ für Markov-Ketten erster Ordnung,\\ $17{,}72\,\text{s}$ für Markov-Ketten zweiter Ordnung,
 \item[\MB:] $26{,}21\,\text{s}$ für Markov-Ketten erster Ordnung,\\ $125{,}20\,\text{s}$ für Markov-Ketten zweiter Ordnung.
@@ -384,17 +391,19 @@ Diese Problematik wird häufig auch als $p \gg N$-Problem bezeichnet und bringt O
 
 \section{Schlussbetrachtung}
 
-Im Rahmen der vorliegenden Arbeit wurde untersucht, mit welcher Genauigkeit die Bewegungen von Mobilfunknutzern vorhergesagt werden können. Hierfür wurde eine Android-Anwendung programmiert, die über einen längeren Zeitraum die angemeldeten Mobilfunkzellen der Nutzer minütlich aufzeichnet. Zusätzlich wurden die auf Basis ungefährer Positionsdaten geschätzten Zellenkoordinaten ermittelt und visualisiert.
+Im Rahmen der vorliegenden Arbeit wurde untersucht, mit welcher Genauigkeit die Bewegungen von Mobilfunknutzern vorhergesagt werden können. Hierfür wurde eine Android-Anwendung programmiert, die über einen längeren Zeitraum die Sensordaten und Mobilfunkzelleninformationen der Nutzer minütlich aufzeichnet. Zusätzlich wurden die auf Basis ungefährer Positionsdaten geschätzten Zellenkoordinaten ermittelt und visualisiert.
 
-Zur Analyse und Vorhersage der Positionsdaten wurden Markov-Ketten erster, zweiter und dritter Ordnung, sowie eine Evaluation in \emph{R} implementiert. Mit zwei gesammelten Datensätzen wurde die Vorhersagegenauigkeit der implementierten Modelle geschätzt. Mit zunehmender Modellkomplexität nahm die Vorhersagegenauigkeit ab. Der Grund hierfür ist vermutlich in der zu hohen Anzahl an Modellparametern gegenüber einer geringen Anzahl an Beobachtungen zu suchen. Markov-Ketten erster Ordnung konnten die Position mit mittlerer Genauigkeit (45\,\% bzw. 62\,\%) vorhersagen.
+Zur Analyse und Vorhersage der Positionsdaten wurden Markov-Ketten erster, zweiter und dritter Ordnung, sowie eine Evaluation in \emph{R} implementiert. Mit zwei gesammelten Datensätzen wurde die Vorhersagegenauigkeit der implementierten Modelle geschätzt. Mit zunehmender Modellkomplexität nahm die Vorhersagegenauigkeit ab. Der Grund hierfür ist vermutlich in der zu hohen Anzahl an Modellparametern gegenüber einer geringen Anzahl an Beobachtungen zu suchen. Abhilfe kann hier das Sammeln von mehr Daten oder das Verzichten auf komplexe Modelle schaffen. Markov-Ketten erster Ordnung konnten die Position mit mittlerer Genauigkeit (45\,\% bzw. 62\,\%) vorhersagen.
 
 Da die Vorhersage nur auf Basis von Mobilfunkzellen stattfand, lässt sich der praktische Nutzen diskutieren. Mobiltelefone melden sich an einer in der Nähe befindlichen Zelle an, wobei die Position der Zelle im Allgemeinen nicht der exakten Position des Nutzers entspricht. Je nach Besiedelungsdichte kann die Reichweite einer Zelle von einigen Metern bis hin zu mehreren Kilometern reichen. Eine genauere Positionsbestimmung (beispielsweise GPS) könnte den praktischen Nutzen erhöhen. Allerdings ist die Positionsbestimmung mittels GPS gegenüber der hier angewendeten Methode wesentlich energieintensiver.
 
 Zur Untersuchung der Vorhersagegenauigkeit wurden in dieser Arbeit lediglich homogene Markov-Ketten verwendet. Erweiterte Modelle, welche andere beobachtete Eigenschaften wie die Uhrzeit, den Batteriestatus oder Ähnliches einbeziehen, könnten die Genauigkeit erhöhen. Eine Kombination verschiedener Modelle (Ensemble-Learning) kann sich ebenfalls positiv auswirken.
 
+\newpage
+
 Zur praktischen Anwendung eignet sich eine Online-Vorhersage auf dem Mobiltelefon. Einfache Modelle wie Markov-Ketten erster Ordnung ließen sich leicht direkt auf dem Mobiltelefon implementieren und würden eine sukzessive Parameterschätzung und Positionsvorhersage während der täglichen Verwendung ermöglichen.
 
-Um die Allgemeingültigkeit der Ergebnisse zu erhöhen, wäre es sinnvoll die Positionsdatensammlung auf weitere Orte und Anwendungsfälle auszuweiten. Hierfür ist weitere Forschungsarbeit nötig.
+Um die Allgemeingültigkeit der Ergebnisse zu erhöhen, wäre es sinnvoll, die Positionsdatensammlung auf weitere Orte und Anwendungsfälle auszuweiten. Die verwendeten Datensätze sind nicht repräsentativ. Hierfür ist weitere Forschungsarbeit nötig.
 
 \newpage
 
@@ -414,7 +423,7 @@ Gegeben sei eine zeitdiskrete, homogene Markov-Kette $d$-ter Ordnung mit $m$ Zus
 \subsubsection*{Maximum-Likelihood-Schätzung für Markov-Ketten zweiter Ordnung}
 
 \vspace*{-1em}
-Seien $A_{ijk} \in \mathbf{A}$ die Übergangswahrscheinlichkeiten $p(x_{t+1} = k|x_{t} = j, x_{t-1} = i)$ von den Zuständen $i$ und $j$ nach $k$. Sei $N_{ijk}$ die Anzahl der in den Daten beobachteten Zustandsübergänge von $i$ und $j$ nach $k$. Dann ist die Likelihood beobachteter Zustandsübergänge gegeben als
+Sei $A_{ijk} \in \mathbf{A}$ die Übergangswahrscheinlichkeit $p(x_{t+1} = k|x_{t} = j, x_{t-1} = i)$ des Zustandsübergangs von $i$ und $j$ nach $k$. Sei $N_{ijk}$ die Anzahl der in den Daten beobachteten Zustandsübergänge von $i$ und $j$ nach $k$, dann ist die Likelihood beobachteter Zustandsübergänge gegeben als
 \begin{align}
 p(x_2,\ldots,x_n | \mathbf{A}) &= \prod\limits_{i = 1}^{m} \prod\limits_{j = 1}^{m} \prod\limits_{k = 1}^{m} \prod\limits_{h = 2}^{n} A_{ijk}^{\mathbb{I}[x_h = k]}\\
 &= \prod\limits_{i = 1}^{m}\prod\limits_{j = 1}^{m}\prod\limits_{k = 1}^{m} A_{ijk}^{N_{ij\,k}}\\
@@ -425,7 +434,7 @@ Logarithmieren der Likelihood ergibt:
 \log p(N_{ijk}|\mathbf{A}) &= \sum\limits_{i=1}^{m} \sum\limits_{j=1}^{m} \sum\limits_{k=1}^{m} \log A_{ijk}^{N_{ij\,k}}\\
 &= \sum\limits_{i=1}^{m} \sum\limits_{j=1}^{m} \sum\limits_{k=1}^{m} N_{ij\,k} \cdot \log A_{ijk}
 \end{align}
-Nun muss die Log-Likelihood unter den Nebenbedingungen $\forall i,j\in S : \sum\limits_{k=1}^{m} A_{ijk} = 1$ mit Hilfe der Lagrange-Methode maximiert werden, um den Maximum-Likelihood-Schätzer $\mathbf{\hat A}$ des Transitionstensors zu erhalten. Zunächst wird die Langrangefunktion $L(\mathbf{A}, \mathbf{\lambda})$ aufgestellt und anschließend durch Null-Setzen der partiellen Ableitungen maximiert.
+Nun muss die Log-Likelihood unter den Nebenbedingungen $\forall i,j\in S : \sum\limits_{k=1}^{m} A_{ijk} = 1$ mit Hilfe der Lagrange-Methode maximiert werden, um den Maximum-Likelihood-Schätzer $\mathbf{\hat A}$ des Transitionstensors zu erhalten. Zunächst wird die Langrange-Funktion $L(\mathbf{A}, \mathbf{\lambda})$ aufgestellt und anschließend durch Null-Setzen der partiellen Ableitungen maximiert.
 \begin{align}
 L(\mathbf{A}, \mathbf{\lambda}) &= \sum\limits_{i=1}^{m} \sum\limits_{j=1}^{m} \sum\limits_{k=1}^{m} N_{ij\,k} \cdot \log A_{ijk} - \sum\limits_{i=1}^{m} \sum\limits_{j=1}^{m} \lambda_{ij} \left(\left(\sum\limits_{k=1}^{m}A_{ijk}\right)-1\right)
 \end{align}
@@ -451,7 +460,7 @@ Durch Einsetzen von (\ref{eq:lambda_ij}) in (\ref{eq:a_ijk}) ergibt sich der Sch
 \subsubsection*{Maximum-Likelihood-Schätzung für Markov-Ketten dritter Ordnung}
 
 \vspace*{-1em}
-Seien $A_{ijkl} \in \mathbf{A}$ die Übergangswahrscheinlichkeiten $p(x_{t+1} = l|x_{t} = k, x_{t-1} = j, x_{t-2} = i)$ von den Zuständen $i$, $j$ und $k$ nach $l$. Sei $N_{ijkl}$ die Anzahl der in den Daten beobachteten Zustandsübergänge von $i$, $j$ und $k$ nach $l$. Dann ist die Likelihood beobachteter Zustandsübergänge gegeben als
+Sei $A_{ijkl} \in \mathbf{A}$ die Übergangswahrscheinlichkeit $p(x_{t+1} = l|x_{t} = k, x_{t-1} = j, x_{t-2} = i)$ des Zustandsübergangs $i$, $j$ und $k$ nach $l$. Sei $N_{ijkl}$ die Anzahl der in den Daten beobachteten Zustandsübergänge von $i$, $j$ und $k$ nach $l$, dann ist die Likelihood beobachteter Zustandsübergänge gegeben als
 \begin{align}
 p(x_3,\ldots,x_n | \mathbf{A}) &= \prod\limits_{i = 1}^{m} \prod\limits_{j = 1}^{m} \prod\limits_{k = 1}^{m} \prod\limits_{l = 1}^{m} \prod\limits_{h = 3}^{n} A_{ijkl}^{\mathbb{I}[x_h = l]}\\
 &= \prod\limits_{i = 1}^{m}\prod\limits_{j = 1}^{m}\prod\limits_{k = 1}^{m} \prod\limits_{l = 1}^{m} A_{ijkl}^{N_{ij\,kl}}\\
@@ -462,7 +471,7 @@ Logarithmieren der Likelihood ergibt:
 \log p(N_{ijkl}|\mathbf{A}) &= \sum\limits_{i=1}^{m} \sum\limits_{j=1}^{m} \sum\limits_{k=1}^{m} \sum\limits_{l=1}^{m} \log A_{ijkl}^{N_{ij\,kl}}\\
 &= \sum\limits_{i=1}^{m} \sum\limits_{j=1}^{m} \sum\limits_{k=1}^{m} \sum\limits_{l=1}^{m} N_{ij\,kl} \cdot \log A_{ijkl}
 \end{align}
-Nun muss die Log-Likelihood unter den Nebenbedingungen $\forall i,j,k\in S : \sum\limits_{l=1}^{m} A_{ijkl} = 1$ mit Hilfe der Lagrange-Methode maximiert werden, um den Maximum-Likelihood-Schätzer $\mathbf{\hat A}$ des Transitionstensors zu erhalten. Zunächst wird die Langrangefunktion $L(\mathbf{A}, \mathbf{\lambda})$ aufgestellt und anschließend durch Null-Setzen der partiellen Ableitungen maximiert.
+Nun muss die Log-Likelihood unter den Nebenbedingungen $\forall i,j,k\in S : \sum\limits_{l=1}^{m} A_{ijkl} = 1$ mit Hilfe der Lagrange-Methode maximiert werden, um den Maximum-Likelihood-Schätzer $\mathbf{\hat A}$ des Transitionstensors zu erhalten. Zunächst wird die Langrange-Funktion $L(\mathbf{A}, \mathbf{\lambda})$ aufgestellt und anschließend durch Null-Setzen der partiellen Ableitungen maximiert.
 \begin{align}
 L(\mathbf{A}, \mathbf{\lambda}) &= \sum\limits_{i=1}^{m} \sum\limits_{j=1}^{m} \sum\limits_{k=1}^{m} \sum\limits_{l=1}^{m} N_{ij\,kl} \cdot \log A_{ijkl} - \sum\limits_{i=1}^{m} \sum\limits_{j=1}^{m} \sum\limits_{k=1}^{m} \lambda_{ijk} \left(\left(\sum\limits_{l=1}^{m}A_{ijkl}\right)-1\right)
 \end{align}
